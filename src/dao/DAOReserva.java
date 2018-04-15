@@ -1,6 +1,7 @@
 package dao;
 
-import java.sql.Connection; 
+import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,9 +9,9 @@ import java.util.ArrayList;
 
 import vos.*;
 
-public class DAOUsuario {
+public class DAOReserva {
 	
-	public final static String USUARIO = "ISIS2304A651810";
+public final static String USUARIO = "ISIS2304A651810";
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// ATRIBUTOS
@@ -30,7 +31,7 @@ public class DAOUsuario {
 	// METODOS DE INICIALIZACION
 	//----------------------------------------------------------------------------------------------------------------------------------
 
-	public DAOUsuario() {
+	public DAOReserva() {
 			recursos = new ArrayList<Object>();
 	}
 	
@@ -45,20 +46,20 @@ public class DAOUsuario {
 	 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public ArrayList<Usuario> getUsuarios() throws SQLException, Exception {
-		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+	public ArrayList<Reserva> getReservas() throws SQLException, Exception {
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 
 		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-		String sql = String.format("SELECT * FROM %1$s.USUARIOS WHERE ROWNUM <= 50", USUARIO);
+		String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE ROWNUM <= 50", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			usuarios.add(convertResultSetToUsuario(rs));
+			reservas.add(convertResultSetToReserva(rs));
 		}
-		return usuarios;
+		return reservas;
 	}
 
 	/**
@@ -70,21 +71,21 @@ public class DAOUsuario {
 	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public Usuario findUsuarioById(Long id) throws SQLException, Exception 
+	public Reserva findReservaById(Long id) throws SQLException, Exception 
 	{
-		Usuario usuario = null;
+		Reserva reserva = null;
 
-		String sql = String.format("SELECT * FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, id); 
+		String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE ID = %2$d", USUARIO, id); 
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			usuario = convertResultSetToUsuario(rs);
+			reserva = convertResultSetToReserva(rs);
 		}
 
-		return usuario;
+		return reserva;
 	}
 	
 	/**
@@ -94,20 +95,19 @@ public class DAOUsuario {
 	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public void addUsuario(Usuario usuario) throws SQLException, Exception {
+	public void addReserva(Reserva reserva) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.USUARIOS (ID, LOGIN, CONTRASENIA, CEDULA, EDAD, NOMBRE, TELEFONO, OPERADOR, TIPO) "
+		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, FECHAREALIZACION, FECHAINICIO, FECHAFIN, OPERADOR, OFERTA, CLIENTE) "
 				+ "VALUES (%2$s, '%3$s', '%4$s', '%5$s', %6$s,'%7$s','%8$s', %9$s, '%10$s')", 
 									USUARIO, 
-									usuario.getId(), 
-									usuario.getLogin(),
-									usuario.getContrasenia(),
-									usuario.getCedula(),
-									usuario.getEdad(),
-									usuario.getNombre(),
-									usuario.getTelefono(),
-									usuario.getOperador(),
-									usuario.getTipo()
+									reserva.getId(), 
+									reserva.getCobro(),
+									reserva.getFechaRealizacion(),
+									reserva.getFechaInicio(),
+									reserva.getFechaFin(),
+									reserva.getOperador(),
+									reserva.getOferta(),
+									reserva.getCliente()
 									);
 		System.out.println(sql);
 
@@ -124,21 +124,20 @@ public class DAOUsuario {
 	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public void updateUsuario(Usuario usuario) throws SQLException, Exception {
+	public void updateReserva(Reserva reserva) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.USUARIOS SET ", USUARIO));
-		sql.append(String.format("LOGIN = '%1$s' , CONTRASENIA = '%2$s' , CEDULA = '%3$s', EDAD = %4$s, NOMBRE = '%5$s', TELEFONO = '%6$s', OPERADOR = %7$s, TIPO = '%8$s' ", 
-				usuario.getLogin(),
-				usuario.getContrasenia(),
-				usuario.getCedula(),
-				usuario.getEdad(),
-				usuario.getNombre(),
-				usuario.getTelefono(),
-				usuario.getOperador(),
-				usuario.getTipo()
+		sql.append(String.format("UPDATE %s.RESERVAS SET ", USUARIO));
+		sql.append(String.format("COBRO = %1$s , FECHAREALIZACION = '%2$s' , FECHAINICIO = '%3$s', FECHAFIN = %4$s, OPERADOR = %5$s, OFERTA = %6$s, CLIENTE = %7$s ", 
+				reserva.getCobro(),
+				reserva.getFechaRealizacion(),
+				reserva.getFechaInicio(),
+				reserva.getFechaFin(),
+				reserva.getOperador(),
+				reserva.getOferta(),
+				reserva.getCliente()
 				));
-		sql.append(String.format("WHERE ID = %s ", usuario.getId() ));
+		sql.append(String.format("WHERE ID = %s ", reserva.getId() ));
 		
 		System.out.println(sql);
 		
@@ -154,9 +153,9 @@ public class DAOUsuario {
 	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public void deleteUsuario(Usuario usuario) throws SQLException, Exception {
+	public void deleteReserva(Reserva reserva) throws SQLException, Exception {
 
-		String sql = String.format("DELETE FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, usuario.getId());
+		String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE ID = %2$d", USUARIO, reserva.getId());
 
 		System.out.println(sql);
 		
@@ -202,21 +201,21 @@ public class DAOUsuario {
 	 * @return Bebedor cuyos atributos corresponden a los valores asociados a un registro particular de la tabla BEBEDORES.
 	 * @throws SQLException Si existe algun problema al extraer la informacion del ResultSet.
 	 */
-	public Usuario convertResultSetToUsuario(ResultSet resultSet) throws SQLException {
+	public Reserva convertResultSetToReserva(ResultSet resultSet) throws SQLException {
 		
 		Long id = resultSet.getLong("ID");
-		String login = resultSet.getString("LOGIN");
-		String contrasenia = resultSet.getString("CONTRASENIA");
-		String cedula = resultSet.getString("CEDULA");
-		Integer edad = resultSet.getInt("EDAD");
-		String nombre = resultSet.getString("NOMBRE");
-		String telefono = resultSet.getString("TELEFONO");
+		Double cobro = resultSet.getDouble("COBRO");
+		Date fechaRealizacion= resultSet.getDate("FECHAREALIZACION");
+		Date fechaInicio = resultSet.getDate("FECHAINICIO");
+		Date fechaFin = resultSet.getDate("FECHAFIN");
 		Long operador = resultSet.getLong("OPERADOR");
-		String tipo = resultSet.getString("TIPO");
+		Long oferta = resultSet.getLong("OFERTA");
+		Long cliente = resultSet.getLong("CLIENTE");
 
-		Usuario user = new Usuario(id, login, contrasenia, cedula, edad, nombre, telefono, operador, tipo);
 
-		return user;
+		Reserva reserva = new Reserva(id, cobro, fechaRealizacion, fechaInicio, fechaFin, operador, oferta, cliente);
+
+		return reserva;
 	}
 
 }

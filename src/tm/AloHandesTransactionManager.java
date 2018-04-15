@@ -166,7 +166,7 @@ public class AloHandesTransactionManager {
 				usuario = daoUsuario.findUsuarioById(id);
 				if(usuario == null)
 				{
-					throw new Exception("El bebedor con el id = " + id + " no se encuentra persistido en la base de datos.");				
+					throw new Exception("El Usuario con el id = " + id + " no se encuentra persistido en la base de datos.");				
 				}
 			} 
 			catch (SQLException sqlException) {
@@ -240,7 +240,7 @@ public class AloHandesTransactionManager {
 				if(exists != null) {
 					daoUsuario.updateUsuario(usuario);
 				}else
-					throw new Exception("Este Bebedor no se encuentra en la base de datos");
+					throw new Exception("Este Usuario no se encuentra en la base de datos");
 
 			}
 			catch (SQLException sqlException) {
@@ -278,7 +278,7 @@ public class AloHandesTransactionManager {
 				if(exists != null) {
 					daoUsuario.deleteUsuario(usuario);
 				}else
-					throw new Exception("Este Bebedor no se encuentra en la base de datos");
+					throw new Exception("Este Usuario no se encuentra en la base de datos");
 
 			}
 			catch (SQLException sqlException) {
@@ -294,6 +294,194 @@ public class AloHandesTransactionManager {
 			finally {
 				try {
 					daoUsuario.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+			
+		}
+
+		public List<Reserva> getAllReservas() throws Exception{
+			DAOReserva daoReserva = new DAOReserva();
+			List<Reserva> reservas;
+			try 
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				
+				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+				reservas = daoReserva.getReservas();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return reservas;
+		}
+
+		public Reserva getReservaById(Long id) throws Exception{
+			DAOReserva daoReserva = new DAOReserva();
+			Reserva reserva = null;
+			try 
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				reserva = daoReserva.findReservaById(id);
+				if(reserva == null)
+				{
+					throw new Exception("La reserva con el id = " + id + " no se encuentra persistido en la base de datos.");				
+				}
+			} 
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return reserva;
+		}
+
+		public void addReserva(Reserva reserva) throws Exception{
+			DAOReserva daoReserva = new DAOReserva( );
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				daoReserva.addReserva(reserva);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+		}
+
+		public void updateReserva(Reserva reserva) throws Exception{
+			DAOReserva daoReserva = new DAOReserva( );
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn( conn );
+				Reserva exists = daoReserva.findReservaById(reserva.getId());
+				if(exists != null) {
+					daoReserva.updateReserva(reserva);
+				}else
+					throw new Exception("Esta Reserva no se encuentra en la base de datos");
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+			
+		}
+
+		public void deleteReserva(Reserva reserva) throws Exception{
+			DAOReserva daoReserva = new DAOReserva( );
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn( conn );
+				Reserva exists = daoReserva.findReservaById(reserva.getId());
+				if(exists != null) {
+					daoReserva.deleteReserva(reserva);
+				}else
+					throw new Exception("Esta Reserva no se encuentra en la base de datos");
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
 					if(this.conn!=null){
 						this.conn.close();					
 					}

@@ -1,0 +1,127 @@
+package vos;
+
+import java.sql.Date;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+
+public class Reserva {
+	
+	@JsonProperty(value="id")
+	private Long id;
+	
+	@JsonProperty(value="cobro")
+	private Double cobro;
+	
+	@JsonProperty(value="fechaRealizacion")
+	private Date fechaRealizacion;
+	
+	@JsonProperty(value="fechaInicio")
+	private Date fechaInicio;
+	
+	@JsonProperty(value="fechaFinal")
+	private Date fechaFin;
+	
+	@JsonProperty(value="operador")
+	private Long operador;
+	
+	@JsonProperty(value="oferta")
+	private Long oferta;
+	
+	@JsonProperty(value="cliente")
+	private Long cliente;
+	
+	public Reserva(
+			@JsonProperty(value="id")
+			Long id,
+			@JsonProperty(value="cobro")
+			Double cobro,
+			@JsonProperty(value="fechaRealizacion")
+			Date fechaRealizacion,
+			@JsonProperty(value="fechaInicio")
+			Date fechaInicio,
+			@JsonProperty(value="fechaFin")
+			Date fechaFin,
+			@JsonProperty(value="operador")
+			Long operador,
+			@JsonProperty(value="oferta")
+			Long oferta,
+			@JsonProperty(value="cliente")
+			Long cliente ) {
+		
+		this.id = id;
+		this.cobro = cobro;
+		this.fechaRealizacion = fechaRealizacion;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.operador = operador;
+		this.oferta = oferta;
+		this.cliente = cliente;
+		
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Double getCobro() {
+		return cobro;
+	}
+
+	public void setCobro(Double cobro) {
+		this.cobro = cobro;
+	}
+
+	public Date getFechaRealizacion() {
+		return fechaRealizacion;
+	}
+
+	public void setFechaRealizacion(Date fechaRealizacion) {
+		this.fechaRealizacion = fechaRealizacion;
+	}
+
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFinal(Date fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
+	public Long getOperador() {
+		return operador;
+	}
+
+	public void setOperador(Long operador) {
+		this.operador = operador;
+	}
+
+	public Long getOferta() {
+		return oferta;
+	}
+
+	public void setOferta(Long oferta) {
+		this.oferta = oferta;
+	}
+
+	public Long getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Long cliente) {
+		this.cliente = cliente;
+	}
+	
+
+}
