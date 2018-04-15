@@ -25,6 +25,9 @@ public class Usuario {
 	@JsonProperty(value="telefono")
 	private String telefono;
 	
+	@JsonProperty(value="operador")
+	private Long operador;
+	
 	@JsonProperty(value="tipo")
 	private String tipo;
 	
@@ -41,6 +44,8 @@ public class Usuario {
 	 		String nombre,
 	 		@JsonProperty(value="telefono")
 			String telefono,
+			@JsonProperty(value="operador")
+			Long operador,
 			@JsonProperty(value="tipo")
 	 		String tipo) {
 
@@ -51,6 +56,7 @@ public class Usuario {
 		this.edad = edad;
 		this.nombre = nombre;
 		this.telefono = telefono;
+		this.operador = operador;
 		this.tipo = tipo;
 	}
 
@@ -116,6 +122,14 @@ public class Usuario {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	
+	public Long getOperador() {
+		return operador;
+	}
+	
+	public void setOperador(Long operador) {
+		this.operador = operador;
 	}
 	
 }

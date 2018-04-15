@@ -97,7 +97,7 @@ public class DAOUsuario {
 	public void addUsuario(Usuario usuario) throws SQLException, Exception {
 
 		String sql = String.format("INSERT INTO %1$s.USUARIOS (ID, LOGIN, CONTRASENIA, CEDULA, EDAD, NOMBRE, TELEFONO, TIPO) "
-				+ "VALUES (%2$s, '%3$s', '%4$s', '%5$s', %6$s,'%7$s','%8$s','%9$s')", 
+				+ "VALUES (%2$s, '%3$s', '%4$s', '%5$s', %6$s,'%7$s','%8$s', %9$s, '%10$s')", 
 									USUARIO, 
 									usuario.getId(), 
 									usuario.getLogin(),
@@ -106,6 +106,7 @@ public class DAOUsuario {
 									usuario.getEdad(),
 									usuario.getNombre(),
 									usuario.getTelefono(),
+									usuario.getOperador(),
 									usuario.getTipo()
 									);
 		System.out.println(sql);
@@ -127,13 +128,14 @@ public class DAOUsuario {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.BEBEDORES SET ", USUARIO));
-		sql.append(String.format("LOGIN = '%1$s' , CONTRASENIA = '%2$s' , CEDULA = '%3$s', EDAD = %4$s, NOMBRE = '%5$s', TELEFONO = '%6$s', TIPO = '%7$s' ", 
+		sql.append(String.format("LOGIN = '%1$s' , CONTRASENIA = '%2$s' , CEDULA = '%3$s', EDAD = %4$s, NOMBRE = '%5$s', TELEFONO = '%6$s', OPERADOR = %7$s,TIPO = '%8$s' ", 
 				usuario.getLogin(),
 				usuario.getContrasenia(),
 				usuario.getCedula(),
 				usuario.getEdad(),
 				usuario.getNombre(),
 				usuario.getTelefono(),
+				usuario.getOperador(),
 				usuario.getTipo()
 				));
 		sql.append(String.format("WHERE ID = %s ", usuario.getId() ));
@@ -209,9 +211,10 @@ public class DAOUsuario {
 		Integer edad = resultSet.getInt("EDAD");
 		String nombre = resultSet.getString("NOMBRE");
 		String telefono = resultSet.getString("TELEFONO");
+		Long operador = resultSet.getLong("OPERADOR");
 		String tipo = resultSet.getString("TIPO");
 
-		Usuario user = new Usuario(id, login, contrasenia, cedula, edad, nombre, telefono, tipo);
+		Usuario user = new Usuario(id, login, contrasenia, cedula, edad, nombre, telefono, operador, tipo);
 
 		return user;
 	}
