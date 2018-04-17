@@ -1,46 +1,4 @@
 //----------------------------------
-// Usuarios
-//----------------------------------
-
-create table usuarios(
-id varchar(60),
-contrasenia varchar(64),
-login varchar (64),
-cedula varchar(20),
-edad Number(3),
-nombre varchar(60),
-telefono varchar(20),
-tipo varchar (20)
-);
-
-alter table usuarios
-modify contrasenia not null;
-
-alter table usuarios
-modify login not null;
-
-alter table usuarios
-modify cedula not null;
-
-alter table usuarios
-modify edad not null;
-
-alter table usuarios
-modify nombre not null;
-
-alter table usuarios
-modify telefono not null;
-
-alter table usuarios
-add CONSTRAINT CHK_Cliente CHECK (edad>=18);
-
-alter table usuarios
-add CONSTRAINT PK_Usuario PRIMARY KEY (id);
-
-alter table usuarios
-add constraint CHK_tipousvalido check (tipo in ('cliente','responsable'));
-
-//----------------------------------
 // remake operadores
 //----------------------------------
 
@@ -89,6 +47,55 @@ add constraint CHK_tipoopvalido check (tipo in ('hotel','pernat','percom','hosta
 
 alter table operadores 
 add CONSTRAINT PK_Operador PRIMARY KEY (id);
+
+
+//----------------------------------
+// remake Usuarios
+//----------------------------------
+
+create table usuarios(
+id varchar(60),
+contrasenia varchar(64),
+login varchar (64),
+cedula varchar(20),
+edad Number(3),
+nombre varchar(60),
+telefono varchar(20),
+operador varchar(60),
+tipo varchar (20)
+);
+
+alter table usuarios
+modify contrasenia not null;
+
+alter table usuarios
+modify login not null;
+
+alter table usuarios
+modify cedula not null;
+
+alter table usuarios
+modify edad not null;
+
+alter table usuarios
+modify nombre not null;
+
+alter table usuarios
+modify telefono not null;
+
+alter table usuarios
+add CONSTRAINT CHK_Cliente CHECK (edad>=18);
+
+alter table usuarios
+add constraint CHK_tipousvalido check (tipo in ('cliente','responsable'));
+
+alter table usuarios
+add constraint FK_Operador FOREIGN KEY (operador) references operadores(id);
+
+alter table usuarios
+add CONSTRAINT PK_Usuario PRIMARY KEY (id);
+
+
 
 //----------------------------------
 // remake alojamientos
@@ -149,6 +156,56 @@ modify fecharealizacion not null;
 alter table reservas
 modify fechainicio not null;
 
+alter table reservas
+modify fechafin not null;
+
+alter table reservas
+modify operador not null;
+
+alter table reservas
+modify oferta not null;
+
+alter table reservas
+modify cliente not null;
+
+alter table reservas
+add CONSTRAINT PK_reservas PRIMARY KEY (id);
+
+alter table reservas
+add FOREIGN KEY (operador) references operadores(id);
+
+alter table reservas
+add FOREIGN KEY (oferta) references ofertas(id);
+
+alter table reservas
+add FOREIGN KEY (cliente) references usuarios(id);
+
+alter table reservas
+add CONSTRAINT CHK_reservacoherente CHECK ( fechainicio < fechafin and fecharealizacion < fechainicio);
+
+//----------------------------------
+// servicios
+//----------------------------------
+
+create table servicios(
+id varchar(60),
+costo number (8,2),
+descripcion varchar(60),
+nombre varchar(60),
+oferta varchar(60)
+);
+
+alter table servicios
+modify nombre not null;
+
+alter table servicios
+modify oferta not null;
+
+alter table servicios
+add CONSTRAINT PK_servicios PRIMARY KEY (id);
+
+alter table servicios
+add FOREIGN KEY (oferta) references ofertas(id);
 alter table reservas
 modify fechafin not null;
 
