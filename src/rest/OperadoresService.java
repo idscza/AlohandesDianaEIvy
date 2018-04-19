@@ -137,7 +137,7 @@ public class OperadoresService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces( MediaType.APPLICATION_JSON )
 	
-	public Response updateUsuario(Operador operador) {
+	public Response updateOperador(Operador operador) {
 		
 		try{
 			AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
