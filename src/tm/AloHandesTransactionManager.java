@@ -494,6 +494,43 @@ public class AloHandesTransactionManager {
 			}	
 			
 		}
+		
+		public List<Oferta> getOfertasPopulares() throws Exception{
+			DAOOferta daoOferta = new DAOOferta();
+			List<Oferta> ofertas;
+			try 
+			{
+				this.conn = darConexion();
+				daoOferta.setConn(conn);
+				
+				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+				ofertas = daoOferta.getOfertasPopulares();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOferta.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return ofertas;
+		}
 
 	
 }
