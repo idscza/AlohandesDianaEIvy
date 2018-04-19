@@ -102,12 +102,16 @@ public class Alojamiento {
 	 * @param numerohabitacion
 	 * @param operador
 	 */
-	public Alojamiento(@JsonProperty(value="id") Long id, @JsonProperty(value = "capacidad")int capacidad,
-			@JsonProperty(value = "tipo") String tipo,@JsonProperty(value = "tamanio")int tamanio,
-			@JsonProperty(value = "menaje") int menaje,@JsonProperty(value = "amoblado")
-	        int amoblado, @JsonProperty(value = "numhabitaciones")int numhabitaciones, 
+	public Alojamiento(@JsonProperty(value="id") Long id, 
+			@JsonProperty(value = "capacidad")int capacidad,
+			@JsonProperty(value = "tipo") String tipo,
+			@JsonProperty(value = "tamanio")int tamanio,
+			@JsonProperty(value = "menaje") int menaje,
+			@JsonProperty(value = "amoblado")int amoblado, 
+	        @JsonProperty(value = "numhabitaciones")int numhabitaciones, 
 	        @JsonProperty(value = "direccion")String direccion,
-	        @JsonProperty(value = "diasuso") int diasuso, @JsonProperty(value = "categoria")String categoria,
+	        @JsonProperty(value = "diasuso") int diasuso, 
+	        @JsonProperty(value = "categoria")String categoria,
 	        @JsonProperty(value = "numerohabitacion") String numerohabitacion,
 	        @JsonProperty(value = "operador") String operador) {
 		this.id = id;
