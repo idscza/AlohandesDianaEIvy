@@ -41,7 +41,7 @@ public class DAOOferta {
 	
 	//REQUERIMENTO DE CONSULTA RFC2
 
-	public ArrayList<Oferta> getOfertasPopulares() throws SQLException, Exception {
+	/*public ArrayList<Oferta> getOfertasPopulares() throws SQLException, Exception {
 		ArrayList<Oferta> ofertas = new ArrayList<Oferta>();
 
 		String sql = String.format("SELECT * FROM "
@@ -56,5 +56,5 @@ public class DAOOferta {
 			ofertas.add(convertResultSetToOferta(rs));
 		}
 		return ofertas;
-	}
+	}*/ //TODO
 }
