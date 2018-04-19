@@ -10,6 +10,8 @@ import vos.Servicio;
 import vos.Usuario;
 
 public class DAOServicios {
+	
+	public final static String USUARIO = "ISIS2304A651810";
 
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// ATRIBUTOS
@@ -54,7 +56,7 @@ public class DAOServicios {
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			servicios.add(arg0);
+			servicios.addAll(rs);
 		}
 		return servicios;
 	}

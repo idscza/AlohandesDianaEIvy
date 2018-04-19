@@ -11,7 +11,7 @@ import vos.*;
 
 public class DAOReserva {
 	
-public final static String USUARIO = "ISIS2304A651810";
+	public final static String USUARIO = "ISIS2304A651810";
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// ATRIBUTOS
