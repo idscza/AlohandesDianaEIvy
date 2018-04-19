@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response;
 import tm.AloHandesTransactionManager;
 import vos.Reserva;
 
-@Path("usuarios")
+@Path("reservas")
 public class ReservasService {
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ public class ReservasService {
 			 */			
 			@GET
 			@Produces({ MediaType.APPLICATION_JSON })
-			public Response getUsuarioss() {
+			public Response getReservas() {
 				
 				try {
 					AloHandesTransactionManager tm = new AloHandesTransactionManager(getPath());
@@ -86,7 +86,7 @@ public class ReservasService {
 			@GET
 			@Path( "{id: \\d+}" )
 			@Produces( { MediaType.APPLICATION_JSON } )
-			public Response getUsuarioById( @PathParam( "id" ) Long id )
+			public Response getReservaById( @PathParam( "id" ) Long id )
 			{
 				try{
 					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
@@ -114,7 +114,7 @@ public class ReservasService {
 			@POST
 			@Consumes(MediaType.APPLICATION_JSON)
 			@Produces( MediaType.APPLICATION_JSON )
-			public Response addBebedor(Reserva reserva) {
+			public Response addReserva(Reserva reserva) {
 				
 					try{
 					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
@@ -139,7 +139,7 @@ public class ReservasService {
 			@Consumes(MediaType.APPLICATION_JSON)
 			@Produces( MediaType.APPLICATION_JSON )
 			
-			public Response updateBebedor(Reserva reserva) {
+			public Response updateReserva(Reserva reserva) {
 				
 				try{
 					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
@@ -165,7 +165,7 @@ public class ReservasService {
 			@Consumes(MediaType.APPLICATION_JSON)
 			@Produces(MediaType.APPLICATION_JSON)
 			
-			public Response deleteBebedor(Reserva reserva) {
+			public Response deleteReserva(Reserva reserva) {
 				try{
 					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
 					tm.deleteReserva(reserva);

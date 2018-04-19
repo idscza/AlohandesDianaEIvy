@@ -61,7 +61,7 @@ public class UsuariosService {
 		 */			
 		@GET
 		@Produces({ MediaType.APPLICATION_JSON })
-		public Response getUsuarioss() {
+		public Response getUsuarios() {
 			
 			try {
 				AloHandesTransactionManager tm = new AloHandesTransactionManager(getPath());
@@ -114,7 +114,7 @@ public class UsuariosService {
 		@POST
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces( MediaType.APPLICATION_JSON )
-		public Response addBebedor(Usuario usuario) {
+		public Response addUsuario(Usuario usuario) {
 			
 				try{
 				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
@@ -139,7 +139,7 @@ public class UsuariosService {
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces( MediaType.APPLICATION_JSON )
 		
-		public Response updateBebedor(Usuario usuario) {
+		public Response updateUsuario(Usuario usuario) {
 			
 			try{
 				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
@@ -165,7 +165,7 @@ public class UsuariosService {
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.APPLICATION_JSON)
 		
-		public Response deleteBebedor(Usuario usuario) {
+		public Response deleteUsuario(Usuario usuario) {
 			try{
 				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
 				tm.deleteUsuario(usuario);
