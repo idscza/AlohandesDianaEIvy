@@ -1,7 +1,13 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import vos.Servicio;
+import vos.Usuario;
 
 public class DAOServicios {
 
@@ -30,5 +36,27 @@ public class DAOServicios {
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODOS DE COMUNICACION CON LA BASE DE DATOS
 	//----------------------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Metodo que obtiene la informacion de todos los servicios en la Base de Datos <br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>
+	 * @return	lista con la informacion de todos los servicios que se encuentran en la Base de Datos
+	 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public ArrayList<Servicio> getServicios() throws SQLException, Exception {
+		ArrayList<Servicio> servicios = new ArrayList<Servicio>();
+
+		String sql = String.format("SELECT * FROM %1$s.SERVICIOS WHERE ROWNUM <= 50", SERVICIO);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			servicios.add(arg0);
+		}
+		return servicios;
+	}
 
 }
