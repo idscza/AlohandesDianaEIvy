@@ -495,6 +495,194 @@ public class AloHandesTransactionManager {
 			
 		}
 		
+		public List<Operador> getAllOperadores() throws Exception{
+			DAOOperador daoOperador = new DAOOperador();
+			List<Operador> operadores;
+			try 
+			{
+				this.conn = darConexion();
+				daoOperador.setConn(conn);
+				
+				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+				operadores = daoOperador.getOperadores();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return operadores;
+		}
+
+		public Operador getOperadorById(Long id) throws Exception{
+			DAOOperador daoOperador = new DAOOperador();
+			Operador operador = null;
+			try 
+			{
+				this.conn = darConexion();
+				daoOperador.setConn(conn);
+				operador = daoOperador.findOperadorById(id);
+				if(operador == null)
+				{
+					throw new Exception("El Operador con el id = " + id + " no se encuentra persistido en la base de datos.");				
+				}
+			} 
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return operador;
+		}
+
+		public void addOperador(Operador operador) throws Exception{
+			DAOOperador daoOperador = new DAOOperador( );
+			try
+			{
+				this.conn = darConexion();
+				daoOperador.setConn(conn);
+				daoOperador.addOperador(operador);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+		}
+
+		public void updateOperador(Operador operador) throws Exception{
+			DAOOperador daoOperador = new DAOOperador( );
+			try
+			{
+				this.conn = darConexion();
+				daoOperador.setConn( conn );
+				Operador exists = daoOperador.findOperadorById(operador.getId());
+				if(exists != null) {
+					daoOperador.updateOperador(operador);
+				}else
+					throw new Exception("Este Operador no se encuentra en la base de datos");
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+
+		public void deleteOperador(Operador operador) throws Exception{
+			DAOOperador daoOperador = new DAOOperador( );
+			try
+			{
+				this.conn = darConexion();
+				daoOperador.setConn( conn );
+				Operador exists = daoOperador.findOperadorById(operador.getId());
+				if(exists != null) {
+					daoOperador.deleteOperador(operador);
+				}else
+					throw new Exception("Este Operador no se encuentra en la base de datos");
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+			
+		}
+		
 		/*public List<Oferta> getOfertasPopulares() throws Exception{
 			DAOOferta daoOferta = new DAOOferta();
 			List<Oferta> ofertas;
