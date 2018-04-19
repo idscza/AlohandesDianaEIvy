@@ -495,7 +495,7 @@ public class AloHandesTransactionManager {
 			
 		}
 		
-		public List<Oferta> getOfertasPopulares() throws Exception{
+		/*public List<Oferta> getOfertasPopulares() throws Exception{
 			DAOOferta daoOferta = new DAOOferta();
 			List<Oferta> ofertas;
 			try 
@@ -530,7 +530,7 @@ public class AloHandesTransactionManager {
 				}
 			}
 			return ofertas;
-		}
+		}*/ //TODO
 
 	
 }
