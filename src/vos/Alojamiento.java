@@ -79,7 +79,7 @@ public class Alojamiento {
 	 * operador a cargo del alojamiento
 	 */
 	@JsonProperty(value = "operador")
-	private String operador;
+	private Long operador;
 
 	
 	
@@ -100,7 +100,7 @@ public class Alojamiento {
 	 * @param diasuso
 	 * @param categoria
 	 * @param numerohabitacion
-	 * @param operador
+	 * @param operador2
 	 */
 	public Alojamiento(@JsonProperty(value="id") Long id, 
 			@JsonProperty(value = "capacidad")int capacidad,
@@ -113,7 +113,7 @@ public class Alojamiento {
 	        @JsonProperty(value = "diasuso") int diasuso, 
 	        @JsonProperty(value = "categoria")String categoria,
 	        @JsonProperty(value = "numerohabitacion") String numerohabitacion,
-	        @JsonProperty(value = "operador") String operador) {
+	        @JsonProperty(value = "operador") Long operador2) {
 		this.id = id;
 		this.capacidad = capacidad;
 		this.tipo = tipo;
@@ -125,7 +125,7 @@ public class Alojamiento {
 		this.diasuso = diasuso;
 		this.categoria = categoria;
 		this.numerohabitacion = numerohabitacion;
-		this.operador = operador;
+		this.operador = operador2;
 	}
 
 	
@@ -313,14 +313,14 @@ public class Alojamiento {
 	/**
 	 * @return the operador
 	 */
-	public String getOperador() {
+	public Long getOperador() {
 		return operador;
 	}
 
 	/**
 	 * @param operador the operador to set
 	 */
-	public void setOperador(String operador) {
+	public void setOperador(Long operador) {
 		this.operador = operador;
 	}
 	

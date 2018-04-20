@@ -1,5 +1,7 @@
 package vos;
 
+import java.sql.Date;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Oferta {
@@ -9,22 +11,22 @@ public class Oferta {
 	//----------------------------------------------------------------------------------------------------------------------------------
     
 	@JsonProperty(value="id")
-	private String id;
+	private Long id;
 	
 	@JsonProperty(value="costo")
 	private int costo;
 	
 	@JsonProperty(value="fecharetiro")
-	private String fecharetiro;
+	private Date fecharetiro;
 	
 	@JsonProperty(value="nombre")
 	private String nombre;
 	
 	@JsonProperty(value="operador")
-	private String operador;
+	private Long operador;
 	
 	@JsonProperty(value="alojamiento")
-	private Alojamiento alojamiento;
+	private Long alojamiento;
 
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -39,8 +41,12 @@ public class Oferta {
 	 * @param operador
 	 * @param alojamiento
 	 */
-	public Oferta(String id, int costo, String fecharetiro, String nombre,
-			String operador, Alojamiento alojamiento) {
+	public Oferta(@JsonProperty(value="id") Long id,
+			@JsonProperty(value="costo")int costo, 
+			@JsonProperty(value="fecharetiro")Date fecharetiro,
+			@JsonProperty(value="nombre")String nombre,
+			@JsonProperty(value="operador") Long operador, 
+			@JsonProperty(value="alojamiento")Long alojamiento) {
 		this.id = id;
 		this.costo = costo;
 		this.fecharetiro = fecharetiro;
@@ -58,7 +64,7 @@ public class Oferta {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -66,7 +72,7 @@ public class Oferta {
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -90,7 +96,7 @@ public class Oferta {
 	/**
 	 * @return the fecharetiro
 	 */
-	public String getFecharetiro() {
+	public Date getFecharetiro() {
 		return fecharetiro;
 	}
 
@@ -98,7 +104,7 @@ public class Oferta {
 	/**
 	 * @param fecharetiro the fecharetiro to set
 	 */
-	public void setFecharetiro(String fecharetiro) {
+	public void setFecharetiro(Date fecharetiro) {
 		this.fecharetiro = fecharetiro;
 	}
 
@@ -122,7 +128,7 @@ public class Oferta {
 	/**
 	 * @return the operador
 	 */
-	public String getOperador() {
+	public Long getOperador() {
 		return operador;
 	}
 
@@ -130,7 +136,7 @@ public class Oferta {
 	/**
 	 * @param operador the operador to set
 	 */
-	public void setOperador(String operador) {
+	public void setOperador(Long operador) {
 		this.operador = operador;
 	}
 
@@ -138,7 +144,7 @@ public class Oferta {
 	/**
 	 * @return the alojamiento
 	 */
-	public Alojamiento getAlojamiento() {
+	public Long getAlojamiento() {
 		return alojamiento;
 	}
 
@@ -146,7 +152,7 @@ public class Oferta {
 	/**
 	 * @param alojamiento the alojamiento to set
 	 */
-	public void setAlojamiento(Alojamiento alojamiento) {
+	public void setAlojamiento(Long alojamiento) {
 		this.alojamiento = alojamiento;
 	}
 	

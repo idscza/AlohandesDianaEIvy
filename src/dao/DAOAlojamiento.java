@@ -205,7 +205,7 @@ public class DAOAlojamiento {
 		/**
 		 * Metodo que transforma el resultado obtenido de una consulta SQL (sobre la tabla BEBEDORES) en una instancia de la clase Bebedor.
 		 * @param resultSet ResultSet con la informacion de un bebedor que se obtuvo de la base de datos.
-		 * @return Bebedor cuyos atributos corresponden a los valores asociados a un registro particular de la tabla BEBEDORES.
+		 * @return Alojamiento cuyos atributos corresponden a los valores asociados a un registro particular de la tabla BEBEDORES.
 		 * @throws SQLException Si existe algun problema al extraer la informacion del ResultSet.
 		 */
 		public Alojamiento convertResultSetToAlojamiento (ResultSet resultSet) throws SQLException {
@@ -221,8 +221,7 @@ public class DAOAlojamiento {
 			int diasuso = resultSet.getInt("DIASUSO");
 			String categoria = resultSet.getString("CATEGORIA");
 			String numerohabitacion = resultSet.getString("NUMEROHABITACION");
-			String operador = resultSet.getString("OPERADOR");
-
+			Long operador = resultSet.getLong("OPERADOR");
 
 
 			Alojamiento alojamiento = new Alojamiento(id, capacidad, tipo, tamanio, menaje, amoblado, numhabitaciones, direccion, diasuso, categoria, numerohabitacion, operador);
