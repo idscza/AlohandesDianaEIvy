@@ -41,8 +41,8 @@ public class DAOOferta {
 	
 	//REQUERIMENTO DE CONSULTA RFC2
 
-	/*public ArrayList<Oferta> getOfertasPopulares() throws SQLException, Exception {
-		ArrayList<Oferta> ofertas = new ArrayList<Oferta>();
+	public ArrayList<RFC2> getOfertasPopulares() throws SQLException, Exception {
+		ArrayList<RFC2> ofertas = new ArrayList<RFC2>();
 
 		String sql = String.format("SELECT * FROM "
 				+ "(SELECT OFERTA , COUNT(OFERTAS) AS POPULARES FROM %1$s.RESERVAS GROUP BY OFERTA ORDER BY POPULARES DESC)" + 
@@ -53,8 +53,17 @@ public class DAOOferta {
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			ofertas.add(convertResultSetToOferta(rs));
+			ofertas.add(convertResultSetToRFC2(rs));
 		}
 		return ofertas;
-	}*/ //TODO
+	}
+
+	public RFC2 convertResultSetToRFC2(ResultSet rs) throws SQLException {
+	
+		Long oferta = rs.getLong("OFERTA");
+		Integer populares = rs.getInt("POPULARES");
+		
+		RFC2 req = new RFC2(oferta,populares);
+		return req;
+	}
 }

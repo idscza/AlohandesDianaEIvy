@@ -682,16 +682,15 @@ public class AloHandesTransactionManager {
 			}	
 			
 		}
-		
-		/*public List<Oferta> getOfertasPopulares() throws Exception{
+		/*
+		public List<RFC2> getOfertasPopulares() throws Exception{
 			DAOOferta daoOferta = new DAOOferta();
-			List<Oferta> ofertas;
+			List<RFC2> ofertas;
 			try 
 			{
 				this.conn = darConexion();
 				daoOferta.setConn(conn);
 				
-				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 				ofertas = daoOferta.getOfertasPopulares();
 			}
 			catch (SQLException sqlException) {
@@ -718,7 +717,7 @@ public class AloHandesTransactionManager {
 				}
 			}
 			return ofertas;
-		}*/ //TODO
-
+		}
+		*/
 	
 }
