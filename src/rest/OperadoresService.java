@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import tm.AloHandesTransactionManager;
 import vos.Operador;
+import vos.RFC1;
 
 @Path("operadores")
 public class OperadoresService {
@@ -172,6 +173,24 @@ public class OperadoresService {
 		catch( Exception e )
 		{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+
+	@GET
+	@Path( "ganancias" )
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getGananciaOperadores() {
+		
+		try {
+			AloHandesTransactionManager tm = new AloHandesTransactionManager(getPath());
+			
+			List<RFC1> operadores;
+			//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+			operadores = tm.getGananciaOperadores();
+			return Response.status(200).entity(operadores).build();
+		} 
+		catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 	}
 

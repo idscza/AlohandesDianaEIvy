@@ -231,5 +231,36 @@ public final static String USUARIO = "ISIS2304A651810";
 
 		return operador;
 	}
+	
+	//REQUERIMENTO DE CONSULTA RFC1
+
+		public ArrayList<RFC1> getGananciaOperadores() throws SQLException, Exception {
+			ArrayList<RFC1> operadores = new ArrayList<RFC1>();
+
+			String sql = String.format("SELECT OPERADOR, SUM(COBRO) AS GANANCIAS " + 
+					"FROM " + 
+					"(SELECT OPERADOR, COBRO FROM %1$s.RESERVAS" + 
+					"WHERE FECHAFIN > '1/1/2018')FILTRO " + 
+					"GROUP BY OPERADOR " + 
+					"ORDER  BY GANANCIAS DESC;", USUARIO);
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				operadores.add(convertResultSetToRFC1(rs));
+			}
+			return operadores;
+		}
+
+		public RFC1 convertResultSetToRFC1(ResultSet rs) throws SQLException {
+		
+			Long operador = rs.getLong("OPERADOR");
+			Double ganancia = rs.getDouble("GANANCIA");
+			
+			RFC1 req = new RFC1(operador,ganancia);
+			return req;
+		}
 
 }
