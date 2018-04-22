@@ -21,6 +21,9 @@ public class Reserva {
 	@JsonProperty(value="fechaFinal")
 	private Date fechaFin;
 	
+	@JsonProperty(value="personas")
+	private Integer personas;
+	
 	@JsonProperty(value="operador")
 	private Long operador;
 	
@@ -41,6 +44,8 @@ public class Reserva {
 			Date fechaInicio,
 			@JsonProperty(value="fechaFin")
 			Date fechaFin,
+			@JsonProperty(value="personas")
+			Integer personas,
 			@JsonProperty(value="operador")
 			Long operador,
 			@JsonProperty(value="oferta")
@@ -95,8 +100,16 @@ public class Reserva {
 		return fechaFin;
 	}
 
-	public void setFechaFinal(Date fechaFin) {
+	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
+	}
+
+	public Integer getPersonas() {
+		return personas;
+	}
+
+	public void setPersonas(Integer personas) {
+		this.personas = personas;
 	}
 
 	public Long getOperador() {

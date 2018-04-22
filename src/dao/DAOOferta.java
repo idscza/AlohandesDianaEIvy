@@ -104,6 +104,7 @@ public class DAOOferta {
 									oferta.getCosto(),
 									oferta.getFecharetiro(),
 									oferta.getNombre(),
+									oferta.getOperador(),
 									oferta.getAlojamiento()
 									);
 		System.out.println(sql);
@@ -129,6 +130,7 @@ public class DAOOferta {
 				oferta.getCosto(),
 				oferta.getFecharetiro(),
 				oferta.getNombre(),
+				oferta.getOperador(),
 				oferta.getAlojamiento()
 				));
 		sql.append(String.format("WHERE ID = %s ", oferta.getId() ));

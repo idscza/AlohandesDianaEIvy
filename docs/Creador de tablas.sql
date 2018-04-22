@@ -183,6 +183,7 @@ cobro number(9,2) default 0,
 fecharealizacion date,
 fechainicio date,
 fechafin date,
+personas number(2),
 operador varchar(60),
 oferta varchar(60),
 cliente varchar(60)  
@@ -199,6 +200,9 @@ modify fechainicio not null;
 
 alter table reservas
 modify fechafin not null;
+
+alter table personas
+modify cliente not null;
 
 alter table reservas
 modify operador not null;

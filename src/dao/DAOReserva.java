@@ -97,14 +97,15 @@ public class DAOReserva {
 	 */
 	public void addReserva(Reserva reserva) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, FECHAREALIZACION, FECHAINICIO, FECHAFIN, OPERADOR, OFERTA, CLIENTE) "
-				+ "VALUES (%2$s, '%3$s', '%4$s', '%5$s', %6$s,'%7$s','%8$s', %9$s, '%10$s')", 
+		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, FECHAREALIZACION, FECHAINICIO, FECHAFIN, PERSONAS, OPERADOR, OFERTA, CLIENTE) "
+				+ "VALUES (%2$s,  %3$s, '%4$s', '%5$s', '%6$s', %7$s, %8$s, %9$s, %10$s)", 
 									USUARIO, 
 									reserva.getId(), 
 									reserva.getCobro(),
 									reserva.getFechaRealizacion(),
 									reserva.getFechaInicio(),
 									reserva.getFechaFin(),
+									reserva.getPersonas(),
 									reserva.getOperador(),
 									reserva.getOferta(),
 									reserva.getCliente()
@@ -128,11 +129,12 @@ public class DAOReserva {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.RESERVAS SET ", USUARIO));
-		sql.append(String.format("COBRO = %1$s , FECHAREALIZACION = '%2$s' , FECHAINICIO = '%3$s', FECHAFIN = %4$s, OPERADOR = %5$s, OFERTA = %6$s, CLIENTE = %7$s ", 
+		sql.append(String.format("COBRO = %1$s , FECHAREALIZACION = '%2$s' , FECHAINICIO = '%3$s', FECHAFIN = '%4$s', PERSONAS = %5$s, OPERADOR = %5$s, OFERTA = %6$s, CLIENTE = %7$s ", 
 				reserva.getCobro(),
 				reserva.getFechaRealizacion(),
 				reserva.getFechaInicio(),
 				reserva.getFechaFin(),
+				reserva.getPersonas(),
 				reserva.getOperador(),
 				reserva.getOferta(),
 				reserva.getCliente()
@@ -208,12 +210,13 @@ public class DAOReserva {
 		Date fechaRealizacion= resultSet.getDate("FECHAREALIZACION");
 		Date fechaInicio = resultSet.getDate("FECHAINICIO");
 		Date fechaFin = resultSet.getDate("FECHAFIN");
+		Integer personas = resultSet.getInt("PERSONAS");
 		Long operador = resultSet.getLong("OPERADOR");
 		Long oferta = resultSet.getLong("OFERTA");
 		Long cliente = resultSet.getLong("CLIENTE");
 
 
-		Reserva reserva = new Reserva(id, cobro, fechaRealizacion, fechaInicio, fechaFin, operador, oferta, cliente);
+		Reserva reserva = new Reserva(id, cobro, fechaRealizacion, fechaInicio, fechaFin, personas, operador, oferta, cliente);
 
 		return reserva;
 	}
