@@ -1,10 +1,12 @@
 package dao;
 
-import java.sql.Connection; 
+import java.sql.Connection;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import vos.*;
 
@@ -258,10 +260,16 @@ public final static String USUARIO = "ISIS2304A651810";
 		public ArrayList<RFC3> getIndiceOcupacion() throws SQLException, Exception {
 			ArrayList<RFC3> operadores = new ArrayList<RFC3>();
 
+			Date xd = new Date();
+			String d = ""+xd.getDate();
+			String m = ""+(xd.getMonth()+1);
+			String a = ""+(xd.getYear()-100);
+			String fecha = d+"/"+m+"/"+a;
+			
 			String sql = String.format("SELECT operador, floor((sum(case when fecharealizacion is null then 0 else 1 end) )/ (count(elid))*100)||' Por ciento' Indiceocupacion " + 
 					"from(SELECT OFERTAS.id as elid, ofertas.operador ,filtro.fecharealizacion FROM %1$s.OFERTAS LEFT OUTER JOIN " + 
-					"(SELECT * FROM %1$s.RESERVAS WHERE FECHAFIN > '13/2/2018' and FECHAINICIO <= '13/2/2018')FILTRO " + 
-					"ON OFERTAS.ID = FILTRO.OFERTA)info group by operador", USUARIO);
+					"(SELECT * FROM %1$s.RESERVAS WHERE FECHAFIN > '%2$s' and FECHAINICIO <= '%2$s')FILTRO " + 
+					"ON OFERTAS.ID = FILTRO.OFERTA)info group by operador", USUARIO, fecha);
 
 			System.out.println(sql);
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
