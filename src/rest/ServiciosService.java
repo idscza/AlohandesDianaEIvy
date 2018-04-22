@@ -64,7 +64,7 @@ public class ServiciosService {
 			
 			List<Servicio> servicios;
 			//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-			servicios = tm.getAllServicios);
+			servicios = tm.getAllServicios();
 			return Response.status(200).entity(servicios).build();
 		} 
 		catch (Exception e) {
