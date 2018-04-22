@@ -47,7 +47,7 @@ public class DAOAlojamiento {
 		 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 		 * @throws Exception Si se genera un error dentro del metodo.
 		 */
-		public ArrayList<Alojamiento> getAlojamiento() throws SQLException, Exception {
+		public ArrayList<Alojamiento> getAlojamientos() throws SQLException, Exception {
 			ArrayList<Alojamiento> alojamiento = new ArrayList<Alojamiento>();
 
 			//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta

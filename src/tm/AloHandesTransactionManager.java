@@ -757,5 +757,43 @@ public class AloHandesTransactionManager {
 			return operadores;
 		}
 		
+		
+		public List<Alojamiento> getAllAlojamientos() throws Exception{
+			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+			List<Alojamiento> alojamiento;
+			try 
+			{
+				this.conn = darConexion();
+				daoAlojamiento.setConn(conn);
+				
+				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+				alojamiento = daoAlojamiento.getAlojamientos();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoUsuario.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return usuarios;
+		}
+		
 	
 }
