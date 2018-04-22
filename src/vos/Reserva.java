@@ -33,6 +33,9 @@ public class Reserva {
 	@JsonProperty(value="cliente")
 	private Long cliente;
 	
+	@JsonProperty(value="idMaestro")
+	private Long idMaestro;
+	
 	public Reserva(
 			@JsonProperty(value="id")
 			Long id,
@@ -51,7 +54,9 @@ public class Reserva {
 			@JsonProperty(value="oferta")
 			Long oferta,
 			@JsonProperty(value="cliente")
-			Long cliente ) {
+			Long cliente,
+			@JsonProperty(value="idMaestro")
+			Long idMaestro) {
 		
 		this.id = id;
 		this.cobro = cobro;
@@ -61,6 +66,7 @@ public class Reserva {
 		this.operador = operador;
 		this.oferta = oferta;
 		this.cliente = cliente;
+		this.idMaestro = idMaestro;
 		
 	}
 
@@ -134,6 +140,14 @@ public class Reserva {
 
 	public void setCliente(Long cliente) {
 		this.cliente = cliente;
+	}
+
+	public Long getIdMaestro() {
+		return idMaestro;
+	}
+
+	public void setIdMaestro(Long idMaestro) {
+		this.idMaestro = idMaestro;
 	}
 	
 

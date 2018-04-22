@@ -193,7 +193,8 @@ fechafin date,
 personas number(2),
 operador varchar(60),
 oferta varchar(60),
-cliente varchar(60)  
+cliente varchar(60),
+idmaestro varchar(60)  
 );
 
 alter table reservas
@@ -208,8 +209,8 @@ modify fechainicio not null;
 alter table reservas
 modify fechafin not null;
 
-alter table personas
-modify cliente not null;
+alter table reservas
+modify personas not null;
 
 alter table reservas
 modify operador not null;

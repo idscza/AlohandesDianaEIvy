@@ -17,7 +17,7 @@ public class RFC1 {
 				Double ganancias) 
 	{
 		this.operador = operador;
-		this.ganancias = ganancias;
+		this.ganancias = ganancias; 
 		
 	}
 

@@ -97,8 +97,8 @@ public class DAOReserva {
 	 */
 	public void addReserva(Reserva reserva) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, FECHAREALIZACION, FECHAINICIO, FECHAFIN, PERSONAS, OPERADOR, OFERTA, CLIENTE) "
-				+ "VALUES (%2$s,  %3$s, '%4$s', '%5$s', '%6$s', %7$s, %8$s, %9$s, %10$s)", 
+		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, FECHAREALIZACION, FECHAINICIO, FECHAFIN, PERSONAS, OPERADOR, OFERTA, CLIENTE, IDMAESTRO) "
+				+ "VALUES (%2$s,  %3$s, '%4$s', '%5$s', '%6$s', %7$s, %8$s, %9$s, %10$s, %11$s)", 
 									USUARIO, 
 									reserva.getId(), 
 									reserva.getCobro(),
@@ -108,7 +108,8 @@ public class DAOReserva {
 									reserva.getPersonas(),
 									reserva.getOperador(),
 									reserva.getOferta(),
-									reserva.getCliente()
+									reserva.getCliente(),
+									reserva.getIdMaestro()
 									);
 		System.out.println(sql);
 
@@ -129,7 +130,7 @@ public class DAOReserva {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.RESERVAS SET ", USUARIO));
-		sql.append(String.format("COBRO = %1$s , FECHAREALIZACION = '%2$s' , FECHAINICIO = '%3$s', FECHAFIN = '%4$s', PERSONAS = %5$s, OPERADOR = %5$s, OFERTA = %6$s, CLIENTE = %7$s ", 
+		sql.append(String.format("COBRO = %1$s , FECHAREALIZACION = '%2$s' , FECHAINICIO = '%3$s', FECHAFIN = '%4$s', PERSONAS = %5$s, OPERADOR = %5$s, OFERTA = %6$s, CLIENTE = %7$s, IDMAESTRO = %8$s ", 
 				reserva.getCobro(),
 				reserva.getFechaRealizacion(),
 				reserva.getFechaInicio(),
@@ -137,7 +138,8 @@ public class DAOReserva {
 				reserva.getPersonas(),
 				reserva.getOperador(),
 				reserva.getOferta(),
-				reserva.getCliente()
+				reserva.getCliente(),
+				reserva.getIdMaestro()
 				));
 		sql.append(String.format("WHERE ID = %s ", reserva.getId() ));
 		
@@ -214,9 +216,9 @@ public class DAOReserva {
 		Long operador = resultSet.getLong("OPERADOR");
 		Long oferta = resultSet.getLong("OFERTA");
 		Long cliente = resultSet.getLong("CLIENTE");
+		Long idMaestro = resultSet.getLong("IDMAESTRO");
 
-
-		Reserva reserva = new Reserva(id, cobro, fechaRealizacion, fechaInicio, fechaFin, personas, operador, oferta, cliente);
+		Reserva reserva = new Reserva(id, cobro, fechaRealizacion, fechaInicio, fechaFin, personas, operador, oferta, cliente, idMaestro);
 
 		return reserva;
 	}
