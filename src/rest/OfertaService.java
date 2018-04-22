@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import tm.AloHandesTransactionManager;
 import vos.Oferta;
+import vos.RFC2;
 
 public class OfertaService {
 
@@ -172,6 +173,24 @@ public class OfertaService {
 			catch( Exception e )
 			{
 				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+			}
+		}
+		
+		@GET
+		@Path( "ofertasPopulares" )
+		@Produces({ MediaType.APPLICATION_JSON })
+		public Response getOfertasPopulares() {
+			
+			try {
+				AloHandesTransactionManager tm = new AloHandesTransactionManager(getPath());
+				
+				List<RFC2> ofertas;
+				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+				ofertas = tm.getOfertasPopulares();
+				return Response.status(200).entity(ofertas).build();
+			} 
+			catch (Exception e) {
+				return Response.status(500).entity(doErrorMessage(e)).build();
 			}
 		}
 }
