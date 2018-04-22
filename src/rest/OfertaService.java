@@ -65,7 +65,7 @@ public class OfertaService {
 				
 				List<Oferta> ofertas;
 				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-				ofertas = tm.getAllOfertas);
+				ofertas = tm.getAllOfertas();
 				return Response.status(200).entity(ofertas).build();
 			} 
 			catch (Exception e) {
@@ -89,7 +89,7 @@ public class OfertaService {
 			try{
 				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
 				
-				Servicio oferta = tm.getOfertaById( id );
+				Oferta oferta = tm.getOfertaById( id );
 				return Response.status( 200 ).entity( oferta ).build( );			
 			}
 			catch( Exception e )

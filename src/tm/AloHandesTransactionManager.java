@@ -1136,7 +1136,7 @@ public class AloHandesTransactionManager {
 		
 		
 		
-		public List<Oferta> getAllOferta() throws Exception{
+		public List<Oferta> getAllOfertas() throws Exception{
 			DAOOferta daoOferta = new DAOOferta();
 			List<Oferta> oferta;
 			try 
