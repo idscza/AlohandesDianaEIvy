@@ -682,7 +682,7 @@ public class AloHandesTransactionManager {
 			}	
 			
 		}
-		/*
+
 		public List<RFC2> getOfertasPopulares() throws Exception{
 			DAOOferta daoOferta = new DAOOferta();
 			List<RFC2> ofertas;
@@ -718,7 +718,7 @@ public class AloHandesTransactionManager {
 			}
 			return ofertas;
 		}
-		*/
+
 		
 		
 		public List<RFC1> getGananciaOperadores() throws Exception{

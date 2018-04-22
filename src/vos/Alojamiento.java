@@ -20,11 +20,6 @@ public class Alojamiento {
 	@JsonProperty(value = "capacidad")
 	private Integer capacidad;
 	
-	/**
-	 * tipo de alojamiento
-	 */
-	@JsonProperty(value = "tipo")
-	private String tipo;
 	
 	/**
 	 * tamaño e metros cuadrados dedl alojamiento
@@ -80,6 +75,12 @@ public class Alojamiento {
 	 */
 	@JsonProperty(value = "operador")
 	private Long operador;
+	
+	/**
+	 * tipo de alojamiento
+	 */
+	@JsonProperty(value = "tipo")
+	private String tipo;
 
 	
 	
@@ -104,7 +105,6 @@ public class Alojamiento {
 	 */
 	public Alojamiento(@JsonProperty(value="id") Long id, 
 			@JsonProperty(value = "capacidad")Integer capacidad,
-			@JsonProperty(value = "tipo") String tipo,
 			@JsonProperty(value = "tamanio")Integer tamanio,
 			@JsonProperty(value = "menaje") Integer menaje,
 			@JsonProperty(value = "amoblado")Integer amoblado, 
@@ -113,7 +113,8 @@ public class Alojamiento {
 	        @JsonProperty(value = "diasuso") Integer diasuso, 
 	        @JsonProperty(value = "categoria")String categoria,
 	        @JsonProperty(value = "numerohabitacion") String numerohabitacion,
-	        @JsonProperty(value = "operador") Long operador2) {
+	        @JsonProperty(value = "operador") Long operador,
+			@JsonProperty(value = "tipo") String tipo) {
 		this.id = id;
 		this.capacidad = capacidad;
 		this.tipo = tipo;
@@ -125,7 +126,7 @@ public class Alojamiento {
 		this.diasuso = diasuso;
 		this.categoria = categoria;
 		this.numerohabitacion = numerohabitacion;
-		this.operador = operador2;
+		this.operador = operador;
 	}
 
 	

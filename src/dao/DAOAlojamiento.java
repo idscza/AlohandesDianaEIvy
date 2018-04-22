@@ -98,20 +98,21 @@ public class DAOAlojamiento {
 		 */
 		public void addAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
 
-			String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, CAPACIDAD, TIPO, TAMANIO, MENAJE, AMOBLADO, NUMHABITACIONES, DIRECCION, DIASUSO,CATEGORIA, NUMEROHABITACION, OPERADOR) "
-					+ "VALUES (%2$s, '%3$s', '%4$s', '%5$s', %6$s,'%7$s','%8$s', %9$s, '%10$s')", 
+			String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, CAPACIDAD, TAMANIO, MENAJE, AMOBLADO, NUMHABITACIONES, DIRECCION, DIASUSO,CATEGORIA, NUMEROHABITACION, OPERADOR, TIPO ) "
+					+ "VALUES (%2$s, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s, %9$s, '%10$s', '%11$s', %12$s, '%13$s')", 
 										USUARIO, 
 										alojamiento.getId(),
 										alojamiento.getCapacidad(),
-										alojamiento.getTipo(),
 										alojamiento.getTamanio(),
 										alojamiento.getMenaje(),
 										alojamiento.getAmoblado(),
 										alojamiento.getNumhabitaciones(),
+										alojamiento.getDireccion(),
 										alojamiento.getDiasuso(),
 										alojamiento.getCategoria(),
 										alojamiento.getNumerohabitacion(),
-										alojamiento.getOperador()
+										alojamiento.getOperador(),
+										alojamiento.getTipo()
 										);
 			System.out.println(sql);
 
@@ -132,13 +133,14 @@ public class DAOAlojamiento {
 
 			StringBuilder sql = new StringBuilder();
 			sql.append(String.format("UPDATE %s.ALOJAMIENTOS SET ", USUARIO));
-			sql.append(String.format("CAPACIDAD = %1$s , TIPO = '%2$s' , TAMANIO = '%3$s', MENAJE = %4$s, AMOBLADO = %5$s, NUMHABUTACIONES = %6$s, DIRECCION = %7$s , DIASUSO = %8$s, CATEGORIA = %9$s, NUMEROHABITACION = %10$s, OPERADOR = %11$s     ", 
+			sql.append(String.format("CAPACIDAD = %1$s , TAMANIO =  %3$s, MENAJE = %4$s, AMOBLADO = %5$s, NUMHABUTACIONES = %6$s, DIRECCION = '%7$s' , DIASUSO =  %8$s, CATEGORIA = '%9$s', NUMEROHABITACION = '%10$s', OPERADOR = %11$s , TIPO = '%2$s' ", 
 					alojamiento.getCapacidad(),
 					alojamiento.getTipo(),
 					alojamiento.getTamanio(),
 					alojamiento.getMenaje(),
 					alojamiento.getAmoblado(),
 					alojamiento.getNumhabitaciones(),
+					alojamiento.getDireccion(),
 					alojamiento.getDiasuso(),
 					alojamiento.getCategoria(),
 					alojamiento.getNumerohabitacion(),
@@ -224,7 +226,7 @@ public class DAOAlojamiento {
 			Long operador = resultSet.getLong("OPERADOR");
 
 
-			Alojamiento alojamiento = new Alojamiento(id, capacidad, tipo, tamanio, menaje, amoblado, numhabitaciones, direccion, diasuso, categoria, numerohabitacion, operador);
+			Alojamiento alojamiento = new Alojamiento(id, capacidad,  tamanio, menaje, amoblado, numhabitaciones, direccion, diasuso, categoria, numerohabitacion, operador, tipo);
 
 			return alojamiento;
 		}
