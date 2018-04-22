@@ -27,11 +27,19 @@ public class Oferta {
 	
 	@JsonProperty(value="alojamiento")
 	private Long alojamiento;
+	
+	@JsonProperty(value="deshabilitada")
+	private Integer deshabilitada;
+	
+	
 
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODO CONSTRUCTOR
 	//----------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 	/**
 	 * @param id
@@ -46,13 +54,15 @@ public class Oferta {
 			@JsonProperty(value="fecharetiro")Date fecharetiro,
 			@JsonProperty(value="nombre")String nombre,
 			@JsonProperty(value="operador") Long operador, 
-			@JsonProperty(value="alojamiento")Long alojamiento) {
+			@JsonProperty(value="alojamiento")Long alojamiento,
+			@JsonProperty(value="deshabilitada")Integer deshabilitada) {
 		this.id = id;
 		this.costo = costo;
 		this.fecharetiro = fecharetiro;
 		this.nombre = nombre;
 		this.operador = operador;
 		this.alojamiento = alojamiento;
+		this.deshabilitada = deshabilitada;
 	}
 
 	
@@ -156,6 +166,14 @@ public class Oferta {
 		this.alojamiento = alojamiento;
 	}
 	
+	public Integer getDeshabilitada() {
+		return deshabilitada;
+	}
+
+
+	public void setDeshabilitada(Integer deshabilitada) {
+		this.deshabilitada = deshabilitada;
+	}
 	
 	
 	

@@ -152,7 +152,8 @@ costo number(9,2),
 fecharetiro date,
 nombre varchar(60),
 operador varchar(60),
-alojamiento varchar(60)
+alojamiento varchar(60),
+deshabilitada NUMBER(1)
 );
 
 alter table ofertas
@@ -163,6 +164,12 @@ modify operador not null;
 
 alter table ofertas
 modify alojamiento not null;
+
+alter table ofertas
+modify deshabilitada not null;
+
+alter table ofertas
+add CONSTRAINT CHK_deshabilitacion CHECK ( deshabilitada = 1 or deshabilitada = 0);
 
 alter table ofertas
 add CONSTRAINT PK_ofertas PRIMARY KEY (id);
@@ -251,3 +258,7 @@ add CONSTRAINT PK_servicios PRIMARY KEY (id);
 
 alter table servicios
 add FOREIGN KEY (oferta) references ofertas(id);
+
+//----------------------------------
+// super reservas
+//----------------------------------

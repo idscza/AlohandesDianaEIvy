@@ -97,15 +97,16 @@ public class DAOOferta {
 	 */
 	public void addOferta(Oferta oferta) throws SQLException, Exception {
 	
-		String sql = String.format("INSERT INTO %1$s.OFERTAS (ID, COSTO, FECHARETIRO, NOMBRE, OPERADOR, ALOJAMIENTO) "
-				+ "VALUES (%2$s, %3$s, '%4$s', '%5$s', %6$s, %7$s)", 
+		String sql = String.format("INSERT INTO %1$s.OFERTAS (ID, COSTO, FECHARETIRO, NOMBRE, OPERADOR, ALOJAMIENTO, DESHABILITADA) "
+				+ "VALUES (%2$s, %3$s, '%4$s', '%5$s', %6$s, %7$s, %8$s)", 
 									USUARIO, 
 									oferta.getId(), 
 									oferta.getCosto(),
 									oferta.getFecharetiro(),
 									oferta.getNombre(),
 									oferta.getOperador(),
-									oferta.getAlojamiento()
+									oferta.getAlojamiento(),
+									oferta.getDeshabilitada()
 									);
 		System.out.println(sql);
 	
@@ -126,12 +127,13 @@ public class DAOOferta {
 	
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.OFERTAS SET ", USUARIO));
-		sql.append(String.format("COSTO = %1$s , FECHARETIRO = '%2$s' , NOMBRE = '%3$s', OPERADOR = %4$s, ALOJAMIENTO = %5$s ", 
+		sql.append(String.format("COSTO = %1$s , FECHARETIRO = '%2$s' , NOMBRE = '%3$s', OPERADOR = %4$s, ALOJAMIENTO = %5$s, DESHABILITADA = %6$s ", 
 				oferta.getCosto(),
 				oferta.getFecharetiro(),
 				oferta.getNombre(),
 				oferta.getOperador(),
-				oferta.getAlojamiento()
+				oferta.getAlojamiento(),
+				oferta.getDeshabilitada()
 				));
 		sql.append(String.format("WHERE ID = %s ", oferta.getId() ));
 		
@@ -193,13 +195,14 @@ public class DAOOferta {
 	public Oferta convertResultSetToOferta(ResultSet resultSet) throws SQLException {
 		
 		Long id = resultSet.getLong("ID");
-		int costo = resultSet.getInt("COSTO");
+		Integer costo = resultSet.getInt("COSTO");
 		Date fecharetiro = resultSet.getDate("FECHARETIRO");
 		String nombre = resultSet.getString("NOMBRE");
 		Long operador = resultSet.getLong("OPERADOR");
 		Long alojamiento = resultSet.getLong("ALOJAMIENTO");
+		Integer deshabilitada = resultSet.getInt("DESHABILITADA");
 
-		Oferta user = new Oferta (id, costo, fecharetiro, nombre, operador, alojamiento);
+		Oferta user = new Oferta (id, costo, fecharetiro, nombre, operador, alojamiento,deshabilitada);
 
 		return user;
 	}
