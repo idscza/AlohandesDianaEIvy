@@ -239,11 +239,12 @@ public final static String USUARIO = "ISIS2304A651810";
 
 			String sql = String.format("SELECT OPERADOR, SUM(COBRO) AS GANANCIAS " + 
 					"FROM " + 
-					"(SELECT OPERADOR, COBRO FROM %1$s.RESERVAS" + 
+					"(SELECT OPERADOR, COBRO FROM %1$s.RESERVAS " + 
 					"WHERE FECHAFIN > '1/1/2018')FILTRO " + 
 					"GROUP BY OPERADOR " + 
-					"ORDER  BY GANANCIAS DESC;", USUARIO);
+					"ORDER  BY GANANCIAS DESC", USUARIO);
 
+			System.out.println(sql);
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
 			ResultSet rs = prepStmt.executeQuery();
@@ -253,6 +254,27 @@ public final static String USUARIO = "ISIS2304A651810";
 			}
 			return operadores;
 		}
+		
+		public ArrayList<RFC3> getIndiceOcupacion() throws SQLException, Exception {
+			ArrayList<RFC3> operadores = new ArrayList<RFC3>();
+
+			String sql = String.format("SELECT operador, floor((sum(case when fecharealizacion is null then 0 else 1 end) )/ (count(elid))*100)||' Por ciento' Indiceocupacion " + 
+					"from(SELECT OFERTAS.id as elid, ofertas.operador ,filtro.fecharealizacion FROM %1$s.OFERTAS LEFT OUTER JOIN " + 
+					"(SELECT * FROM %1$s.RESERVAS WHERE FECHAFIN > '13/2/2018' and FECHAINICIO <= '13/2/2018')FILTRO " + 
+					"ON OFERTAS.ID = FILTRO.OFERTA)info group by operador", USUARIO);
+
+			System.out.println(sql);
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				operadores.add(convertResultSetToRFC3(rs));
+			}
+			return operadores;
+		}
+		
+		
 
 		public RFC1 convertResultSetToRFC1(ResultSet rs) throws SQLException {
 		
@@ -262,5 +284,16 @@ public final static String USUARIO = "ISIS2304A651810";
 			RFC1 req = new RFC1(operador,ganancia);
 			return req;
 		}
+		
+		public RFC3 convertResultSetToRFC3(ResultSet rs) throws SQLException {
+			
+			Long operador = rs.getLong("OPERADOR");
+			String indiceOcupacion = rs.getString("INDICEOCUPACION");
+			
+			RFC3 req = new RFC3(operador,indiceOcupacion);
+			return req;
+		}
+		
+		
 
 }

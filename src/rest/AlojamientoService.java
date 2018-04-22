@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import tm.AloHandesTransactionManager;
 import vos.Alojamiento;
 
+@Path("alojamientos")
 public class AlojamientoService {
 	
 	//----------------------------------------------------------------------------------------------------------------------------------

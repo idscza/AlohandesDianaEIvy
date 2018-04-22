@@ -19,6 +19,7 @@ import tm.AloHandesTransactionManager;
 import vos.Oferta;
 import vos.RFC2;
 
+@Path("ofertas")
 public class OfertaService {
 
 	//----------------------------------------------------------------------------------------------------------------------------------

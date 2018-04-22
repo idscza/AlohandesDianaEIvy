@@ -218,8 +218,10 @@ public class DAOOferta {
 		ArrayList<RFC2> ofertas = new ArrayList<RFC2>();
 	
 		String sql = String.format("SELECT * FROM "
-				+ "(SELECT OFERTA , COUNT(OFERTAS) AS POPULARES FROM %1$s.RESERVAS GROUP BY OFERTA ORDER BY POPULARES DESC)" + 
-				"WHERE ROWNUM <= 20;", USUARIO);
+				+ "(SELECT OFERTA , COUNT(OFERTA) AS POPULARES FROM %1$s.RESERVAS GROUP BY OFERTA ORDER BY POPULARES DESC) LASPOPULARES " + 
+				"WHERE ROWNUM <= 20", USUARIO);
+		
+		System.out.println(sql);
 	
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
