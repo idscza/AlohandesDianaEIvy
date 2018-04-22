@@ -757,6 +757,43 @@ public class AloHandesTransactionManager {
 			return operadores;
 		}
 		
+		public List<RFC4> getAlojamientoConServicios() throws Exception{
+			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+			List<RFC4> alojamientos;
+			try 
+			{
+				this.conn = darConexion();
+				daoAlojamiento.setConn(conn);
+				
+				alojamientos = daoAlojamiento.getAlojamientoConServicios();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoAlojamiento.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return alojamientos;
+		}
+		
+		
 		public List<RFC3> getIndiceOcupacion() throws Exception{
 			DAOOperador daoOperador = new DAOOperador();
 			List<RFC3> operadores;
@@ -792,6 +829,7 @@ public class AloHandesTransactionManager {
 			}
 			return operadores;
 		}
+		
 		
 		
 		public List<Alojamiento> getAllAlojamientos() throws Exception{

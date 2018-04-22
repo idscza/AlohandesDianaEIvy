@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response;
 
 import tm.AloHandesTransactionManager;
 import vos.Alojamiento;
+import vos.RFC3;
+import vos.RFC4;
 
 @Path("alojamientos")
 public class AlojamientoService {
@@ -177,5 +179,22 @@ public class AlojamientoService {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
+	
+	@GET 
+	@Path ("alojamientoconservicios")
+	@Produces ({ MediaType.APPLICATION_JSON })
+	public Response getAlojamientoConServicios(){
+		try {
+			AloHandesTransactionManager tm = new AloHandesTransactionManager(getPath());
 
+			List<RFC4> alojamientos;
+			alojamientos = tm.getAlojamientoConServicios();
+			return Response.status(200).entity(alojamientos).build();
+		}
+		catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+
+	
 }

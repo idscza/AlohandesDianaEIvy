@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import vos.Alojamiento;
 import vos.Operador;
+import vos.RFC4;
 
 public class DAOAlojamiento {
 	
@@ -229,6 +230,19 @@ public class DAOAlojamiento {
 			Alojamiento alojamiento = new Alojamiento(id, capacidad,  tamanio, menaje, amoblado, numhabitaciones, direccion, diasuso, categoria, numerohabitacion, operador, tipo);
 
 			return alojamiento;
+		}
+		
+		public RFC4 convertResultSetToRFC4 (ResultSet rs)throws SQLException {
+			Long alojamiento = rs.getLong("ALOJAMIENTO");
+			Long servicio = rs.getLong("SERVICIO");
+			Date fechaInicio = rs.getDate("FECHAINICIO");
+			Date fechaFin = rs.getDate("FECHAFIN");
+			
+			RFC4 req = new RFC4 (alojamiento,servicio,fechaInicio, fechaFin  );
+			
+			return req;
+					
+			
 		}
 
 }
