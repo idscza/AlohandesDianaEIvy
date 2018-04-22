@@ -51,7 +51,7 @@ public class DAOAlojamiento {
 			ArrayList<Alojamiento> alojamiento = new ArrayList<Alojamiento>();
 
 			//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-			String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE ROWNUM <= 50", USUARIO);
+			String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE ROWNUM <= 50", USUARIO);
 
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
@@ -76,7 +76,7 @@ public class DAOAlojamiento {
 		{
 			Alojamiento alojamiento = null;
 
-			String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE ID = %2$d", USUARIO, id); 
+			String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, id); 
 
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
@@ -98,7 +98,7 @@ public class DAOAlojamiento {
 		 */
 		public void addAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
 
-			String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, CAPACIDAD, TIPO, TAMANIO, MENAJE, AMOBLADO, NUMHABITACIONES, DIRECCION, DIASUSO,CATEGORIA, NUMEROHABITACION, OPERADOR) "
+			String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, CAPACIDAD, TIPO, TAMANIO, MENAJE, AMOBLADO, NUMHABITACIONES, DIRECCION, DIASUSO,CATEGORIA, NUMEROHABITACION, OPERADOR) "
 					+ "VALUES (%2$s, '%3$s', '%4$s', '%5$s', %6$s,'%7$s','%8$s', %9$s, '%10$s')", 
 										USUARIO, 
 										alojamiento.getId(),
@@ -131,7 +131,7 @@ public class DAOAlojamiento {
 		public void updateAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
 
 			StringBuilder sql = new StringBuilder();
-			sql.append(String.format("UPDATE %s.RESERVAS SET ", USUARIO));
+			sql.append(String.format("UPDATE %s.ALOJAMIENTOS SET ", USUARIO));
 			sql.append(String.format("CAPACIDAD = %1$s , TIPO = '%2$s' , TAMANIO = '%3$s', MENAJE = %4$s, AMOBLADO = %5$s, NUMHABUTACIONES = %6$s, DIRECCION = %7$s , DIASUSO = %8$s, CATEGORIA = %9$s, NUMEROHABITACION = %10$s, OPERADOR = %11$s     ", 
 					alojamiento.getCapacidad(),
 					alojamiento.getTipo(),
@@ -162,7 +162,7 @@ public class DAOAlojamiento {
 		 */
 		public void deleteAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
 
-			String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE ID = %2$d", USUARIO, alojamiento.getId());
+			String sql = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, alojamiento.getId());
 
 			System.out.println(sql);
 			
@@ -211,14 +211,14 @@ public class DAOAlojamiento {
 		public Alojamiento convertResultSetToAlojamiento (ResultSet resultSet) throws SQLException {
 			
 			Long id = resultSet.getLong("ID");
-			int capacidad= resultSet.getInt("CAPACIDAD");
+			Integer capacidad= resultSet.getInt("CAPACIDAD");
 			String tipo= resultSet.getString("TIPO");
-			int tamanio = resultSet.getInt("TAMANIO");
-			int menaje = resultSet.getInt("MENAJE");
-			int amoblado= resultSet.getInt("AMOBLADO");
-			int numhabitaciones= resultSet.getInt("NUMMHABITACIONES");
+			Integer tamanio = resultSet.getInt("TAMANIO");
+			Integer menaje = resultSet.getInt("MENAJE");
+			Integer amoblado= resultSet.getInt("AMOBLADO");
+			Integer numhabitaciones= resultSet.getInt("NUMMHABITACIONES");
 			String direccion = resultSet.getString("DIRECCION");
-			int diasuso = resultSet.getInt("DIASUSO");
+			Integer diasuso = resultSet.getInt("DIASUSO");
 			String categoria = resultSet.getString("CATEGORIA");
 			String numerohabitacion = resultSet.getString("NUMEROHABITACION");
 			Long operador = resultSet.getLong("OPERADOR");

@@ -17,7 +17,7 @@ public class Servicio {
 	 * costo del servicio
 	 */
 	@JsonProperty(value = "costo")
-	private double costo;
+	private Double costo;
 	
 	/**
 	 * descripcion del servicio
@@ -35,7 +35,7 @@ public class Servicio {
 	 * oferta relacionada al servicio
 	 */
 	@JsonProperty(value = "oferta")
-	private String oferta;
+	private Long oferta;
 
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -50,10 +50,10 @@ public class Servicio {
 	 * @param oferta
 	 */
 	public Servicio(@JsonProperty(value = "id")Long id, 
-			@JsonProperty(value = "costo") double costo, 
+			@JsonProperty(value = "costo") Double costo, 
 			@JsonProperty(value = "descripcion")String descripcion, 
 			@JsonProperty(value = "nombre")String nombre,
-			@JsonProperty(value = "oferta")String oferta) {
+			@JsonProperty(value = "oferta")Long oferta) {
 		this.id = id;
 		this.costo = costo;
 		this.descripcion = descripcion;
@@ -85,7 +85,7 @@ public class Servicio {
 	/**
 	 * @return the costo
 	 */
-	public double getCosto() {
+	public Double getCosto() {
 		return costo;
 	}
 
@@ -93,7 +93,7 @@ public class Servicio {
 	/**
 	 * @param costo the costo to set
 	 */
-	public void setCosto(int costo) {
+	public void setCosto(Double costo) {
 		this.costo = costo;
 	}
 
@@ -133,7 +133,7 @@ public class Servicio {
 	/**
 	 * @return the oferta
 	 */
-	public String getOferta() {
+	public Long getOferta() {
 		return oferta;
 	}
 
@@ -141,7 +141,7 @@ public class Servicio {
 	/**
 	 * @param oferta the oferta to set
 	 */
-	public void setOferta(String oferta) {
+	public void setOferta(Long oferta) {
 		this.oferta = oferta;
 	}
 	

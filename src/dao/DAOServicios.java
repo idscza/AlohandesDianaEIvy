@@ -1,15 +1,14 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Reserva;
+
 import vos.Servicio;
-import vos.Usuario;
+
 
 public class DAOServicios {
 	
@@ -64,28 +63,6 @@ public class DAOServicios {
 	}
 	
 	/**
-	 * Metodo que transforma el resultado obtenido de una consulta SQL (sobre la tabla BEBEDORES) en una instancia de la clase Bebedor.
-	 * @param resultSet ResultSet con la informacion de un bebedor que se obtuvo de la base de datos.
-	 * @return Bebedor cuyos atributos corresponden a los valores asociados a un registro particular de la tabla BEBEDORES.
-	 * @throws SQLException Si existe algun problema al extraer la informacion del ResultSet.
-	 */
-	public Servicio convertResultSetToServicio(ResultSet resultSet) throws SQLException {
-		
-		Long id = resultSet.getLong("ID");
-		Double costo = resultSet.getDouble("COSTO");
-		String descripcion= resultSet.getString("DESCRIPCION");
-		String nombre = resultSet.getString("NOMBRE");
-		String oferta = resultSet.getString("OFERTA");
-		
-
-
-		Servicio servicio = new Servicio(id, costo, descripcion, nombre, oferta);
-
-		return servicio ;
-	}
-
-	
-	/**
 	 * Metodo que obtiene la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
 	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/> 
 	 * @param id el identificador del bebedor
@@ -98,7 +75,7 @@ public class DAOServicios {
 	{
 		Servicio servicio = null;
 
-		String sql = String.format("SELECT * FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, id); 
+		String sql = String.format("SELECT * FROM %1$s.SERVICIOS WHERE ID = %2$d", USUARIO, id); 
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -120,8 +97,8 @@ public class DAOServicios {
 	 */
 	public void addServicio(Servicio servicio) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.USUARIOS (ID, COSTO, DESCRIPCION, NOMBRE, OFERTA) "
-				+ "VALUES (%2$s, '%3$s', '%4$s', '%5$s', %6$s,'%7$s','%8$s', %9$s, '%10$s')", 
+		String sql = String.format("INSERT INTO %1$s.SERVICIOS (ID, COSTO, DESCRIPCION, NOMBRE, OFERTA) "
+				+ "VALUES (%2$s,  %3$s, '%4$s', '%5$s', %6$s)", 
 									USUARIO, 
 									servicio.getId(),
 									servicio.getCosto(),
@@ -146,9 +123,8 @@ public class DAOServicios {
 	public void updateServicio(Servicio servicio) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.USUARIOS SET ", USUARIO));
-		sql.append(String.format("COSTO = '%1$s' , DESCRIPCION = '%2$s' , NOMBRE= '%3$s', OFERTA = %4$s ", 
-				servicio.getId(),
+		sql.append(String.format("UPDATE %s.SERVICIOS SET ", USUARIO));
+		sql.append(String.format("COSTO =  %1$s, DESCRIPCION = '%2$s' , NOMBRE= '%3$s', OFERTA = %4$s ", 
 				servicio.getCosto(),
 				servicio.getDescripcion(),
 				servicio.getNombre(),
@@ -173,7 +149,7 @@ public class DAOServicios {
 	 */
 	public void deleteServicio(Servicio servicio) throws SQLException, Exception {
 
-		String sql = String.format("DELETE FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, servicio.getId());
+		String sql = String.format("DELETE FROM %1$s.SERVICIOS WHERE ID = %2$d", USUARIO, servicio.getId());
 
 		System.out.println(sql);
 		
@@ -204,5 +180,26 @@ public class DAOServicios {
 					ex.printStackTrace();
 				}
 		}
+	}
+
+	/**
+	 * Metodo que transforma el resultado obtenido de una consulta SQL (sobre la tabla BEBEDORES) en una instancia de la clase Bebedor.
+	 * @param resultSet ResultSet con la informacion de un bebedor que se obtuvo de la base de datos.
+	 * @return Bebedor cuyos atributos corresponden a los valores asociados a un registro particular de la tabla BEBEDORES.
+	 * @throws SQLException Si existe algun problema al extraer la informacion del ResultSet.
+	 */
+	public Servicio convertResultSetToServicio(ResultSet resultSet) throws SQLException {
+		
+		Long id = resultSet.getLong("ID");
+		Double costo = resultSet.getDouble("COSTO");
+		String descripcion= resultSet.getString("DESCRIPCION");
+		String nombre = resultSet.getString("NOMBRE");
+		Long oferta = resultSet.getLong("OFERTA");
+		
+	
+	
+		Servicio servicio = new Servicio(id, costo, descripcion, nombre, oferta);
+	
+		return servicio ;
 	}
 }

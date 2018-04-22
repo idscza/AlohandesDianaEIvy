@@ -18,7 +18,7 @@ public class Alojamiento {
 	 * capacidad maxima del alojamiento
 	 */
 	@JsonProperty(value = "capacidad")
-	private int capacidad;
+	private Integer capacidad;
 	
 	/**
 	 * tipo de alojamiento
@@ -30,26 +30,26 @@ public class Alojamiento {
 	 * tamaño e metros cuadrados dedl alojamiento
 	 */
 	@JsonProperty(value = "tamanio")
-	private int tamanio;
+	private Integer tamanio;
 	
 	/**
 	 * indica si el alojamiento tiene menaje
 	 */
 	@JsonProperty(value = "menaje")
-	private int menaje;
+	private Integer menaje;
 	
 	/**
 	 * indica si el alojamiento está amoblado
 	 */
 	@JsonProperty(value = "amoblado")
-	private int amoblado;
+	private Integer amoblado;
 	
 	
 	/**
 	 * numero de habitaciones del alojamiento
 	 */
 	@JsonProperty(value = "numhabitaciones")
-	private int numhabitaciones;
+	private Integer numhabitaciones;
 	
 	/**
 	 * dirección del alojamiento
@@ -61,7 +61,7 @@ public class Alojamiento {
 	 * dias de uso que ha tenido el inmueble
 	 */
 	@JsonProperty(value = "diasuso")
-	private int diasuso;
+	private Integer diasuso;
 	
 	/**
 	 * Categoria de la habitacion
@@ -103,14 +103,14 @@ public class Alojamiento {
 	 * @param operador2
 	 */
 	public Alojamiento(@JsonProperty(value="id") Long id, 
-			@JsonProperty(value = "capacidad")int capacidad,
+			@JsonProperty(value = "capacidad")Integer capacidad,
 			@JsonProperty(value = "tipo") String tipo,
-			@JsonProperty(value = "tamanio")int tamanio,
-			@JsonProperty(value = "menaje") int menaje,
-			@JsonProperty(value = "amoblado")int amoblado, 
-	        @JsonProperty(value = "numhabitaciones")int numhabitaciones, 
+			@JsonProperty(value = "tamanio")Integer tamanio,
+			@JsonProperty(value = "menaje") Integer menaje,
+			@JsonProperty(value = "amoblado")Integer amoblado, 
+	        @JsonProperty(value = "numhabitaciones")Integer numhabitaciones, 
 	        @JsonProperty(value = "direccion")String direccion,
-	        @JsonProperty(value = "diasuso") int diasuso, 
+	        @JsonProperty(value = "diasuso") Integer diasuso, 
 	        @JsonProperty(value = "categoria")String categoria,
 	        @JsonProperty(value = "numerohabitacion") String numerohabitacion,
 	        @JsonProperty(value = "operador") Long operador2) {
@@ -151,14 +151,14 @@ public class Alojamiento {
 	/**
 	 * @return the capacidad
 	 */
-	public int getCapacidad() {
+	public Integer getCapacidad() {
 		return capacidad;
 	}
      
 	/**
 	 * @param capacidad the capacidad to set
 	 */
-	public void setCapacidad(int capacidad) {
+	public void setCapacidad(Integer capacidad) {
 		this.capacidad = capacidad;
 	}
 
@@ -179,7 +179,7 @@ public class Alojamiento {
 	/**
 	 * @return the tamanio
 	 */
-	public int getTamanio() {
+	public Integer getTamanio() {
 		return tamanio;
 	}
 
@@ -188,7 +188,7 @@ public class Alojamiento {
 	/**
 	 * @param tamanio the tamanio to set
 	 */
-	public void setTamanio(int tamanio) {
+	public void setTamanio(Integer tamanio) {
 		this.tamanio = tamanio;
 	}
 
@@ -197,7 +197,7 @@ public class Alojamiento {
 	/**
 	 * @return the menaje
 	 */
-	public int getMenaje() {
+	public Integer getMenaje() {
 		return menaje;
 	}
 
@@ -206,28 +206,28 @@ public class Alojamiento {
 	/**
 	 * @param menaje the menaje to set
 	 */
-	public void setMenaje(int menaje) {
+	public void setMenaje(Integer menaje) {
 		this.menaje = menaje;
 	}
 
 	/**
 	 * @return the amoblado
 	 */
-	public int getAmoblado() {
+	public Integer getAmoblado() {
 		return amoblado;
 	}
 
 	/**
 	 * @param amoblado the amoblado to set
 	 */
-	public void setAmoblado(int amoblado) {
+	public void setAmoblado(Integer amoblado) {
 		this.amoblado = amoblado;
 	}
 
 	/**
 	 * @return the numhabitaciones
 	 */
-	public int getNumhabitaciones() {
+	public Integer getNumhabitaciones() {
 		return numhabitaciones;
 	}
 
@@ -236,7 +236,7 @@ public class Alojamiento {
 	/**
 	 * @param numhabitaciones the numhabitaciones to set
 	 */
-	public void setNumhabitaciones(int numhabitaciones) {
+	public void setNumhabitaciones(Integer numhabitaciones) {
 		this.numhabitaciones = numhabitaciones;
 	}
 
@@ -263,7 +263,7 @@ public class Alojamiento {
 	/**
 	 * @return the diasuso
 	 */
-	public int getDiasuso() {
+	public Integer getDiasuso() {
 		return diasuso;
 	}
 
@@ -272,7 +272,7 @@ public class Alojamiento {
 	/**
 	 * @param diasuso the diasuso to set
 	 */
-	public void setDiasuso(int diasuso) {
+	public void setDiasuso(Integer diasuso) {
 		this.diasuso = diasuso;
 	}
 

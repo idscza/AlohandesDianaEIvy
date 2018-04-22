@@ -14,7 +14,7 @@ public class Oferta {
 	private Long id;
 	
 	@JsonProperty(value="costo")
-	private int costo;
+	private Integer costo;
 	
 	@JsonProperty(value="fecharetiro")
 	private Date fecharetiro;
@@ -42,7 +42,7 @@ public class Oferta {
 	 * @param alojamiento
 	 */
 	public Oferta(@JsonProperty(value="id") Long id,
-			@JsonProperty(value="costo")int costo, 
+			@JsonProperty(value="costo")Integer costo, 
 			@JsonProperty(value="fecharetiro")Date fecharetiro,
 			@JsonProperty(value="nombre")String nombre,
 			@JsonProperty(value="operador") Long operador, 
@@ -80,7 +80,7 @@ public class Oferta {
 	/**
 	 * @return the costo
 	 */
-	public int getCosto() {
+	public Integer getCosto() {
 		return costo;
 	}
 
@@ -88,7 +88,7 @@ public class Oferta {
 	/**
 	 * @param costo the costo to set
 	 */
-	public void setCosto(int costo) {
+	public void setCosto(Integer costo) {
 		this.costo = costo;
 	}
 
