@@ -176,6 +176,23 @@ public class UsuariosService {
 				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 			}
 		}
+		
+		
+		@GET
+		@Path( "info/{id: \\d+}/{opcion}" )
+		@Produces( { MediaType.APPLICATION_JSON } )
+		public Response getInfoById( @PathParam( "id" ) Long id, @PathParam( "opcion" ) String opcion  )
+		{
+			try{
+				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+				Object usuario = tm.getInfoById(id , opcion);
+				return Response.status( 200 ).entity( usuario ).build( );			
+			}
+			catch( Exception e )
+			{
+				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+			}
+		}
 
 
 }

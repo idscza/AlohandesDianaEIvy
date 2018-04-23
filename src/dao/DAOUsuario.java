@@ -165,9 +165,83 @@ public class DAOUsuario {
 		prepStmt.executeQuery();
 	}
 	
+	public RFC6C getInfoById(Long id) throws SQLException, Exception {
+		RFC6C req = null;
+
+		String sql = String.format("select cliente, sum(cobro) as dineropagado, sum (noches) as nochespasadas from (select cliente, cobro, (fechafin-fechainicio) noches from %1$s.reservas where cliente = %2$s )xd group by cliente", USUARIO, id);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if (rs.next()) {
+			req = convertResultSetToRF6C(rs);
+		}
+		return req;
+	}
+	
+	public RFC6O getInfoById(Long id, int machetazo) throws SQLException, Exception {
+		RFC6O req = null;
+
+		String sql = String.format("select operador, sum(cobro) as dineroGanado, sum (noches) as nochesalquiladas from (select operador, cobro, (fechafin-fechainicio) noches from %1$s.reservas where operador = %2$s )xd group by operador", USUARIO, id);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if (rs.next()) {
+			req = convertResultSetToRF6O(rs);
+		}
+		return req;
+	}
+	
+	
+	public ArrayList<Alojamiento> getInfoById(Long id, boolean cliente) throws SQLException, Exception {
+		ArrayList<Alojamiento> alojamientos = new ArrayList<Alojamiento>();
+
+		String sql = "";
+		
+		if (cliente){
+			sql = String.format("select distinct alojamientos.* from (select alojamiento from(select oferta from %1$s.reservas where cliente = %2$s)hola, %1$s.ofertas where oferta = id)oferticas , %1$s.alojamientos where alojamientos.id = oferticas.alojamiento",USUARIO,id);
+		}
+		else{
+			sql = String.format("select distinct alojamientos.* from (select alojamiento from(select oferta from %1$s.reservas where operador = %2$s)hola, %1$s.ofertas where oferta = id)oferticas , %1$s.alojamientos where alojamientos.id = oferticas.alojamiento",USUARIO,id);
+		}
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			alojamientos.add(convertResultSetToAlojamiento(rs));
+		}
+		return alojamientos;
+	}
+	
 		
 	
 	
+	private RFC6C convertResultSetToRF6C(ResultSet rs) throws SQLException {
+		
+		Long cliente = rs.getLong("CLIENTE");
+		Double dineropagado = rs.getDouble("DINEROPAGADO");
+		Integer nochespasadas = rs.getInt("NOCHESPASADAS");
+		
+		RFC6C rta = new RFC6C(cliente,dineropagado,nochespasadas);
+		return rta;
+	}
+	
+	private RFC6O convertResultSetToRF6O(ResultSet rs) throws SQLException {
+		
+		Long operador = rs.getLong("OPERADOR");
+		Double dineroganado = rs.getDouble("DINEROGANADO");
+		Integer nochesalquiladas = rs.getInt("NOCHESALQUILADAS");
+		
+		RFC6O rta = new RFC6O(operador,dineroganado,nochesalquiladas);
+		return rta;
+	}
+
+
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODOS AUXILIARES
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -218,5 +292,27 @@ public class DAOUsuario {
 
 		return user;
 	}
+	
+
+		public Alojamiento convertResultSetToAlojamiento (ResultSet resultSet) throws SQLException {
+			
+			Long id = resultSet.getLong("ID");
+			Integer capacidad= resultSet.getInt("CAPACIDAD");
+			String tipo= resultSet.getString("TIPO");
+			Integer tamanio = resultSet.getInt("TAMANIO");
+			Integer menaje = resultSet.getInt("MENAJE");
+			Integer amoblado= resultSet.getInt("AMOBLADO");
+			Integer numhabitaciones= resultSet.getInt("NUMMHABITACIONES");
+			String direccion = resultSet.getString("DIRECCION");
+			Integer diasuso = resultSet.getInt("DIASUSO");
+			String categoria = resultSet.getString("CATEGORIA");
+			String numerohabitacion = resultSet.getString("NUMEROHABITACION");
+			Long operador = resultSet.getLong("OPERADOR");
+
+
+			Alojamiento alojamiento = new Alojamiento(id, capacidad,  tamanio, menaje, amoblado, numhabitaciones, direccion, diasuso, categoria, numerohabitacion, operador, tipo);
+
+			return alojamiento;
+		}
 
 }

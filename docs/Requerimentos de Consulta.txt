@@ -57,17 +57,42 @@ where servicios = 2;
 //RFC6
 //-----------------------------------
 
-select cliente, sum(noches) from
-(select cliente,(fechafin-fechainicio) noches
+Caso 1 cliente:
+
+select cliente, sum(cobro) as dineropagado, sum (noches) as nochespasadas from
+(select cliente, cobro, (fechafin-fechainicio) noches 
 from reservas
 where cliente = 69)xd
 group by cliente;
 
-select cliente, sum(cobro) as dineropagado from
-(select cliente, cobro
+Caso 1 responsable:
+
+select operador, sum(cobro) as dineroGanado, sum (noches) as nochesalquiladas from
+(select operador, cobro, (fechafin-fechainicio) noches 
 from reservas
-where cliente = 69)xd
-group by cliente;
+where operador = 1)xd
+group by operador;
+
+Caso 2 cliente:
+
+select distinct alojamientos.* from
+(select alojamiento from
+(select oferta
+from reservas
+where cliente = 69)hola,ofertas
+where oferta = id)oferticas,alojamientos
+where alojamientos.id = oferticas.alojamiento;
+
+Caso 2 responsable:
+
+select distinct alojamientos.* from
+(select alojamiento from
+(select oferta
+from reservas
+where operador = 1)hola,ofertas
+where oferta = id)oferticas,alojamientos
+where alojamientos.id = oferticas.alojamiento;
+
 
 
 //-----------------------------------

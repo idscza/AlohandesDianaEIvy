@@ -1563,4 +1563,55 @@ public class AloHandesTransactionManager {
 			}	
 			
 		}
+
+		public Object getInfoById(Long id, String opcion) throws Exception{
+			DAOUsuario daoUsuario = new DAOUsuario();
+			Object rta = null;
+			try 
+			{
+				this.conn = darConexion();
+				daoUsuario.setConn(conn);
+				Usuario usuario = daoUsuario.findUsuarioById(id);
+				if(usuario != null){
+					if(usuario.getTipo().equals("cliente")){
+						if(opcion.equals("1")){
+							rta = daoUsuario.getInfoById(id);
+						}else if(opcion.equals("2")){
+							rta = daoUsuario.getInfoById(id, true);
+						}else throw new Exception("Formato no válido");
+					}else if(usuario.getTipo().equals("responsable")){
+						if(opcion.equals("1")){
+							rta = daoUsuario.getInfoById(usuario.getOperador(),123);
+						}else if(opcion.equals("2")){
+							rta = daoUsuario.getInfoById(usuario.getOperador(), false);
+						}else throw new Exception("Formato no válido");
+					}else throw new Exception("Error en la base de datos");
+						
+				}else throw new Exception("el usuario no existe");
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoUsuario.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return rta;
+		}
 }
