@@ -1402,11 +1402,18 @@ public class AloHandesTransactionManager {
 
 		public void addOferta(Oferta oferta) throws Exception{
 			DAOOferta daoOferta = new DAOOferta( );
+			DAOAlojamiento daoAlojamiento= new DAOAlojamiento();
 			try
 			{
 				this.conn = darConexion();
 				daoOferta.setConn(conn);
-				daoOferta.addOferta(oferta);
+				daoAlojamiento.setConn(conn);
+				Alojamiento alo = daoAlojamiento.findAlojamientoById(oferta.getAlojamiento());
+				if(alo != null){
+					if (alo.getOperador() == oferta.getOperador()){
+						daoOferta.addOferta(oferta);	
+					}
+				}
 
 			}
 			catch (SQLException sqlException) {
