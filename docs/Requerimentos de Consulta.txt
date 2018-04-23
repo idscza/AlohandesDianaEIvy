@@ -1,0 +1,89 @@
+//-----------------------------------
+//RFC1
+//-----------------------------------
+
+SELECT OPERADOR, SUM(COBRO) AS GANANCIAS
+FROM
+(SELECT OPERADOR, COBRO FROM RESERVAS 
+WHERE FECHAFIN > '1/1/2018')FILTRO
+GROUP BY OPERADOR 
+ORDER  BY GANANCIAS DESC;
+
+//-----------------------------------
+//RFC2
+//-----------------------------------
+
+select * 
+from
+(select oferta ,count(oferta) as populares 
+from reservas
+group by oferta
+order by populares desc)
+WHERE ROWNUM <= 20;
+
+//-----------------------------------
+//RFC3
+//-----------------------------------
+
+SELECT operador, floor((sum(case when fecharealizacion is null then 0 else 1 end) )/ (count(elid))*100)||' Por ciento' Indiceocupacion 
+from (SELECT OFERTAS.id as elid, ofertas.operador ,filtro.fecharealizacion FROM OFERTAS LEFT OUTER JOIN  
+(SELECT * FROM RESERVAS WHERE FECHAFIN > '%2$s' and FECHAINICIO <= '%2$s' and ESTADO = 'activa' )FILTRO 
+ON OFERTAS.ID = FILTRO.OFERTA)info group by operador;
+
+//-----------------------------------
+//RFC4
+//-----------------------------------
+
+Select alojamientos.* from
+alojamientos join
+(Select alojamiento, count(nombre) as servicios from
+(select * from
+(Select id, nombre, oferta, operador, alojamiento
+ From SERVICIOS join
+(SELECT OFERTAS.id as elid, ofertas.operador, OFERTAS.ALOJAMIENTO,filtro.fecharealizacion FROM OFERTAS LEFT OUTER JOIN  
+(SELECT * FROM RESERVAS WHERE FECHAFIN > '13/2/2018' and FECHAINICIO <= '13/2/2018' )FILTRO 
+ON OFERTAS.ID = FILTRO.OFERTA) hello
+on elid = servicios.oferta 
+where fecharealizacion is null)validos
+where nombre = 'Baby' or nombre = 'Garden')masterfilter
+group by alojamiento)selected
+on id = alojamiento
+where servicios = 2;
+
+//-----------------------------------
+//RFC5
+//-----------------------------------
+
+
+//-----------------------------------
+//RFC6
+//-----------------------------------
+
+select cliente, sum(noches) from
+(select cliente,(fechafin-fechainicio) noches
+from reservas
+where cliente = 69)xd
+group by cliente;
+
+select cliente, sum(cobro) as dineropagado from
+(select cliente, cobro
+from reservas
+where cliente = 69)xd
+group by cliente;
+
+
+//-----------------------------------
+//RFC7
+//-----------------------------------
+
+
+//-----------------------------------
+//RFC8
+//-----------------------------------
+
+//-----------------------------------
+//RFC9
+//-----------------------------------
+
+
+

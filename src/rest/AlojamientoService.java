@@ -181,14 +181,14 @@ public class AlojamientoService {
 	}
 	
 	@GET 
-	@Path ("alojamientoconservicios")
+	@Path ("alojamientoconservicios/{servicios}")
 	@Produces ({ MediaType.APPLICATION_JSON })
-	public Response getAlojamientoConServicios(){
+	public Response getAlojamientoConServicios(@PathParam("servicios") String servicios){
 		try {
 			AloHandesTransactionManager tm = new AloHandesTransactionManager(getPath());
 
 			List<RFC4> alojamientos;
-			alojamientos = tm.getAlojamientoConServicios();
+			alojamientos = tm.getAlojamientoConServicios(servicios);
 			return Response.status(200).entity(alojamientos).build();
 		}
 		catch (Exception e) {

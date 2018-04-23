@@ -835,15 +835,17 @@ public class AloHandesTransactionManager {
 			return operadores;
 		}
 		
-		public List<RFC4> getAlojamientoConServicios() throws Exception{
+		public List<RFC4> getAlojamientoConServicios(String servicios) throws Exception{
 			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
 			List<RFC4> alojamientos;
 			try 
 			{
+				String[] losServicios = servicios.split(":");
+				
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
 				
-				alojamientos = daoAlojamiento.getAlojamientoConServicios();
+				alojamientos = daoAlojamiento.getAlojamientoConServicios(losServicios);
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());

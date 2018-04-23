@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import vos.Alojamiento;
 import vos.Operador;
@@ -243,6 +244,31 @@ public class DAOAlojamiento {
 			return req;
 					
 			
+		}
+
+		public List<RFC4> getAlojamientoConServicios(String[] losServicios) {
+			
+			String goal = ""+losServicios.length;
+			
+			/*
+			 * Select alojamientos.* from
+alojamientos join
+(Select alojamiento, count(nombre) as servicios from
+(select * from
+(Select id, nombre, oferta, operador, alojamiento
+ From SERVICIOS join
+(SELECT OFERTAS.id as elid, ofertas.operador, OFERTAS.ALOJAMIENTO,filtro.fecharealizacion FROM OFERTAS LEFT OUTER JOIN  
+(SELECT * FROM RESERVAS WHERE FECHAFIN > '13/2/2018' and FECHAINICIO <= '13/2/2018' )FILTRO 
+ON OFERTAS.ID = FILTRO.OFERTA) hello
+on elid = servicios.oferta 
+where fecharealizacion is null)validos
+where nombre = 'Baby' or nombre = 'Garden')masterfilter
+group by alojamiento)selected
+on id = alojamiento
+where servicios = 2;*/
+			
+			
+			return null;
 		}
 
 }
