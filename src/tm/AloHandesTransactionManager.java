@@ -652,7 +652,10 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
-				daoOperador.addOperador(operador);
+				if (operador.getTipo() != null){
+					daoOperador.addOperador(operador);
+				}
+				
 
 			}
 			catch (SQLException sqlException) {
@@ -989,7 +992,9 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
-				daoAlojamiento.addAlojamiento(alojamiento);
+				if (alojamiento.getTipo() == ("hotel"|"hostal"|"ddd"))
+					//lodeje con error para revisarmaañana
+				{daoAlojamiento.addAlojamiento(alojamiento);}
 
 			}
 			catch (SQLException sqlException) {
