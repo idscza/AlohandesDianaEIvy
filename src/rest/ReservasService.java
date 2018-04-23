@@ -177,5 +177,22 @@ public class ReservasService {
 				}
 			}
 
+			
+			@PUT
+			@Path("cancelar/{idCancelacion}")
+			@Produces( MediaType.APPLICATION_JSON )
+			
+			public Response CancelarReserva(@PathParam("id") Long id) {
+				
+				try{
+					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+					tm.cancelarReserva(id,true);
+					return Response.status( 200 ).entity( tm.getReservaById(id) ).build( );			
+				}
+				catch( Exception e )
+				{
+					return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+				}
+			}
 
 }

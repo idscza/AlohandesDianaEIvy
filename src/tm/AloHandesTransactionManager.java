@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -465,6 +467,79 @@ public class AloHandesTransactionManager {
 				Reserva exists = daoReserva.findReservaById(reserva.getId());
 				if(exists != null) {
 					daoReserva.deleteReserva(reserva);
+				}else
+					throw new Exception("Esta Reserva no se encuentra en la base de datos");
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+			
+		}
+		
+		public void cancelarReserva(Long id, boolean cobrar) throws Exception{
+			DAOReserva daoReserva = new DAOReserva( );
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn( conn );
+				Reserva exists = daoReserva.findReservaById(id);
+				if(exists != null) {
+					
+					double cobro = 0;
+					if(cobrar) {
+						
+						Date hoy = Calendar.getInstance().getTime();
+						if(exists.getFechaInicio().compareTo(hoy) <= 0) {
+							
+							cobro = getOfertaById(exists.getOferta()).getCosto() * 0.5;
+						}
+						else {
+							
+							long duracion = exists.getFechaFin().getTime() - exists.getFechaInicio().getTime(); 
+							if(duracion > 691200000) {
+								
+								if(exists.getFechaInicio().getTime()-hoy.getTime() > 691200000) {
+									cobro = getOfertaById(exists.getOferta()).getCosto() * 0.1;
+								}
+								else {
+									cobro = getOfertaById(exists.getOferta()).getCosto() * 0.3;
+								}	
+							}
+							else {
+								
+								if(exists.getFechaInicio().getTime()-hoy.getTime() > 345600000) {
+									cobro = getOfertaById(exists.getOferta()).getCosto() * 0.1;
+								}
+								else {
+									cobro = getOfertaById(exists.getOferta()).getCosto() * 0.3;
+								}
+								
+							}
+						}	
+						
+					}
+					daoReserva.cancelarReserva(id,cobro);
 				}else
 					throw new Exception("Esta Reserva no se encuentra en la base de datos");
 

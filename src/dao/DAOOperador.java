@@ -268,7 +268,7 @@ public final static String USUARIO = "ISIS2304A651810";
 			
 			String sql = String.format("SELECT operador, floor((sum(case when fecharealizacion is null then 0 else 1 end) )/ (count(elid))*100)||' Por ciento' Indiceocupacion " + 
 					"from(SELECT OFERTAS.id as elid, ofertas.operador ,filtro.fecharealizacion FROM %1$s.OFERTAS LEFT OUTER JOIN " + 
-					"(SELECT * FROM %1$s.RESERVAS WHERE FECHAFIN > '%2$s' and FECHAINICIO <= '%2$s')FILTRO " + 
+					"(SELECT * FROM %1$s.RESERVAS WHERE FECHAFIN > '%2$s' and FECHAINICIO <= '%2$s' and ESTADO = 'activa' )FILTRO " + 
 					"ON OFERTAS.ID = FILTRO.OFERTA)info group by operador", USUARIO, fecha);
 
 			System.out.println(sql);

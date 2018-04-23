@@ -33,6 +33,9 @@ public class Reserva {
 	@JsonProperty(value="cliente")
 	private Long cliente;
 	
+	@JsonProperty(value="estado")
+	private String estado;
+	
 	@JsonProperty(value="idMaestro")
 	private Long idMaestro;
 	
@@ -55,6 +58,8 @@ public class Reserva {
 			Long oferta,
 			@JsonProperty(value="cliente")
 			Long cliente,
+			@JsonProperty(value="estado")
+			String estado,
 			@JsonProperty(value="idMaestro")
 			Long idMaestro) {
 		
@@ -67,6 +72,7 @@ public class Reserva {
 		this.oferta = oferta;
 		this.cliente = cliente;
 		this.idMaestro = idMaestro;
+		this.estado = estado;
 		
 	}
 
@@ -148,6 +154,14 @@ public class Reserva {
 
 	public void setIdMaestro(Long idMaestro) {
 		this.idMaestro = idMaestro;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 	
 

@@ -194,6 +194,7 @@ personas number(2),
 operador varchar(60),
 oferta varchar(60),
 cliente varchar(60),
+estado varchar(60),
 idmaestro varchar(60)  
 );
 
@@ -220,6 +221,12 @@ modify oferta not null;
 
 alter table reservas
 modify cliente not null;
+
+alter table reservas
+modify estado not null;
+
+alter table reservas
+add constraint CHK_estado check (estado in ('activa','cancelada','terminada'));
 
 alter table reservas
 add CONSTRAINT PK_reservas PRIMARY KEY (id);
