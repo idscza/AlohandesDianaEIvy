@@ -194,4 +194,22 @@ public class OfertaService {
 				return Response.status(500).entity(doErrorMessage(e)).build();
 			}
 		}
+		
+		@PUT
+		@Path( "retirar/{idRetiro}" )
+		@Produces( MediaType.APPLICATION_JSON )
+		
+		public Response retirarOferta(@PathParam("idRetiro") Long idRetiro) {
+			
+			try{
+				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+				Oferta oferta = tm.getOfertaById(idRetiro);
+				tm.retirarOferta(idRetiro);
+				return Response.status( 200 ).entity( oferta ).build( );			
+			}
+			catch( Exception e )
+			{
+				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+			}
+		}
 }

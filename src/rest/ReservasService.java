@@ -182,12 +182,12 @@ public class ReservasService {
 			@Path("cancelar/{idCancelacion}")
 			@Produces( MediaType.APPLICATION_JSON )
 			
-			public Response CancelarReserva(@PathParam("id") Long id) {
+			public Response CancelarReserva(@PathParam("idCancelacion") Long idCancelacion) {
 				
 				try{
 					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
-					tm.cancelarReserva(id,true);
-					return Response.status( 200 ).entity( tm.getReservaById(id) ).build( );			
+					tm.cancelarReserva(idCancelacion,true);
+					return Response.status( 200 ).entity( tm.getReservaById(idCancelacion) ).build( );			
 				}
 				catch( Exception e )
 				{

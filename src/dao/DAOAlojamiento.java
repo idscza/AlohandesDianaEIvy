@@ -235,40 +235,42 @@ public class DAOAlojamiento {
 		
 		public RFC4 convertResultSetToRFC4 (ResultSet rs)throws SQLException {
 			Long alojamiento = rs.getLong("ALOJAMIENTO");
-			Long servicio = rs.getLong("SERVICIO");
-			Date fechaInicio = rs.getDate("FECHAINICIO");
-			Date fechaFin = rs.getDate("FECHAFIN");
+			Long oferta = rs.getLong("OFERTA");
+
 			
-			RFC4 req = new RFC4 (alojamiento,servicio,fechaInicio, fechaFin  );
+			RFC4 req = new RFC4 (alojamiento,oferta  );
 			
-			return req;
-					
-			
+			return req;		
 		}
 
-		public List<RFC4> getAlojamientoConServicios(String[] losServicios) {
+		public List<RFC4> getAlojamientoConServicios(String[] losServicios, String inicio, String fin) throws SQLException {
 			
-			String goal = ""+losServicios.length;
+			ArrayList<RFC4> alojamientos = new ArrayList<RFC4>();
 			
-			/*
-			 * Select alojamientos.* from
-alojamientos join
-(Select alojamiento, count(nombre) as servicios from
-(select * from
-(Select id, nombre, oferta, operador, alojamiento
- From SERVICIOS join
-(SELECT OFERTAS.id as elid, ofertas.operador, OFERTAS.ALOJAMIENTO,filtro.fecharealizacion FROM OFERTAS LEFT OUTER JOIN  
-(SELECT * FROM RESERVAS WHERE FECHAFIN > '13/2/2018' and FECHAINICIO <= '13/2/2018' )FILTRO 
-ON OFERTAS.ID = FILTRO.OFERTA) hello
-on elid = servicios.oferta 
-where fecharealizacion is null)validos
-where nombre = 'Baby' or nombre = 'Garden')masterfilter
-group by alojamiento)selected
-on id = alojamiento
-where servicios = 2;*/
+			int goal = losServicios.length;
+			StringBuilder sql = new StringBuilder();
 			
+			sql.append("select alojamiento, oferta from (Select alojamiento, oferta, count(nombre) as servicios from (select * from (Select id, nombre, oferta, operador, alojamiento ");
+			sql.append(String.format(" From %1$s.SERVICIOS join (SELECT OFERTAS.id as elid, ofertas.operador, OFERTAS.ALOJAMIENTO,filtro.fecharealizacion FROM %1$s.OFERTAS LEFT OUTER JOIN", USUARIO));
+			sql.append(String.format("(SELECT * FROM RESERVAS WHERE FECHAFIN > '%1$s' and FECHAINICIO <= '%2$s' and ESTADO = 'activa' )FILTRO ON OFERTAS.ID = FILTRO.OFERTA) hello on elid = servicios.oferta where fecharealizacion is null)validos ", inicio,fin));
+			sql.append(String.format("where nombre = '%1$s' ", losServicios[0]));
 			
-			return null;
+			int i = 1;
+			while(i<goal){
+				sql.append(String.format("or nombre = '%1$s' ", losServicios[i]));
+				i++;
+			}
+			sql.append(String.format("group by alojamiento, oferta) where servicios = %1$s ",goal));
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				alojamientos.add(convertResultSetToRFC4(rs));
+			}
+			return alojamientos;
+
 		}
 
 }

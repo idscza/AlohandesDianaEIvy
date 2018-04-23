@@ -34,20 +34,18 @@ ON OFERTAS.ID = FILTRO.OFERTA)info group by operador;
 //RFC4
 //-----------------------------------
 
-Select alojamientos.* from
-alojamientos join
-(Select alojamiento, count(nombre) as servicios from
+select alojamiento, oferta from
+(Select alojamiento, oferta, count(nombre) as servicios from
 (select * from
 (Select id, nombre, oferta, operador, alojamiento
  From SERVICIOS join
 (SELECT OFERTAS.id as elid, ofertas.operador, OFERTAS.ALOJAMIENTO,filtro.fecharealizacion FROM OFERTAS LEFT OUTER JOIN  
-(SELECT * FROM RESERVAS WHERE FECHAFIN > '13/2/2018' and FECHAINICIO <= '13/2/2018' )FILTRO 
+(SELECT * FROM RESERVAS WHERE FECHAFIN > '13/2/2018' and FECHAINICIO <= '13/2/2018' and ESTADO = 'activa' )FILTRO 
 ON OFERTAS.ID = FILTRO.OFERTA) hello
 on elid = servicios.oferta 
 where fecharealizacion is null)validos
 where nombre = 'Baby' or nombre = 'Garden')masterfilter
-group by alojamiento)selected
-on id = alojamiento
+group by alojamiento, oferta)
 where servicios = 2;
 
 //-----------------------------------

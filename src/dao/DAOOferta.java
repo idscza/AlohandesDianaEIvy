@@ -161,6 +161,44 @@ public class DAOOferta {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+	
+	public void retirarOferta(Oferta oferta, Date fecharetiro) throws SQLException, Exception {
+		
+		String[] hue = fecharetiro.toString().split("-");
+		
+		String hue1 = hue[2]+"/"+hue[1]+"/"+hue[0];
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append(String.format("UPDATE %s.OFERTAS SET ", USUARIO));
+		sql.append(String.format("FECHARETIRO = '%1$s' ", 
+				hue1
+				));
+		sql.append(String.format("WHERE ID = %s ", oferta.getId() ));
+		
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	
+	public Reserva buscarReservasActivas(Oferta oferta) throws SQLException, Exception {
+		Reserva reserva = null;
+	
+		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+		String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE OFERTA = %2$s and ESTADO = 'activa' and ROWNUM = 1 ORDER BY FECHAFIN DESC", USUARIO, oferta.getId() );
+	
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+	
+		while (rs.next()) {
+			reserva = convertResultSetToReserva(rs);
+		}
+		return reserva;
+	}
+		
+	
 
 	/**
 	 * Metodo encargado de inicializar la conexion del DAO a la Base de Datos a partir del parametro <br/>
@@ -205,6 +243,25 @@ public class DAOOferta {
 		Oferta user = new Oferta (id, costo, fecharetiro, nombre, operador, alojamiento,deshabilitada);
 
 		return user;
+	}
+	
+	public Reserva convertResultSetToReserva(ResultSet resultSet) throws SQLException {
+		
+		Long id = resultSet.getLong("ID");
+		Double cobro = resultSet.getDouble("COBRO");
+		Date fechaRealizacion= resultSet.getDate("FECHAREALIZACION");
+		Date fechaInicio = resultSet.getDate("FECHAINICIO");
+		Date fechaFin = resultSet.getDate("FECHAFIN");
+		Integer personas = resultSet.getInt("PERSONAS");
+		Long operador = resultSet.getLong("OPERADOR");
+		Long oferta = resultSet.getLong("OFERTA");
+		Long cliente = resultSet.getLong("CLIENTE");
+		String estado = resultSet.getString("ESTADO");
+		Long idMaestro = resultSet.getLong("IDMAESTRO");
+
+		Reserva reserva = new Reserva(id, cobro, fechaRealizacion, fechaInicio, fechaFin, personas, operador, oferta, cliente, estado, idMaestro);
+
+		return reserva;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------

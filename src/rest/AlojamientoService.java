@@ -181,14 +181,16 @@ public class AlojamientoService {
 	}
 	
 	@GET 
-	@Path ("alojamientoconservicios/{servicios}")
+	@Path ("alojamientoconservicios/{servicios}/{inicio}/{fin}")
 	@Produces ({ MediaType.APPLICATION_JSON })
-	public Response getAlojamientoConServicios(@PathParam("servicios") String servicios){
+	public Response getAlojamientoConServicios(@PathParam("servicios") String servicios,
+			@PathParam("inicio") String inicio,
+			@PathParam("fin") String fin){
 		try {
 			AloHandesTransactionManager tm = new AloHandesTransactionManager(getPath());
 
 			List<RFC4> alojamientos;
-			alojamientos = tm.getAlojamientoConServicios(servicios);
+			alojamientos = tm.getAlojamientoConServicios(servicios,inicio,fin);
 			return Response.status(200).entity(alojamientos).build();
 		}
 		catch (Exception e) {

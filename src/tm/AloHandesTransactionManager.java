@@ -835,7 +835,7 @@ public class AloHandesTransactionManager {
 			return operadores;
 		}
 		
-		public List<RFC4> getAlojamientoConServicios(String servicios) throws Exception{
+		public List<RFC4> getAlojamientoConServicios(String servicios,String inicio, String fin) throws Exception{
 			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
 			List<RFC4> alojamientos;
 			try 
@@ -845,7 +845,7 @@ public class AloHandesTransactionManager {
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
 				
-				alojamientos = daoAlojamiento.getAlojamientoConServicios(losServicios);
+				alojamientos = daoAlojamiento.getAlojamientoConServicios(losServicios, inicio, fin);
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
@@ -1450,6 +1450,51 @@ public class AloHandesTransactionManager {
 				Oferta exists = daoOferta.findOfertaById(oferta.getId());
 				if(exists != null) {
 					daoOferta.deleteOferta(oferta);
+				}else
+					throw new Exception("Este Oferta no se encuentra en la base de datos");
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOferta.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+			
+		}
+
+		public void retirarOferta(Long id) throws Exception{
+			DAOOferta daoOferta = new DAOOferta( );
+			try
+			{
+				this.conn = darConexion();
+				daoOferta.setConn( conn );
+				Oferta exists = daoOferta.findOfertaById(id);
+				if(exists != null) {
+					
+					Reserva ultimaactiva= daoOferta.buscarReservasActivas(exists);
+					if(ultimaactiva == null){
+						daoOferta.deleteOferta(exists);
+					}else{		
+					daoOferta.retirarOferta(exists, ultimaactiva.getFechaFin());
+					}
 				}else
 					throw new Exception("Este Oferta no se encuentra en la base de datos");
 
