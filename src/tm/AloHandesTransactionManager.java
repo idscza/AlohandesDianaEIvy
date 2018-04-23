@@ -652,10 +652,42 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
-				if (operador.getTipo() != null){
+				if (operador.getTipo().equals("hotel") &
+						operador.getDireccion() !=null &
+						operador.getRut() !=  null &
+						operador.getEstrellas() != null &
+						operador.getHabDisponibles() != null  &
+						operador.getHabOcupadas() != null)
+					{
+						daoOperador.addOperador(operador);
+				}
+				
+				else if (operador.getTipo().equals("hostal")&
+						operador.getDireccion() !=null &
+						operador.getRut() !=  null &
+						operador.getHabDisponibles() != null  &
+						operador.getHabOcupadas() != null &
+						operador.getHoraApertura() != null &
+						operador.getHoraCierre() != null ){
 					daoOperador.addOperador(operador);
 				}
 				
+				else if (operador.getTipo().equals("pernat")&
+						operador.getCedula() != null &
+						operador.getEdad() != null ){
+					daoOperador.addOperador(operador);
+				}
+				else if (operador.getTipo().equals("percom")&
+						operador.getCedula() != null &
+						operador.getEdad() != null ){
+					daoOperador.addOperador(operador);
+				}
+				else if (operador.getTipo().equals("vivuni")&
+						operador.getHabDisponibles() != null& 
+						operador.getHabOcupadas()!= null & 
+						operador.getDireccion()!= null ){
+					daoOperador.addOperador(operador);
+				}
 
 			}
 			catch (SQLException sqlException) {
