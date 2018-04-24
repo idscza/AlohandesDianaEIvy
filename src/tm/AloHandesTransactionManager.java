@@ -444,6 +444,67 @@ public class AloHandesTransactionManager {
 			}
 			return rta;
 		}
+		
+		public List<Reserva> reservarMultiple(String habs, String hospedaje, String servicios,String inicio,String fin,String cliente) throws Exception{
+			DAOReserva daoReserva = new DAOReserva( );
+			DAOOferta daoOferta = new DAOOferta();
+			List<Reserva> rta = null;
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				daoOferta.setConn(conn);
+
+				String[] losservicios = servicios.split("-");
+				int quant = Integer.parseInt(habs);
+
+				List<Oferta> validez = daoOferta.findOfertasValidas(hospedaje,losservicios,inicio,fin);
+				if(validez.size() >= quant){
+
+					String idmaestro =""+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10;
+					int i = 0;
+
+					while(i < quant) {
+						Date xd = new Date();
+						String d = ""+xd.getDate();
+						String m = ""+(xd.getMonth()+1);
+						String a = ""+(xd.getYear()-100);
+						String hoy = d+"/"+m+"/"+a;
+
+						rta.add(daoReserva.reservar(cliente, validez.get(i),inicio,fin,hoy,idmaestro));
+						i++;
+					}
+
+				}else throw new Exception("No hay cupos para estas especificaciones");
+
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					daoOferta.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return rta;
+		}
 
 		public void addReserva(Reserva reserva) throws Exception{
 			DAOReserva daoReserva = new DAOReserva( );
@@ -568,8 +629,56 @@ public class AloHandesTransactionManager {
 			
 		}
 		
-		public void cancelarReserva(Long id, boolean cobrar) throws Exception{
+		public List<Reserva> cancelarReservaMultiple(Long id) throws Exception{
 			DAOReserva daoReserva = new DAOReserva( );
+			List<Reserva> multiple = null;
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn( conn );
+				 multiple = daoReserva.getReservaMultiple(id);
+				if(!multiple.isEmpty()) {
+					
+					int i = 0;
+					while(i < multiple.size()) {
+						cancelarReserva(id,true);
+						i++;
+					}
+					
+				}else
+					throw new Exception("Esta Reserva no se encuentra en la base de datos");
+				multiple = daoReserva.getReservaMultiple(id);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+			return multiple;
+		}
+		
+		public Reserva cancelarReserva(Long id, boolean cobrar) throws Exception{
+			DAOReserva daoReserva = new DAOReserva( );
+			Reserva reserva = null;
 			try
 			{
 				this.conn = darConexion();
@@ -611,6 +720,7 @@ public class AloHandesTransactionManager {
 						
 					}
 					daoReserva.cancelarReserva(id,cobro);
+					reserva = daoReserva.findReservaById(id);
 				}else
 					throw new Exception("Esta Reserva no se encuentra en la base de datos");
 
@@ -638,7 +748,7 @@ public class AloHandesTransactionManager {
 					throw exception;
 				}
 			}	
-			
+			return reserva;
 		}
 		
 		public List<Operador> getAllOperadores() throws Exception{
