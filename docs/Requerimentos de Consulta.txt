@@ -128,3 +128,13 @@ where alojamientos.id = oferticas.alojamiento;
 //-----------------------------------
 //RFC8
 //-----------------------------------
+
+select usuarios.* from usuarios inner join
+(Select cliente from
+(Select cliente, sum(fechafin-fechainicio) noches, count(fecharealizacion) as veces from
+(Select reservas.* from reservas join ofertas on ofertas.id = reservas.oferta
+where ofertas.alojamiento = 1) filtro
+group by cliente) conteo
+where noches > 14 or veces > 2)
+on cliente = id;
+
