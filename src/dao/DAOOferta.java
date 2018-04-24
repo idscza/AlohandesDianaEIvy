@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import vos.*;
 
@@ -185,14 +186,13 @@ public class DAOOferta {
 	public Reserva buscarReservasActivas(Oferta oferta) throws SQLException, Exception {
 		Reserva reserva = null;
 	
-		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 		String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE OFERTA = %2$s and ESTADO = 'activa' and ROWNUM = 1 ORDER BY FECHAFIN DESC", USUARIO, oferta.getId() );
 	
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 	
-		while (rs.next()) {
+		if (rs.next()) {
 			reserva = convertResultSetToReserva(rs);
 		}
 		return reserva;
@@ -346,5 +346,35 @@ public class DAOOferta {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 		
+	}
+
+	public void deshabilitarOferta(Long id) throws SQLException {
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append(String.format("UPDATE %s.OFERTAS SET ", USUARIO));
+		sql.append("DESHABILITADA = 1 "); 
+		sql.append(String.format("WHERE ID = %s ", id ));
+		
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+	}
+
+	public List<Reserva> getReservasActivas(Long id) throws SQLException {
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+		
+		String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE OFERTA = %2$s and ESTADO = 'activa' order by FECHAFIN ASC", USUARIO, id );
+	
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+	
+		if (rs.next()) {
+			reservas.add( convertResultSetToReserva(rs));
+		}
+		return reservas;
 	}
 }
