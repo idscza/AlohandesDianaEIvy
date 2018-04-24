@@ -1,0 +1,470 @@
+{
+	"id": "6490a408-bd4f-4a60-a958-f6b2241e3dca",
+	"name": "Pruebas",
+	"description": null,
+	"auth": null,
+	"events": null,
+	"variables": null,
+	"order": [
+		"63165819-e637-4808-a552-1d10c9bfc448",
+		"0c55ed0c-d261-4bc0-be10-f60d1e7ca760",
+		"c3ff6e15-0186-47d6-933a-9558d5be3648",
+		"010b7050-8581-47f3-a445-65a0cc7d56ba",
+		"37d1fe1a-9264-4d82-bb1e-fa748c3c5adb",
+		"2029c611-e379-4a87-a290-4121f7dd13b8",
+		"46437f7e-4689-4a2c-ac35-ed2b132919c4",
+		"974238ad-624f-4308-90a2-e7dfcad6a75b",
+		"56e0fa4f-cfe1-4f7d-9503-224f6ee08aaf",
+		"07131988-69ee-4af1-bece-718521166f4c",
+		"97781243-6552-4b8c-8c60-819788974f8f",
+		"a4375cd0-1951-4f9d-831f-f809fded974c",
+		"b9343d78-a302-429f-bf40-3cdf77e85644",
+		"bf86c8cb-6db1-4f2d-a510-ef87b54dc4f5",
+		"c2e7caae-3300-420a-b3e9-827ac90052c9",
+		"36a920a9-f890-48e5-a19f-a96120e073eb",
+		"929d6d9b-4b5c-4dd1-bb80-7d9ae4ea1a7d",
+		"0bc28fb9-6d6b-4577-9991-b0bdb21c2bcd",
+		"726c335e-af2c-4749-b196-81b8997e16c6"
+	],
+	"folders_order": [],
+	"folders": [],
+	"requests": [
+		{
+			"id": "010b7050-8581-47f3-a445-65a0cc7d56ba",
+			"name": "GET all usuarios",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/usuarios",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "07131988-69ee-4af1-bece-718521166f4c",
+			"name": "GET reserva by ID",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/reservas/5",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "0bc28fb9-6d6b-4577-9991-b0bdb21c2bcd",
+			"name": "PUT alojamiento",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/alojamientos",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": " {\n        \"ID\": 1,\n  \"CAPACIDAD\": 1,\n  \"TAMANIO\": 60,\n  \"MENAJE\": \"null\",\n  \"AMOBLADO\": \"null\",\n  \"NUMHABITACIONES\": \"null\",\n  \"DIRECCION\": \"1 Mcbride Park\",\n  \"DIASUSO\": \"null\",\n  \"CATEGORIA\": \"null\",\n  \"COMPARTIDA\": 1,\n  \"NUMEROHAB\": 9,\n  \"OPERADOR\": 11,\n  \"TIPO\": \"habhos\"\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "0c55ed0c-d261-4bc0-be10-f60d1e7ca760",
+			"name": "GET all alojamientos",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/alojamientos",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "2029c611-e379-4a87-a290-4121f7dd13b8",
+			"name": "GET all servicios",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/servicios",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "36a920a9-f890-48e5-a19f-a96120e073eb",
+			"name": "POST usuario",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/usuarios",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": " {\n       \"ID\": 1,\n  \"CONTRASENIA\": \"4wP9gmytt7\",\n  \"LOGIN\": \"daustwick0\",\n  \"CEDULA\": \"7341661917\",\n  \"EDAD\": 29,\n  \"NOMBRE\": \"Dorrie\",\n  \"TELEFONO\": \"831 218 9514\",\n  \"OPERADOR\": 1,\n  \"TIPO\": \"responsable\"\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "37d1fe1a-9264-4d82-bb1e-fa748c3c5adb",
+			"name": "GET all reservas",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/reservas",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "46437f7e-4689-4a2c-ac35-ed2b132919c4",
+			"name": "GET alojamiento by ID  ",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/alojamientos/5",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "56e0fa4f-cfe1-4f7d-9503-224f6ee08aaf",
+			"name": "GET usuario by ID",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/usuarios/5",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "63165819-e637-4808-a552-1d10c9bfc448",
+			"name": "GET all operadores",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/operadores",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "726c335e-af2c-4749-b196-81b8997e16c6",
+			"name": "DELETE alojamientos",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/alojamientos",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "DELETE",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": " {\n        \"ID\": 1,\n  \"CAPACIDAD\": 5,\n  \"TAMANIO\": 14,\n  \"MENAJE\": \"null\",\n  \"AMOBLADO\": \"null\",\n  \"NUMHABITACIONES\": \"null\",\n  \"DIRECCION\": \"2 Kinsman Lane\",\n  \"DIASUSO\": \"null\",\n  \"CATEGORIA\": \"null\",\n  \"COMPARTIDA\": 1,\n  \"NUMEROHAB\": 5,\n  \"OPERADOR\": 18,\n  \"TIPO\": \"habhos\"\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "929d6d9b-4b5c-4dd1-bb80-7d9ae4ea1a7d",
+			"name": "POST oferta",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/ofertas",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": " {\n       \"ID\": 1,\n  \"COSTO\": 69,\n  \"FECHARETIRO\": \"26/09/2018\",\n  \"NOMBRE\": \"Parrothead Indian Paintbrush\",\n  \"OPERADOR\": 15,\n  \"ALOJAMIENTO\": 1,\n  \"DESHABILITADA\": 1\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "974238ad-624f-4308-90a2-e7dfcad6a75b",
+			"name": "GET oferta by ID",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/ofertas/5",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "97781243-6552-4b8c-8c60-819788974f8f",
+			"name": "GET operador by ID ",
+			"url": "http://localhost:8081/TutorialParranderos/rest/operadores/5",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "a4375cd0-1951-4f9d-831f-f809fded974c",
+			"name": "GET servicio by ID",
+			"url": "http://localhost:8081/TutorialParranderos/rest/operadores/5",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "b9343d78-a302-429f-bf40-3cdf77e85644",
+			"name": "POST operador",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/operadores",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": " {\n        \"ID\": 31,\n   \"CAPACIDAD\": 4,\n  \"NOMBRE\": \"Garrique\",\n  \"TELEFONO\": \"176 542 7288\",\n  \"DIRECCION\": \"88169 Surrey Crossing\",\n  \"ESTRELLAS\": \"null\",\n  \"RUT\": \"null\",\n  \"HABDISPONIBLES\": \"null\",\n  \"HABOCUPADAS\": \"null\",\n  \"HORACIERRE\": \"null\",\n  \"HORAAPERTURA\": \"null\",\n  \"CEDULA\": \"5828401351\",\n  \"EDAD\": 32,\n  \"TIPO\": \"percom\"\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "bf86c8cb-6db1-4f2d-a510-ef87b54dc4f5",
+			"name": "POST alojamiento",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/alojamientos",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": " {\n        \"ID\": 1,\n  \"CAPACIDAD\": 5,\n  \"TAMANIO\": 11,\n  \"MENAJE\": \"null\",\n  \"AMOBLADO\": \"null\",\n  \"NUMHABITACIONES\": \"null\",\n  \"DIRECCION\": \"06 Dixon Junction\",\n  \"DIASUSO\": \"null\",\n  \"CATEGORIA\": \"null\",\n  \"COMPARTIDA\": 1,\n  \"NUMEROHAB\": 5,\n  \"OPERADOR\": 15,\n  \"TIPO\": \"habhos\"\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "c2e7caae-3300-420a-b3e9-827ac90052c9",
+			"name": "POST reserva",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/ofertas",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": " {\"ID\": 1,\n  \"COBRO\": 702,\n  \"FECHAREALIZACION\": \"03/06/2018\",\n  \"FECHAINICIO\": \"23/08/2018\",\n  \"FECHAFIN\": \"02/11/2018\",\n  \"PERSONAS\": 2,\n  \"OPERADOR\": 22,\n  \"OFERTA\": 147,\n  \"CLIENTE\": 7,\n  \"ESTADO\": \"terminada\",\n  \"IDMAESTRO\": \"null\"\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "c3ff6e15-0186-47d6-933a-9558d5be3648",
+			"name": "GET all ofertas",
+			"url": "http://localhost:8081/AlohandesDianaEIvy/rest/ofertas",
+			"description": null,
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n        \"id\": 12,\n        \"name\": \"Harry Potter 3\",\n        \"duration\": 140\n    }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		}
+	]
+}
