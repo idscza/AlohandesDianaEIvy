@@ -2145,14 +2145,13 @@ public class AloHandesTransactionManager {
 						
 						while(i< reservas.size()) {
 							cancelarReserva(reservas.get(i).getId(),false);
-	
 							//TODO reasignar
+							daoOferta.commit();
 							i++;
 						}
 						
 					}
 					daoOferta.deshabilitarOferta(id);
-					daoOferta.commit();
 				}else
 					throw new Exception("Este Oferta no se encuentra en la base de datos");
 

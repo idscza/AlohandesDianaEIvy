@@ -317,7 +317,7 @@ public class DAOOferta {
 			sql.append(String.format("or nombre = '%1$s' ", losServicios[i]));
 			i++;
 		}
-		sql.append(String.format("group by alojamiento, oferta) where servicios = %1$s )final on alojamiento = id ",goal));
+		sql.append(String.format(")masterf group by alojamiento, oferta) where servicios = %1$s )final on alojamiento = id ",goal));
 		sql.append(String.format("where tipo = '%1$s'", hospedaje));
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
@@ -379,29 +379,15 @@ public class DAOOferta {
 	}
 	
 	public void autocommit0() throws SQLException {
-		String sql = "SET AUTOCOMMIT 0";
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-		
+		conn.setAutoCommit(false);
 	}
 	
 	public void commit() throws SQLException {
-		String sql = "commit";
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
+		conn.commit();;
 		
 	}
 	
 	public void rollback() throws SQLException {
-		String sql = "rollback";
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-		
+		conn.rollback();
 	}
 }

@@ -204,29 +204,15 @@ public class DAOServicios {
 	}
 	
 	public void autocommit0() throws SQLException {
-		String sql = "SET AUTOCOMMIT 0";
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-		
+		conn.setAutoCommit(false);
 	}
 	
 	public void commit() throws SQLException {
-		String sql = "commit";
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
+		conn.commit();;
 		
 	}
 	
 	public void rollback() throws SQLException {
-		String sql = "rollback";
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-		
+		conn.rollback();
 	}
 }
