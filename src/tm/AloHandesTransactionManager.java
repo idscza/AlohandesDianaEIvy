@@ -1026,9 +1026,35 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
-				if (alojamiento.getTipo() == ("hotel"|"hostal"|"ddd"))
-					//lodeje con error para revisarmaañana
+				if (alojamiento.getTipo().equals("aparta") & 
+						alojamiento.getMenaje() != null &
+						alojamiento.getAmoblado() != null &
+						alojamiento.getNumhabitaciones() !=null )	
 				{daoAlojamiento.addAlojamiento(alojamiento);}
+				
+				else if (alojamiento.getTipo().equals("habhot") &
+						alojamiento.getNumerohabitacion() != null &
+						alojamiento.getCategoria() != null 
+						){
+					daoAlojamiento.addAlojamiento(alojamiento);
+				}
+				
+				else if (alojamiento.getTipo().equals("vivcom") &
+						alojamiento.getMenaje()!= null &
+						alojamiento.getNumhabitaciones() != null &
+						alojamiento.getDiasuso() != null &
+						alojamiento.getNumerohabitacion() != null){
+					daoAlojamiento.addAlojamiento(alojamiento);
+
+				}
+				else if (alojamiento.getTipo().equals("habita") & 
+						alojamiento.getNumerohabitacion() != null){
+					daoAlojamiento.addAlojamiento(alojamiento);
+				}
+				else if (alojamiento.getTipo().equals("habuni") & 
+						alojamiento.getNumerohabitacion() != null){
+					daoAlojamiento.addAlojamiento(alojamiento);
+				}
 
 			}
 			catch (SQLException sqlException) {
@@ -1410,7 +1436,7 @@ public class AloHandesTransactionManager {
 				daoAlojamiento.setConn(conn);
 				Alojamiento alo = daoAlojamiento.findAlojamientoById(oferta.getAlojamiento());
 				if(alo != null){
-					if (alo.getOperador() == oferta.getOperador()){
+					if (alo.getOperador() == oferta.getOperador() ){
 						daoOferta.addOferta(oferta);	
 					}
 				}
