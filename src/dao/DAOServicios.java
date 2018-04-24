@@ -202,4 +202,31 @@ public class DAOServicios {
 	
 		return servicio ;
 	}
+	
+	public void autocommit0() throws SQLException {
+		String sql = "SET AUTOCOMMIT 0";
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+	}
+	
+	public void commit() throws SQLException {
+		String sql = "commit";
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+	}
+	
+	public void rollback() throws SQLException {
+		String sql = "rollback";
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+	}
 }
