@@ -11,6 +11,7 @@ import java.util.List;
 import vos.Alojamiento;
 import vos.Operador;
 import vos.RFC4;
+import vos.Usuario;
 
 public class DAOAlojamiento {
 	
@@ -233,6 +234,23 @@ public class DAOAlojamiento {
 			return alojamiento;
 		}
 		
+		public Usuario convertResultSetToUsuario(ResultSet resultSet) throws SQLException {
+			
+			Long id = resultSet.getLong("ID");
+			String login = resultSet.getString("LOGIN");
+			String contrasenia = resultSet.getString("CONTRASENIA");
+			String cedula = resultSet.getString("CEDULA");
+			Integer edad = resultSet.getInt("EDAD");
+			String nombre = resultSet.getString("NOMBRE");
+			String telefono = resultSet.getString("TELEFONO");
+			Long operador = resultSet.getLong("OPERADOR");
+			String tipo = resultSet.getString("TIPO");
+
+			Usuario user = new Usuario(id, login, contrasenia, cedula, edad, nombre, telefono, operador, tipo);
+
+			return user;
+		}
+		
 		public RFC4 convertResultSetToRFC4 (ResultSet rs)throws SQLException {
 			Long alojamiento = rs.getLong("ALOJAMIENTO");
 			Long oferta = rs.getLong("OFERTA");
@@ -271,6 +289,26 @@ public class DAOAlojamiento {
 			}
 			return alojamientos;
 
+		}
+
+		public List<Usuario> getClientesFrecuentes(Long id) throws SQLException {
+			
+			ArrayList<Usuario> frecuentes = new ArrayList<Usuario>();
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append(String.format("select usuarios.* from %1$s.usuarios inner join ",USUARIO));
+			sql.append(String.format(" (Select cliente from (Select cliente, sum(fechafin-fechainicio) noches, count(fecharealizacion) as veces from (Select reservas.* from %1$s.reservas join %1$s.ofertas on ofertas.id = reservas.oferta where ofertas.alojamiento = %2$s) filtro ",USUARIO,id));
+			sql.append("group by cliente) conteo where noches > 14 or veces > 2) on cliente = id");
+			
+			PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			
+			while (rs.next()) {
+				frecuentes.add(convertResultSetToUsuario(rs));
+			}
+			
+			return frecuentes;
 		}
 
 }

@@ -1755,5 +1755,41 @@ public class AloHandesTransactionManager {
 			return rta;
 		}
 
+		public List<Usuario> getClientesFrecuentes(Long id) throws Exception {
+			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+			List<Usuario> clientes;
+			try 
+			{
+				this.conn = darConexion();
+				daoAlojamiento.setConn(conn);
+				
+				clientes = daoAlojamiento.getClientesFrecuentes(id);
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoAlojamiento.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return clientes;
+		}
+
 		
 }
