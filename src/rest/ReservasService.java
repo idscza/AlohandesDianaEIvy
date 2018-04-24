@@ -203,8 +203,8 @@ public class ReservasService {
 				
 				try{
 					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
-					tm.cancelarReserva(idCancelacion,true);
-					return Response.status( 200 ).entity( tm.getReservaById(idCancelacion) ).build( );			
+					List<Reserva> reservas = tm.cancelarReservaMultiple(idCancelacion);
+					return Response.status( 200 ).entity( reservas ).build( );			
 				}
 				catch( Exception e )
 				{

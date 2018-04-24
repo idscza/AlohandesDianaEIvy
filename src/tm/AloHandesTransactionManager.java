@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -128,18 +129,22 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoUsuario.setConn(conn);
+				daoUsuario.autocommit0();
 				
 				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 				usuarios = daoUsuario.getUsuarios();
+				daoUsuario.commit();
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoUsuario.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoUsuario.rollback();
 				throw exception;
 			} 
 			finally {
@@ -165,7 +170,9 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoUsuario.setConn(conn);
+				daoUsuario.autocommit0();
 				usuario = daoUsuario.findUsuarioById(id);
+				daoUsuario.commit();
 				if(usuario == null)
 				{
 					throw new Exception("El Usuario con el id = " + id + " no se encuentra persistido en la base de datos.");				
@@ -174,11 +181,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoUsuario.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoUsuario.rollback();
 				throw exception;
 			} 
 			finally {
@@ -203,23 +212,28 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoUsuario.setConn(conn);
+				daoUsuario.autocommit0();
 				if(usuario.getTipo().equals("responsable")) {
 					 if (usuario.getOperador() != null) {
 						 daoUsuario.addUsuario(usuario);
+						 daoUsuario.commit();
 					 }else throw new Exception("No puede haber un responsable sin un operador");
 					
 				}else if(usuario.getTipo().equals("cliente")) {
 						 daoUsuario.addUsuario(usuario);
+						 daoUsuario.commit();
 				}
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoUsuario.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoUsuario.rollback();
 				throw exception;
 			} 
 			finally {
@@ -244,9 +258,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoUsuario.setConn( conn );
+				daoUsuario.autocommit0();
 				Usuario exists = daoUsuario.findUsuarioById(usuario.getId());
 				if(exists != null) {
 					daoUsuario.updateUsuario(usuario);
+					daoUsuario.commit();
 				}else
 					throw new Exception("Este Usuario no se encuentra en la base de datos");
 
@@ -254,11 +270,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoUsuario.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoUsuario.rollback();
 				throw exception;
 			} 
 			finally {
@@ -282,9 +300,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoUsuario.setConn( conn );
+				daoUsuario.autocommit0();
 				Usuario exists = daoUsuario.findUsuarioById(usuario.getId());
 				if(exists != null) {
 					daoUsuario.deleteUsuario(usuario);
+					daoUsuario.commit();
 				}else
 					throw new Exception("Este Usuario no se encuentra en la base de datos");
 
@@ -292,11 +312,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoUsuario.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoUsuario.rollback();
 				throw exception;
 			} 
 			finally {
@@ -315,43 +337,6 @@ public class AloHandesTransactionManager {
 			
 		}
 
-		public List<Reserva> getAllReservas() throws Exception{
-			DAOReserva daoReserva = new DAOReserva();
-			List<Reserva> reservas;
-			try 
-			{
-				this.conn = darConexion();
-				daoReserva.setConn(conn);
-				
-				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-				reservas = daoReserva.getReservas();
-			}
-			catch (SQLException sqlException) {
-				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
-				sqlException.printStackTrace();
-				throw sqlException;
-			} 
-			catch (Exception exception) {
-				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			} 
-			finally {
-				try {
-					daoReserva.cerrarRecursos();
-					if(this.conn!=null){
-						this.conn.close();					
-					}
-				}
-				catch (SQLException exception) {
-					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
-					exception.printStackTrace();
-					throw exception;
-				}
-			}
-			return reservas;
-		}
-
 		public Reserva getReservaById(Long id) throws Exception{
 			DAOReserva daoReserva = new DAOReserva();
 			Reserva reserva = null;
@@ -359,7 +344,9 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoReserva.setConn(conn);
+				daoReserva.autocommit0();
 				reserva = daoReserva.findReservaById(id);
+				daoReserva.commit();
 				if(reserva == null)
 				{
 					throw new Exception("La reserva con el id = " + id + " no se encuentra persistido en la base de datos.");				
@@ -368,11 +355,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoReserva.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoReserva.rollback();
 				throw exception;
 			} 
 			finally {
@@ -391,6 +380,46 @@ public class AloHandesTransactionManager {
 			return reserva;
 		}
 		
+		public List<Reserva> getAllReservas() throws Exception{
+			DAOReserva daoReserva = new DAOReserva();
+			List<Reserva> reservas;
+			try 
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				daoReserva.autocommit0();
+				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+				reservas = daoReserva.getReservas();
+				daoReserva.commit();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				daoReserva.rollback();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				daoReserva.rollback();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return reservas;
+		}
+
 		public Reserva reservar(String hospedaje, String servicios,String inicio,String fin,String cliente) throws Exception{
 			DAOReserva daoReserva = new DAOReserva( );
 			DAOOferta daoOferta = new DAOOferta();
@@ -400,10 +429,11 @@ public class AloHandesTransactionManager {
 				this.conn = darConexion();
 				daoReserva.setConn(conn);
 				daoOferta.setConn(conn);
-				
+				daoReserva.autocommit0();
 				String[] losservicios = servicios.split("-");
-				
+				daoOferta.autocommit0();
 				List<Oferta> validez = daoOferta.findOfertasValidas(hospedaje,losservicios,inicio,fin);
+				daoOferta.commit();
 				if(validez.size() > 0){
 						
 					Date xd = new Date();
@@ -413,6 +443,7 @@ public class AloHandesTransactionManager {
 					String hoy = d+"/"+m+"/"+a;
 					
 						rta = daoReserva.reservar(cliente, validez.get(0),inicio,fin,hoy,null);
+						daoReserva.commit();
 
 				}else throw new Exception("No hay cupos para estas especificaciones");
 				
@@ -421,11 +452,15 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoReserva.rollback();
+				daoOferta.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoReserva.rollback();
+				daoOferta.rollback();
 				throw exception;
 			} 
 			finally {
@@ -448,13 +483,14 @@ public class AloHandesTransactionManager {
 		public List<Reserva> reservarMultiple(String habs, String hospedaje, String servicios,String inicio,String fin,String cliente) throws Exception{
 			DAOReserva daoReserva = new DAOReserva( );
 			DAOOferta daoOferta = new DAOOferta();
-			List<Reserva> rta = null;
+			List<Reserva> rta = new ArrayList<Reserva>();
 			try
 			{
 				this.conn = darConexion();
 				daoReserva.setConn(conn);
 				daoOferta.setConn(conn);
-
+				daoReserva.autocommit0();
+				daoOferta.autocommit0();
 				String[] losservicios = servicios.split("-");
 				int quant = Integer.parseInt(habs);
 
@@ -472,6 +508,7 @@ public class AloHandesTransactionManager {
 						String hoy = d+"/"+m+"/"+a;
 
 						rta.add(daoReserva.reservar(cliente, validez.get(i),inicio,fin,hoy,idmaestro));
+						daoReserva.rollback();
 						i++;
 					}
 
@@ -482,11 +519,15 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoReserva.rollback();
+				daoOferta.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoReserva.rollback();
+				daoOferta.rollback();
 				throw exception;
 			} 
 			finally {
@@ -514,11 +555,15 @@ public class AloHandesTransactionManager {
 				this.conn = darConexion();
 				daoReserva.setConn(conn);
 				daoOferta.setConn(conn);
+				daoReserva.autocommit0();
+				daoOferta.autocommit0();
 				Oferta validez = daoOferta.findOfertaById(reserva.getOferta());
+				daoOferta.commit();
 				if(validez != null){
 					
 					if(validez.getOperador() == reserva.getOperador()) {
 						daoReserva.addReserva(reserva);
+						daoReserva.commit();
 					}else throw new Exception("Reserva inválida");
 					
 				}else throw new Exception("Reserva inválida");
@@ -528,11 +573,15 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoReserva.rollback();
+				daoOferta.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoReserva.rollback();
+				daoOferta.rollback();
 				throw exception;
 			} 
 			finally {
@@ -557,9 +606,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoReserva.setConn( conn );
+				daoReserva.autocommit0();
 				Reserva exists = daoReserva.findReservaById(reserva.getId());
 				if(exists != null) {
 					daoReserva.updateReserva(reserva);
+					daoReserva.commit();
 				}else
 					throw new Exception("Esta Reserva no se encuentra en la base de datos");
 
@@ -567,11 +618,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoReserva.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoReserva.rollback();
 				throw exception;
 			} 
 			finally {
@@ -596,9 +649,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoReserva.setConn( conn );
+				daoReserva.autocommit0();
 				Reserva exists = daoReserva.findReservaById(reserva.getId());
 				if(exists != null) {
 					daoReserva.deleteReserva(reserva);
+					daoReserva.commit();
 				}else
 					throw new Exception("Esta Reserva no se encuentra en la base de datos");
 
@@ -606,11 +661,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoReserva.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoReserva.rollback();
 				throw exception;
 			} 
 			finally {
@@ -636,6 +693,7 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoReserva.setConn( conn );
+				daoReserva.autocommit0();
 				 multiple = daoReserva.getReservaMultiple(id);
 				if(!multiple.isEmpty()) {
 					
@@ -648,16 +706,19 @@ public class AloHandesTransactionManager {
 				}else
 					throw new Exception("Esta Reserva no se encuentra en la base de datos");
 				multiple = daoReserva.getReservaMultiple(id);
+				daoReserva.commit();
 
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoReserva.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoReserva.rollback();
 				throw exception;
 			} 
 			finally {
@@ -683,6 +744,7 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoReserva.setConn( conn );
+				daoReserva.autocommit0();
 				Reserva exists = daoReserva.findReservaById(id);
 				if(exists != null) {
 					
@@ -720,7 +782,9 @@ public class AloHandesTransactionManager {
 						
 					}
 					daoReserva.cancelarReserva(id,cobro);
+					daoReserva.commit();
 					reserva = daoReserva.findReservaById(id);
+					daoReserva.commit();
 				}else
 					throw new Exception("Esta Reserva no se encuentra en la base de datos");
 
@@ -728,11 +792,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoReserva.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoReserva.rollback();
 				throw exception;
 			} 
 			finally {
@@ -758,18 +824,21 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
-				
+				daoOperador.autocommit0();
 				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 				operadores = daoOperador.getOperadores();
+				daoOperador.commit();
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOperador.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOperador.rollback();
 				throw exception;
 			} 
 			finally {
@@ -795,7 +864,9 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
+				daoOperador.autocommit0();
 				operador = daoOperador.findOperadorById(id);
+				daoOperador.commit();
 				if(operador == null)
 				{
 					throw new Exception("El Operador con el id = " + id + " no se encuentra persistido en la base de datos.");				
@@ -804,11 +875,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOperador.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOperador.rollback();
 				throw exception;
 			} 
 			finally {
@@ -833,6 +906,7 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
+				daoOperador.autocommit0();
 				if (operador.getTipo().equals("hotel") &
 						operador.getDireccion() !=null &
 						operador.getRut() !=  null &
@@ -841,6 +915,7 @@ public class AloHandesTransactionManager {
 						operador.getHabOcupadas() != null)
 					{
 						daoOperador.addOperador(operador);
+						daoOperador.commit();
 				}
 				
 				else if (operador.getTipo().equals("hostal")&
@@ -851,34 +926,40 @@ public class AloHandesTransactionManager {
 						operador.getHoraApertura() != null &
 						operador.getHoraCierre() != null ){
 					daoOperador.addOperador(operador);
+					daoOperador.commit();
 				}
 				
 				else if (operador.getTipo().equals("pernat")&
 						operador.getCedula() != null &
 						operador.getEdad() != null ){
 					daoOperador.addOperador(operador);
+					daoOperador.commit();
 				}
 				else if (operador.getTipo().equals("percom")&
 						operador.getCedula() != null &
 						operador.getEdad() != null ){
 					daoOperador.addOperador(operador);
+					daoOperador.commit();
 				}
 				else if (operador.getTipo().equals("vivuni")&
 						operador.getHabDisponibles() != null& 
 						operador.getHabOcupadas()!= null & 
 						operador.getDireccion()!= null ){
 					daoOperador.addOperador(operador);
+					daoOperador.commit();
 				}
 
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOperador.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOperador.rollback();
 				throw exception;
 			} 
 			finally {
@@ -903,9 +984,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOperador.setConn( conn );
+				daoOperador.autocommit0();
 				Operador exists = daoOperador.findOperadorById(operador.getId());
 				if(exists != null) {
 					daoOperador.updateOperador(operador);
+					daoOperador.commit();
 				}else
 					throw new Exception("Este Operador no se encuentra en la base de datos");
 
@@ -913,11 +996,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOperador.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOperador.rollback();
 				throw exception;
 			} 
 			finally {
@@ -941,9 +1026,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOperador.setConn( conn );
+				daoOperador.autocommit0();
 				Operador exists = daoOperador.findOperadorById(operador.getId());
 				if(exists != null) {
 					daoOperador.deleteOperador(operador);
+					daoOperador.commit();
 				}else
 					throw new Exception("Este Operador no se encuentra en la base de datos");
 
@@ -951,11 +1038,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOperador.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOperador.rollback();
 				throw exception;
 			} 
 			finally {
@@ -981,17 +1070,20 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOferta.setConn(conn);
-				
+				daoOferta.autocommit0();
 				ofertas = daoOferta.getOfertasPopulares();
+				daoOferta.commit();
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOferta.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOferta.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1019,17 +1111,20 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
-				
+				daoOperador.autocommit0();
 				operadores = daoOperador.getGananciaOperadores();
+				daoOperador.commit();
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOperador.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOperador.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1057,17 +1152,20 @@ public class AloHandesTransactionManager {
 				
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
-				
+				daoAlojamiento.autocommit0();
 				alojamientos = daoAlojamiento.getAlojamientoConServicios(losServicios, inicio, fin);
+				daoAlojamiento.commit();
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoAlojamiento.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoAlojamiento.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1094,17 +1192,20 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
-				
+				daoOperador.autocommit0();
 				operadores = daoOperador.getIndiceOcupacion();
+				daoOperador.commit();
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOperador.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOperador.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1132,18 +1233,21 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
-				
+				daoAlojamiento.autocommit0();
 				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 				alojamientos = daoAlojamiento.getAlojamientos();
+				daoAlojamiento.commit();
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoAlojamiento.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoAlojamiento.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1169,7 +1273,9 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
+				daoAlojamiento.autocommit0();
 				alojamiento = daoAlojamiento.findAlojamientoById(id);
+				daoAlojamiento.commit();
 				if(alojamiento == null)
 				{
 					throw new Exception("El Alojamiento con el id = " + id + " no se encuentra persistido en la base de datos.");				
@@ -1178,11 +1284,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoAlojamiento.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoAlojamiento.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1207,17 +1315,20 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
+				daoAlojamiento.autocommit0();
 				if (alojamiento.getTipo().equals("aparta") & 
 						alojamiento.getMenaje() != null &
 						alojamiento.getAmoblado() != null &
 						alojamiento.getNumhabitaciones() !=null )	
-				{daoAlojamiento.addAlojamiento(alojamiento);}
+				{daoAlojamiento.addAlojamiento(alojamiento);
+				daoAlojamiento.commit();}
 				
 				else if (alojamiento.getTipo().equals("habhot") &
 						alojamiento.getNumerohabitacion() != null &
 						alojamiento.getCategoria() != null 
 						){
 					daoAlojamiento.addAlojamiento(alojamiento);
+					daoAlojamiento.commit();
 				}
 				
 				else if (alojamiento.getTipo().equals("vivcom") &
@@ -1226,26 +1337,31 @@ public class AloHandesTransactionManager {
 						alojamiento.getDiasuso() != null &
 						alojamiento.getNumerohabitacion() != null){
 					daoAlojamiento.addAlojamiento(alojamiento);
+					daoAlojamiento.commit();
 
 				}
 				else if (alojamiento.getTipo().equals("habita") & 
 						alojamiento.getNumerohabitacion() != null){
 					daoAlojamiento.addAlojamiento(alojamiento);
+					daoAlojamiento.commit();
 				}
 				else if (alojamiento.getTipo().equals("habuni") & 
 						alojamiento.getNumerohabitacion() != null){
 					daoAlojamiento.addAlojamiento(alojamiento);
+					daoAlojamiento.commit();
 				}
 
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoAlojamiento.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoAlojamiento.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1270,9 +1386,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoAlojamiento.setConn( conn );
+				daoAlojamiento.autocommit0();
 				Alojamiento exists = daoAlojamiento.findAlojamientoById(alojamiento.getId());
 				if(exists != null) {
 					daoAlojamiento.updateAlojamiento(alojamiento);
+					daoAlojamiento.commit();
 				}else
 					throw new Exception("Este Alojamiento no se encuentra en la base de datos");
 
@@ -1280,11 +1398,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoAlojamiento.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoAlojamiento.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1308,9 +1428,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoAlojamiento.setConn( conn );
+				daoAlojamiento.autocommit0();
 				Alojamiento exists = daoAlojamiento.findAlojamientoById(alojamiento.getId());
 				if(exists != null) {
 					daoAlojamiento.deleteAlojamiento(alojamiento);
+					daoAlojamiento.commit();
 				}else
 					throw new Exception("Este Alojamiento no se encuentra en la base de datos");
 
@@ -1318,11 +1440,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoAlojamiento.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoAlojamiento.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1349,18 +1473,21 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoServicios.setConn(conn);
-				
+				daoServicios.autocommit0();
 				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 				servicios = daoServicios.getServicios();
+				daoServicios.commit();
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoServicios.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoServicios.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1386,7 +1513,9 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoServicios.setConn(conn);
+				daoServicios.autocommit0();
 				servicio = daoServicios.findServicioById(id);
+				daoServicios.commit();
 				if(servicio == null)
 				{
 					throw new Exception("El servicio con el id = " + id + " no se encuentra persistido en la base de datos.");				
@@ -1395,11 +1524,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoServicios.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoServicios.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1424,17 +1555,21 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoServicios.setConn(conn);
+				daoServicios.autocommit0();
 				daoServicios.addServicio(servicio);
+				daoServicios.commit();
 
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoServicios.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoServicios.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1459,9 +1594,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoServicios.setConn( conn );
+				daoServicios.autocommit0();
 				Servicio exists = daoServicios.findServicioById(servicio.getId());
 				if(exists != null) {
 					daoServicios.updateServicio(servicio);
+					daoServicios.commit();
 				}else
 					throw new Exception("Este Servicio  no se encuentra en la base de datos");
 
@@ -1469,11 +1606,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoServicios.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoServicios.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1497,9 +1636,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoServicios.setConn( conn );
+				daoServicios.autocommit0();
 				Servicio exists = daoServicios.findServicioById(servicio.getId());
 				if(exists != null) {
 					daoServicios.deleteServicio(servicio);
+					daoServicios.commit();
 				}else
 					throw new Exception("Este Servicio no se encuentra en la base de datos");
 
@@ -1507,11 +1648,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoServicios.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoServicios.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1538,18 +1681,21 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOferta.setConn(conn);
-				
+				daoOferta.autocommit0();
 				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 				oferta = daoOferta.getOfertas();
+				daoOferta.commit();
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOferta.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOferta.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1575,7 +1721,9 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOferta.setConn(conn);
+				daoOferta.autocommit0();
 				oferta = daoOferta.findOfertaById(id);
+				daoOferta.commit();
 				if(oferta == null)
 				{
 					throw new Exception("El Oferta con el id = " + id + " no se encuentra persistido en la base de datos.");				
@@ -1584,11 +1732,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOferta.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOferta.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1615,10 +1765,14 @@ public class AloHandesTransactionManager {
 				this.conn = darConexion();
 				daoOferta.setConn(conn);
 				daoAlojamiento.setConn(conn);
+				daoOferta.autocommit0();
+				daoAlojamiento.autocommit0();
 				Alojamiento alo = daoAlojamiento.findAlojamientoById(oferta.getAlojamiento());
+				daoAlojamiento.commit();
 				if(alo != null){
 					if (alo.getOperador() == oferta.getOperador() ){
-						daoOferta.addOferta(oferta);	
+						daoOferta.addOferta(oferta);
+						daoOferta.commit();
 					}else throw new Exception("Oferta inválida");
 				}else throw new Exception("Oferta inválida");
 
@@ -1626,11 +1780,15 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOferta.rollback();
+				daoAlojamiento.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOferta.rollback();
+				daoAlojamiento.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1656,7 +1814,9 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOferta.setConn( conn );
+				daoOferta.autocommit0();
 				Oferta exists = daoOferta.findOfertaById(oferta.getId());
+				daoOferta.commit();
 				if(exists != null) {
 					daoOferta.updateOferta(oferta);
 				}else
@@ -1666,11 +1826,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOferta.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOferta.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1694,9 +1856,11 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOferta.setConn( conn );
+				daoOferta.autocommit0();
 				Oferta exists = daoOferta.findOfertaById(oferta.getId());
 				if(exists != null) {
 					daoOferta.deleteOferta(oferta);
+					daoOferta.commit();
 				}else
 					throw new Exception("Este Oferta no se encuentra en la base de datos");
 
@@ -1704,11 +1868,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOferta.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOferta.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1733,14 +1899,17 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoOferta.setConn( conn );
+				daoOferta.autocommit0();
 				Oferta exists = daoOferta.findOfertaById(id);
 				if(exists != null) {
 					
 					Reserva ultimaactiva= daoOferta.buscarReservasActivas(exists);
 					if(ultimaactiva == null){
 						daoOferta.deleteOferta(exists);
+						daoOferta.commit();
 					}else{		
 					daoOferta.retirarOferta(exists, ultimaactiva.getFechaFin());
+					daoOferta.commit();
 					}
 				}else
 					throw new Exception("Este Oferta no se encuentra en la base de datos");
@@ -1749,11 +1918,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoOferta.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoOferta.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1779,19 +1950,24 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoUsuario.setConn(conn);
+				daoUsuario.autocommit0();
 				Usuario usuario = daoUsuario.findUsuarioById(id);
 				if(usuario != null){
 					if(usuario.getTipo().equals("cliente")){
 						if(opcion.equals("1")){
 							rta = daoUsuario.getInfoById(id);
+							daoUsuario.commit();
 						}else if(opcion.equals("2")){
 							rta = daoUsuario.getInfoById(id, true);
+							daoUsuario.commit();
 						}else throw new Exception("Formato no válido");
 					}else if(usuario.getTipo().equals("responsable")){
 						if(opcion.equals("1")){
 							rta = daoUsuario.getInfoById(usuario.getOperador(),123);
+							daoUsuario.commit();
 						}else if(opcion.equals("2")){
 							rta = daoUsuario.getInfoById(usuario.getOperador(), false);
+							daoUsuario.commit();
 						}else throw new Exception("Formato no válido");
 					}else throw new Exception("Error en la base de datos");
 						
@@ -1800,11 +1976,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoUsuario.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoUsuario.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1830,11 +2008,13 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoUsuario.setConn(conn);
-
+				daoUsuario.autocommit0();
 				if(opcion.equals("1")){
 					rta = daoUsuario.getInfoPorTipo();
+					daoUsuario.commit();
 				}else if(opcion.equals("2")){
 					rta = daoUsuario.getInfoPorTipo(11212);
+					daoUsuario.commit();
 				}else throw new Exception("Formato no válido");
 
 
@@ -1842,11 +2022,13 @@ public class AloHandesTransactionManager {
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoUsuario.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoUsuario.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1872,17 +2054,20 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
-				
+				daoAlojamiento.autocommit0();
 				clientes = daoAlojamiento.getClientesFrecuentes(id);
+				daoAlojamiento.commit();
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 				sqlException.printStackTrace();
+				daoAlojamiento.rollback();
 				throw sqlException;
 			} 
 			catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
 				exception.printStackTrace();
+				daoAlojamiento.rollback();
 				throw exception;
 			} 
 			finally {
@@ -1899,6 +2084,105 @@ public class AloHandesTransactionManager {
 				}
 			}
 			return clientes;
+		}
+
+		public void habilitarOferta(Long id) throws Exception {
+			DAOOferta daoOferta = new DAOOferta( );
+			try
+			{
+				this.conn = darConexion();
+				daoOferta.setConn( conn );
+				Oferta exists = daoOferta.findOfertaById(id);
+				daoOferta.autocommit0();
+				if(exists != null) {
+					daoOferta.habilitarOferta(id);
+					daoOferta.commit();
+				}else
+					throw new Exception("Este Oferta no se encuentra en la base de datos");
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				daoOferta.rollback();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				daoOferta.rollback();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOferta.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+			
+		}
+
+		public void deshabilitarOferta(Long id) throws Exception {
+			DAOOferta daoOferta = new DAOOferta( );
+			try
+			{
+				this.conn = darConexion();
+				daoOferta.setConn( conn );
+				daoOferta.autocommit0();
+				Oferta exists = daoOferta.findOfertaById(id);
+				if(exists != null) {
+					List<Reserva> reservas = daoOferta.getReservasActivas(id);
+					if(!reservas.isEmpty()) {
+					
+						int i = 0;
+						
+						while(i< reservas.size()) {
+							cancelarReserva(reservas.get(i).getId(),false);
+							//TODO reasignar
+							daoOferta.commit();
+							i++;
+						}
+						
+					}
+					daoOferta.deshabilitarOferta(id);
+				}else
+					throw new Exception("Este Oferta no se encuentra en la base de datos");
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				daoOferta.rollback();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				daoOferta.rollback();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOferta.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+			
+			
 		}
 
 		

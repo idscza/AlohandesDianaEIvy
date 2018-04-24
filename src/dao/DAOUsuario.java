@@ -388,4 +388,17 @@ public class DAOUsuario {
 			return alojamiento;
 		}
 
+		public void autocommit0() throws SQLException {
+			conn.setAutoCommit(false);
+		}
+		
+		public void commit() throws SQLException {
+			conn.commit();;
+			
+		}
+		
+		public void rollback() throws SQLException {
+			conn.rollback();
+		}
+
 }

@@ -212,4 +212,40 @@ public class OfertaService {
 				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 			}
 		}
+		
+		@PUT
+		@Path( "habilitar/{id}" )
+		@Produces( MediaType.APPLICATION_JSON )
+		
+		public Response habilitarOferta(@PathParam("id") Long id) {
+			
+			try{
+				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+				Oferta oferta = tm.getOfertaById(id);
+				tm.habilitarOferta(id); 
+				return Response.status( 200 ).entity( oferta ).build( );			
+			}
+			catch( Exception e )
+			{
+				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+			}
+		}
+		
+		@PUT
+		@Path( "deshabilitar/{id}" )
+		@Produces( MediaType.APPLICATION_JSON )
+		
+		public Response deshabilitarOferta(@PathParam("id") Long id) {
+			
+			try{
+				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+				Oferta oferta = tm.getOfertaById(id);
+				tm.deshabilitarOferta(id); 
+				return Response.status( 200 ).entity( oferta ).build( );			
+			}
+			catch( Exception e )
+			{
+				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+			}
+		}
 }

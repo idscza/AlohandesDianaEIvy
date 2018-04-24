@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import vos.*;
 
@@ -185,14 +186,13 @@ public class DAOOferta {
 	public Reserva buscarReservasActivas(Oferta oferta) throws SQLException, Exception {
 		Reserva reserva = null;
 	
-		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 		String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE OFERTA = %2$s and ESTADO = 'activa' and ROWNUM = 1 ORDER BY FECHAFIN DESC", USUARIO, oferta.getId() );
 	
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 	
-		while (rs.next()) {
+		if (rs.next()) {
 			reserva = convertResultSetToReserva(rs);
 		}
 		return reserva;
@@ -309,7 +309,7 @@ public class DAOOferta {
 		sql.append(String.format("select oferta from %1$s.alojamientos join ", USUARIO));
 		sql.append(" (select alojamiento, oferta from (Select alojamiento, oferta, count(nombre) as servicios from (select * from (Select id, nombre, oferta, operador, alojamiento ");
 		sql.append(String.format(" From %1$s.SERVICIOS join (SELECT OFERTAS.id as elid, ofertas.operador, OFERTAS.ALOJAMIENTO,filtro.fecharealizacion FROM %1$s.OFERTAS LEFT OUTER JOIN", USUARIO));
-		sql.append(String.format("(SELECT * FROM RESERVAS WHERE FECHAFIN > '%1$s' and FECHAINICIO <= '%2$s' and ESTADO = 'activa' )FILTRO ON OFERTAS.ID = FILTRO.OFERTA) hello on elid = servicios.oferta where fecharealizacion is null)validos ", inicio,fin));
+		sql.append(String.format("(SELECT * FROM RESERVAS WHERE FECHAFIN > '%1$s' and FECHAINICIO <= '%2$s' and ESTADO = 'activa' )FILTRO ON OFERTAS.ID = FILTRO.OFERTA WHERE deshabilitada = 0) hello on elid = servicios.oferta where fecharealizacion is null)validos ", inicio,fin));
 		sql.append(String.format("where nombre = '%1$s' ", losServicios[0]));
 		
 		int i = 1;
@@ -317,7 +317,7 @@ public class DAOOferta {
 			sql.append(String.format("or nombre = '%1$s' ", losServicios[i]));
 			i++;
 		}
-		sql.append(String.format("group by alojamiento, oferta) where servicios = %1$s )final on alojamiento = id ",goal));
+		sql.append(String.format(")masterf group by alojamiento, oferta) where servicios = %1$s )final on alojamiento = id ",goal));
 		sql.append(String.format("where tipo = '%1$s'", hospedaje));
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
@@ -330,5 +330,64 @@ public class DAOOferta {
 			ofertas.add(findOfertaById(machete));
 		}
 		return ofertas;
+	}
+
+	public void habilitarOferta(Long id) throws SQLException {
+		
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append(String.format("UPDATE %s.OFERTAS SET ", USUARIO));
+		sql.append("DESHABILITADA = 0 "); 
+		sql.append(String.format("WHERE ID = %s ", id ));
+		
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+	}
+
+	public void deshabilitarOferta(Long id) throws SQLException {
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append(String.format("UPDATE %s.OFERTAS SET ", USUARIO));
+		sql.append("DESHABILITADA = 1 "); 
+		sql.append(String.format("WHERE ID = %s ", id ));
+		
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+	}
+
+	public List<Reserva> getReservasActivas(Long id) throws SQLException {
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+		
+		String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE OFERTA = %2$s and ESTADO = 'activa' order by FECHAFIN ASC", USUARIO, id );
+	
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+	
+		if (rs.next()) {
+			reservas.add( convertResultSetToReserva(rs));
+		}
+		return reservas;
+	}
+	
+	public void autocommit0() throws SQLException {
+		conn.setAutoCommit(false);
+	}
+	
+	public void commit() throws SQLException {
+		conn.commit();;
+		
+	}
+	
+	public void rollback() throws SQLException {
+		conn.rollback();
 	}
 }
