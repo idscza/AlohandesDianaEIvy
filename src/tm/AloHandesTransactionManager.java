@@ -1614,4 +1614,46 @@ public class AloHandesTransactionManager {
 			}
 			return rta;
 		}
+		
+		public Object getInfoPorTipo(String opcion) throws Exception{
+			DAOUsuario daoUsuario = new DAOUsuario();
+			Object rta = null;
+			try 
+			{
+				this.conn = darConexion();
+				daoUsuario.setConn(conn);
+
+				if(opcion.equals("1")){
+					rta = daoUsuario.getInfoPorTipo();
+				}else if(opcion.equals("2")){
+					rta = daoUsuario.getInfoPorTipo(11212);
+				}else throw new Exception("Formato no válido");
+
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoUsuario.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return rta;
+		}
 }

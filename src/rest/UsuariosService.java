@@ -193,6 +193,23 @@ public class UsuariosService {
 				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 			}
 		}
+		
+		@GET
+		@Path( "infogeneral/{opcion}" )
+		@Produces( { MediaType.APPLICATION_JSON } )
+		public Response getInfoPorTipo( @PathParam( "opcion" ) String opcion  )
+		{
+			try{
+				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+				Object usuario = tm.getInfoPorTipo( opcion);
+				return Response.status( 200 ).entity( usuario ).build( );			
+			}
+			catch( Exception e )
+			{
+				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+			}
+		}
+
 
 
 }

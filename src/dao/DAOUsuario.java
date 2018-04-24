@@ -218,8 +218,81 @@ public class DAOUsuario {
 		return alojamientos;
 	}
 	
+	public ArrayList<RFC5> getInfoPorTipo() throws SQLException, Exception {
+		ArrayList<RFC5> req = new ArrayList<RFC5>();
+
+		String sql = String.format("select ('cliente')tipousuario, sum(cobro) as dinero, sum (noches) as noches from (select cliente, cobro, (fechafin-fechainicio) noches from %1$s.reservas)hue", USUARIO);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if (rs.next()) {
+			req.add(convertResultSetToRFC5(rs));
+		}
 		
+		sql = String.format("select tipo as tipousuario, sum(cobro) as dinero, sum (noches) as noches from (select tipo, cliente, cobro, (fechafin-fechainicio) noches from %1$s.reservas right outer join %1$s.operadores on reservas.operador = operadores.id)hue group by tipo",USUARIO);
+				
+		prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			req.add(convertResultSetToRFC5(rs));
+		}
+		
+		return req;
+	}
 	
+	
+
+	public ArrayList<RFC5Aloja> getInfoPorTipo(int machete) throws SQLException, Exception {
+		ArrayList<RFC5Aloja> req = new ArrayList<RFC5Aloja>();
+		
+		String sql = String.format("Select operador.tipo as tipooperador, utilizados.* from (select distinct alojamientos.* from(select alojamiento from (select oferta from %1$s.reservas)hola,%1$s.ofertas where oferta = id)oferticas,%1$s.alojamientos where alojamientos.id = oferticas.alojamiento)utilizados inner join %1$s.operadores on utilizados.operador = operador.id;", USUARIO);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+		while (rs.next()) {
+			req.add(convertResultSetToRFCAloja(rs));
+		}
+		
+		return req;
+	}
+	
+	private RFC5Aloja convertResultSetToRFCAloja(ResultSet resultSet) throws SQLException {
+		
+		String tipoOperador = resultSet.getString("TIPOOPERADOR");
+		Long id = resultSet.getLong("ID");
+		Integer capacidad= resultSet.getInt("CAPACIDAD");
+		String tipo= resultSet.getString("TIPO");
+		Integer tamanio = resultSet.getInt("TAMANIO");
+		Integer menaje = resultSet.getInt("MENAJE");
+		Integer amoblado= resultSet.getInt("AMOBLADO");
+		Integer numhabitaciones= resultSet.getInt("NUMMHABITACIONES");
+		String direccion = resultSet.getString("DIRECCION");
+		Integer diasuso = resultSet.getInt("DIASUSO");
+		String categoria = resultSet.getString("CATEGORIA");
+		String numerohabitacion = resultSet.getString("NUMEROHABITACION");
+		Long operador = resultSet.getLong("OPERADOR");
+
+
+		RFC5Aloja alojamiento = new RFC5Aloja(tipoOperador, id, capacidad,  tamanio, menaje, amoblado, numhabitaciones, direccion, diasuso, categoria, numerohabitacion, operador, tipo);
+
+		return alojamiento;
+	}
+
+	private RFC5 convertResultSetToRFC5(ResultSet rs) throws SQLException {
+		
+		String tipoUsuario = rs.getString("TIPOUSUARIO");
+		Double dinero = rs.getDouble("DINERO");
+		Integer noches = rs.getInt("NOCHES");
+		
+		RFC5 rta = new RFC5(tipoUsuario,dinero,noches);
+		return rta;
+	}
 	
 	private RFC6C convertResultSetToRF6C(ResultSet rs) throws SQLException {
 		

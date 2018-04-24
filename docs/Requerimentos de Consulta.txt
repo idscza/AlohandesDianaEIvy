@@ -52,6 +52,31 @@ where servicios = 2;
 //RFC5
 //-----------------------------------
 
+Caso 1:
+
+select ('cliente')tipousuario, sum(cobro) as dinero, sum (noches) as noches from
+(select cliente, cobro, (fechafin-fechainicio) noches 
+from reservas
+)hue;
+
+select tipo as tipousuario, sum(cobro) as dinero, sum (noches) as noches from
+(select tipo, cliente, cobro, (fechafin-fechainicio) noches 
+from reservas right outer join operadores on reservas.operador = operadores.id
+)hue
+group by tipo;
+
+Caso 2:
+
+Select operador.tipo as tipooperador, utilizados.* from
+(select distinct alojamientos.* from
+(select alojamiento from
+(select oferta
+from reservas
+)hola,ofertas
+where oferta = id)oferticas,alojamientos
+where alojamientos.id = oferticas.alojamiento)utilizados inner join operadores 
+on utilizados.operador = operador.id;
+
 
 //-----------------------------------
 //RFC6
@@ -103,10 +128,3 @@ where alojamientos.id = oferticas.alojamiento;
 //-----------------------------------
 //RFC8
 //-----------------------------------
-
-//-----------------------------------
-//RFC9
-//-----------------------------------
-
-
-
