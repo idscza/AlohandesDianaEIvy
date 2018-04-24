@@ -185,6 +185,34 @@ public class DAOReserva {
 	}
 	
 	
+	public Reserva reservar(String cliente, Oferta oferta, String inicio, String fin, String hoy, String maestro) throws NumberFormatException, Exception {
+		
+		String id = ""+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10;
+		
+		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, FECHAREALIZACION, FECHAINICIO, FECHAFIN, PERSONAS, OPERADOR, OFERTA, CLIENTE, ESTADO, IDMAESTRO) "
+				+ "VALUES (%2$s,  %3$s, '%4$s', '%5$s', '%6$s', %7$s, %8$s, %9$s, %10$s, '%11$s', %12$s)", 
+									USUARIO, 
+									id, 
+									0,
+									hoy,
+									inicio,
+									fin,
+									oferta.getOperador(),
+									oferta.getId(),
+									cliente,
+									"activa",
+									maestro
+									);
+		System.out.println(sql);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+		return findReservaById(new Long(id));
+		
+	}
+	
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODOS AUXILIARES
@@ -238,5 +266,7 @@ public class DAOReserva {
 
 		return reserva;
 	}
+
+	
 
 }

@@ -194,5 +194,24 @@ public class ReservasService {
 					return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 				}
 			}
+			
+			@POST
+			@Path("reservar/{hospedaje}/{servicios}/{inicio}/{fin}/{cliente}")
+			@Produces( MediaType.APPLICATION_JSON )
+			
+			public Response reservar(@PathParam("hospedaje") String hospedaje, @PathParam("servicios") String servicios,
+					@PathParam("inicio") String inicio, @PathParam("fin") String fin,@PathParam("cliente") String cliente) {
+				
+				try{
+					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+					Reserva reserva = tm.reservar(hospedaje,servicios,inicio,fin,cliente);
+					return Response.status( 200 ).entity( reserva ).build( );			
+				}
+				catch( Exception e )
+				{
+					return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+				}
+			}
+
 
 }

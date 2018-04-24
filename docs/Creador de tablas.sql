@@ -41,7 +41,7 @@ alter table operadores
 add CONSTRAINT CHK_HorasHostal CHECK ( horacierre >= 0 and horacierre <= 23 and horaapertura >= 0 and horaapertura <= 23);
 
 alter table operadores
-add constraint CHK_tipoopvalido check (tipo in ('hotel','pernat','percom','hostal','vivuni'));
+add constraint CHK_tipoopvalido check (tipo in ('hotel','pernat','percom','hostal','vivuni','habhos'));
 
 alter table operadores 
 add CONSTRAINT PK_Operador PRIMARY KEY (id);
