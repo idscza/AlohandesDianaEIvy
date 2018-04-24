@@ -19,6 +19,7 @@ import tm.AloHandesTransactionManager;
 import vos.Alojamiento;
 import vos.RFC3;
 import vos.RFC4;
+import vos.Usuario;
 
 @Path("alojamientos")
 public class AlojamientoService {
@@ -198,5 +199,21 @@ public class AlojamientoService {
 		}
 	}
 
+	@GET
+	@Path ("frecuentes/{id: \\d+}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getClientesFrecuentes(@PathParam( "id" ) Long id) {
+		
+		try {
+			AloHandesTransactionManager tm = new AloHandesTransactionManager(getPath());
+			
+			List<Usuario> frecuentes;
+			frecuentes = tm.getClientesFrecuentes(id);
+			return Response.status(200).entity(frecuentes).build();
+		} 
+		catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
 	
 }

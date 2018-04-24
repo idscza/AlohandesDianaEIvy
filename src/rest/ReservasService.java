@@ -182,7 +182,24 @@ public class ReservasService {
 			@Path("cancelar/{idCancelacion}")
 			@Produces( MediaType.APPLICATION_JSON )
 			
-			public Response CancelarReserva(@PathParam("idCancelacion") Long idCancelacion) {
+			public Response cancelarReserva(@PathParam("idCancelacion") Long idCancelacion) {
+				
+				try{
+					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+					Reserva reserva = tm.cancelarReserva(idCancelacion,true);
+					return Response.status( 200 ).entity( reserva ).build( );			
+				}
+				catch( Exception e )
+				{
+					return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+				}
+			}
+			
+			@PUT
+			@Path("cancelarmultiple/{idCancelacion}")
+			@Produces( MediaType.APPLICATION_JSON )
+			
+			public Response cancelarReservaMultiple(@PathParam("idCancelacion") Long idCancelacion) {
 				
 				try{
 					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
@@ -194,5 +211,45 @@ public class ReservasService {
 					return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 				}
 			}
+			
+			@POST
+			@Path("reservar/{hospedaje}/{servicios}/{inicio}/{fin}/{cliente}")
+			@Produces( MediaType.APPLICATION_JSON )
+			
+			public Response reservar(@PathParam("hospedaje") String hospedaje, @PathParam("servicios") String servicios,
+					@PathParam("inicio") String inicio, @PathParam("fin") String fin,@PathParam("cliente") String cliente) {
+				
+				try{
+					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+					Reserva reserva = tm.reservar(hospedaje,servicios,inicio,fin,cliente);
+					return Response.status( 200 ).entity( reserva ).build( );			
+				}
+				catch( Exception e )
+				{
+					return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+				}
+			}
+			
+			@POST
+			@Path("reservarmultiple/{habs}/{hospedaje}/{servicios}/{inicio}/{fin}/{cliente}")
+			@Produces( MediaType.APPLICATION_JSON )
+			
+			public Response reservarMultiple(@PathParam("hospedaje") String hospedaje, @PathParam("habs") String habs,
+					@PathParam("servicios") String servicios,
+					@PathParam("inicio") String inicio, @PathParam("fin") String fin,@PathParam("cliente") String cliente) {
+				
+				try{
+					AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+					List<Reserva> reserva = tm.reservarMultiple(habs,hospedaje,servicios,inicio,fin,cliente);
+					return Response.status( 200 ).entity( reserva ).build( );			
+				}
+				catch( Exception e )
+				{
+					return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+				}
+			}
+			
+			
+
 
 }

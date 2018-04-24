@@ -203,8 +203,14 @@ public class AloHandesTransactionManager {
 			{
 				this.conn = darConexion();
 				daoUsuario.setConn(conn);
-				daoUsuario.addUsuario(usuario);
-
+				if(usuario.getTipo().equals("responsable")) {
+					 if (usuario.getOperador() != null) {
+						 daoUsuario.addUsuario(usuario);
+					 }else throw new Exception("No puede haber un responsable sin un operador");
+					
+				}else if(usuario.getTipo().equals("cliente")) {
+						 daoUsuario.addUsuario(usuario);
+				}
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
@@ -384,14 +390,32 @@ public class AloHandesTransactionManager {
 			}
 			return reserva;
 		}
-
-		public void addReserva(Reserva reserva) throws Exception{
+		
+		public Reserva reservar(String hospedaje, String servicios,String inicio,String fin,String cliente) throws Exception{
 			DAOReserva daoReserva = new DAOReserva( );
+			DAOOferta daoOferta = new DAOOferta();
+			Reserva rta = null;
 			try
 			{
 				this.conn = darConexion();
 				daoReserva.setConn(conn);
-				daoReserva.addReserva(reserva);
+				daoOferta.setConn(conn);
+				
+				String[] losservicios = servicios.split("-");
+				
+				List<Oferta> validez = daoOferta.findOfertasValidas(hospedaje,losservicios,inicio,fin);
+				if(validez.size() > 0){
+						
+					Date xd = new Date();
+					String d = ""+xd.getDate();
+					String m = ""+(xd.getMonth()+1);
+					String a = ""+(xd.getYear()-100);
+					String hoy = d+"/"+m+"/"+a;
+					
+						rta = daoReserva.reservar(cliente, validez.get(0),inicio,fin,hoy,null);
+
+				}else throw new Exception("No hay cupos para estas especificaciones");
+				
 
 			}
 			catch (SQLException sqlException) {
@@ -407,6 +431,114 @@ public class AloHandesTransactionManager {
 			finally {
 				try {
 					daoReserva.cerrarRecursos();
+					daoOferta.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return rta;
+		}
+		
+		public List<Reserva> reservarMultiple(String habs, String hospedaje, String servicios,String inicio,String fin,String cliente) throws Exception{
+			DAOReserva daoReserva = new DAOReserva( );
+			DAOOferta daoOferta = new DAOOferta();
+			List<Reserva> rta = null;
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				daoOferta.setConn(conn);
+
+				String[] losservicios = servicios.split("-");
+				int quant = Integer.parseInt(habs);
+
+				List<Oferta> validez = daoOferta.findOfertasValidas(hospedaje,losservicios,inicio,fin);
+				if(validez.size() >= quant){
+
+					String idmaestro =""+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10;
+					int i = 0;
+
+					while(i < quant) {
+						Date xd = new Date();
+						String d = ""+xd.getDate();
+						String m = ""+(xd.getMonth()+1);
+						String a = ""+(xd.getYear()-100);
+						String hoy = d+"/"+m+"/"+a;
+
+						rta.add(daoReserva.reservar(cliente, validez.get(i),inicio,fin,hoy,idmaestro));
+						i++;
+					}
+
+				}else throw new Exception("No hay cupos para estas especificaciones");
+
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					daoOferta.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return rta;
+		}
+
+		public void addReserva(Reserva reserva) throws Exception{
+			DAOReserva daoReserva = new DAOReserva( );
+			DAOOferta daoOferta = new DAOOferta();
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				daoOferta.setConn(conn);
+				Oferta validez = daoOferta.findOfertaById(reserva.getOferta());
+				if(validez != null){
+					
+					if(validez.getOperador() == reserva.getOperador()) {
+						daoReserva.addReserva(reserva);
+					}else throw new Exception("Reserva inválida");
+					
+				}else throw new Exception("Reserva inválida");
+				
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					daoOferta.cerrarRecursos();
 					if(this.conn!=null){
 						this.conn.close();					
 					}
@@ -497,8 +629,56 @@ public class AloHandesTransactionManager {
 			
 		}
 		
-		public void cancelarReserva(Long id, boolean cobrar) throws Exception{
+		public List<Reserva> cancelarReservaMultiple(Long id) throws Exception{
 			DAOReserva daoReserva = new DAOReserva( );
+			List<Reserva> multiple = null;
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn( conn );
+				 multiple = daoReserva.getReservaMultiple(id);
+				if(!multiple.isEmpty()) {
+					
+					int i = 0;
+					while(i < multiple.size()) {
+						cancelarReserva(id,true);
+						i++;
+					}
+					
+				}else
+					throw new Exception("Esta Reserva no se encuentra en la base de datos");
+				multiple = daoReserva.getReservaMultiple(id);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+			return multiple;
+		}
+		
+		public Reserva cancelarReserva(Long id, boolean cobrar) throws Exception{
+			DAOReserva daoReserva = new DAOReserva( );
+			Reserva reserva = null;
 			try
 			{
 				this.conn = darConexion();
@@ -540,6 +720,7 @@ public class AloHandesTransactionManager {
 						
 					}
 					daoReserva.cancelarReserva(id,cobro);
+					reserva = daoReserva.findReservaById(id);
 				}else
 					throw new Exception("Esta Reserva no se encuentra en la base de datos");
 
@@ -567,7 +748,7 @@ public class AloHandesTransactionManager {
 					throw exception;
 				}
 			}	
-			
+			return reserva;
 		}
 		
 		public List<Operador> getAllOperadores() throws Exception{
@@ -872,7 +1053,7 @@ public class AloHandesTransactionManager {
 			List<RFC4> alojamientos;
 			try 
 			{
-				String[] losServicios = servicios.split(":");
+				String[] losServicios = servicios.split("-");
 				
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
@@ -1438,8 +1619,8 @@ public class AloHandesTransactionManager {
 				if(alo != null){
 					if (alo.getOperador() == oferta.getOperador() ){
 						daoOferta.addOferta(oferta);	
-					}
-				}
+					}else throw new Exception("Oferta inválida");
+				}else throw new Exception("Oferta inválida");
 
 			}
 			catch (SQLException sqlException) {
@@ -1455,6 +1636,7 @@ public class AloHandesTransactionManager {
 			finally {
 				try {
 					daoOferta.cerrarRecursos();
+					daoAlojamiento.cerrarRecursos();
 					if(this.conn!=null){
 						this.conn.close();					
 					}
@@ -1682,4 +1864,42 @@ public class AloHandesTransactionManager {
 			}
 			return rta;
 		}
+
+		public List<Usuario> getClientesFrecuentes(Long id) throws Exception {
+			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+			List<Usuario> clientes;
+			try 
+			{
+				this.conn = darConexion();
+				daoAlojamiento.setConn(conn);
+				
+				clientes = daoAlojamiento.getClientesFrecuentes(id);
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoAlojamiento.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return clientes;
+		}
+
+		
 }

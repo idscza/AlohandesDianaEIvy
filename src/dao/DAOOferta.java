@@ -298,4 +298,37 @@ public class DAOOferta {
 		RFC2 req = new RFC2(oferta,populares);
 		return req;
 	}
+
+	public ArrayList<Oferta> findOfertasValidas(String hospedaje, String[] losServicios, String inicio, String fin) throws Exception {
+		
+		ArrayList<Oferta> ofertas = new ArrayList<Oferta>();
+		
+		int goal = losServicios.length;
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append(String.format("select oferta from %1$s.alojamientos join ", USUARIO));
+		sql.append(" (select alojamiento, oferta from (Select alojamiento, oferta, count(nombre) as servicios from (select * from (Select id, nombre, oferta, operador, alojamiento ");
+		sql.append(String.format(" From %1$s.SERVICIOS join (SELECT OFERTAS.id as elid, ofertas.operador, OFERTAS.ALOJAMIENTO,filtro.fecharealizacion FROM %1$s.OFERTAS LEFT OUTER JOIN", USUARIO));
+		sql.append(String.format("(SELECT * FROM RESERVAS WHERE FECHAFIN > '%1$s' and FECHAINICIO <= '%2$s' and ESTADO = 'activa' )FILTRO ON OFERTAS.ID = FILTRO.OFERTA) hello on elid = servicios.oferta where fecharealizacion is null)validos ", inicio,fin));
+		sql.append(String.format("where nombre = '%1$s' ", losServicios[0]));
+		
+		int i = 1;
+		while(i<goal){
+			sql.append(String.format("or nombre = '%1$s' ", losServicios[i]));
+			i++;
+		}
+		sql.append(String.format("group by alojamiento, oferta) where servicios = %1$s )final on alojamiento = id ",goal));
+		sql.append(String.format("where tipo = '%1$s'", hospedaje));
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			
+			Long machete = rs.getLong("OFERTA");
+			ofertas.add(findOfertaById(machete));
+		}
+		return ofertas;
+	}
 }
