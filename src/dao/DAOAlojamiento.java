@@ -270,7 +270,7 @@ public class DAOAlojamiento {
 			
 			sql.append("select alojamiento, oferta from (Select alojamiento, oferta, count(nombre) as servicios from (select * from (Select id, nombre, oferta, operador, alojamiento ");
 			sql.append(String.format(" From %1$s.SERVICIOS join (SELECT OFERTAS.id as elid, ofertas.operador, OFERTAS.ALOJAMIENTO,filtro.fecharealizacion FROM %1$s.OFERTAS LEFT OUTER JOIN", USUARIO));
-			sql.append(String.format("(SELECT * FROM RESERVAS WHERE FECHAFIN > '%1$s' and FECHAINICIO <= '%2$s' and ESTADO = 'activa' )FILTRO ON OFERTAS.ID = FILTRO.OFERTA) hello on elid = servicios.oferta where fecharealizacion is null)validos ", inicio,fin));
+			sql.append(String.format("(SELECT * FROM RESERVAS WHERE FECHAFIN > '%1$s' and FECHAINICIO <= '%2$s' and ESTADO = 'activa' )FILTRO ON OFERTAS.ID = FILTRO.OFERTA WHERE deshabilitada = 0) hello on elid = servicios.oferta where fecharealizacion is null)validos ", inicio,fin));
 			sql.append(String.format("where nombre = '%1$s' ", losServicios[0]));
 			
 			int i = 1;

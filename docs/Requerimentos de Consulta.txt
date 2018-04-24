@@ -41,7 +41,7 @@ select alojamiento, oferta from
  From SERVICIOS join
 (SELECT OFERTAS.id as elid, ofertas.operador, OFERTAS.ALOJAMIENTO,filtro.fecharealizacion FROM OFERTAS LEFT OUTER JOIN  
 (SELECT * FROM RESERVAS WHERE FECHAFIN > '13/2/2018' and FECHAINICIO <= '13/2/2018' and ESTADO = 'activa' )FILTRO 
-ON OFERTAS.ID = FILTRO.OFERTA) hello
+ON OFERTAS.ID = FILTRO.OFERTA WHERE deshabilitada = 0) hello
 on elid = servicios.oferta 
 where fecharealizacion is null)validos
 where nombre = 'Baby' or nombre = 'Garden')masterfilter

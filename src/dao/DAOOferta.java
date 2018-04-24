@@ -309,7 +309,7 @@ public class DAOOferta {
 		sql.append(String.format("select oferta from %1$s.alojamientos join ", USUARIO));
 		sql.append(" (select alojamiento, oferta from (Select alojamiento, oferta, count(nombre) as servicios from (select * from (Select id, nombre, oferta, operador, alojamiento ");
 		sql.append(String.format(" From %1$s.SERVICIOS join (SELECT OFERTAS.id as elid, ofertas.operador, OFERTAS.ALOJAMIENTO,filtro.fecharealizacion FROM %1$s.OFERTAS LEFT OUTER JOIN", USUARIO));
-		sql.append(String.format("(SELECT * FROM RESERVAS WHERE FECHAFIN > '%1$s' and FECHAINICIO <= '%2$s' and ESTADO = 'activa' )FILTRO ON OFERTAS.ID = FILTRO.OFERTA) hello on elid = servicios.oferta where fecharealizacion is null)validos ", inicio,fin));
+		sql.append(String.format("(SELECT * FROM RESERVAS WHERE FECHAFIN > '%1$s' and FECHAINICIO <= '%2$s' and ESTADO = 'activa' )FILTRO ON OFERTAS.ID = FILTRO.OFERTA WHERE deshabilitada = 0) hello on elid = servicios.oferta where fecharealizacion is null)validos ", inicio,fin));
 		sql.append(String.format("where nombre = '%1$s' ", losServicios[0]));
 		
 		int i = 1;
@@ -330,5 +330,21 @@ public class DAOOferta {
 			ofertas.add(findOfertaById(machete));
 		}
 		return ofertas;
+	}
+
+	public void habilitarOferta(Long id) throws SQLException {
+		
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append(String.format("UPDATE %s.OFERTAS SET ", USUARIO));
+		sql.append("DESHABILITADA = 0 "); 
+		sql.append(String.format("WHERE ID = %s ", id ));
+		
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
 	}
 }
