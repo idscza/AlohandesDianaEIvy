@@ -136,7 +136,7 @@ alter table alojamientos
 add constraint CHK_catehotel check (categoria in ('suite','semisuite','estandar'));
 
 alter table alojamientos
-add constraint CHK_tipoalvalido check (tipo in ('habhot','aparta','habuni','vivcom','habita'));
+add constraint CHK_tipoalvalido check (tipo in ('habhot','aparta','habuni','vivcom','habita','habhos'));
 
 alter table alojamientos
 add constraint FK_Operador2 FOREIGN KEY (operador) references operadores(id);

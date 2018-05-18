@@ -18,7 +18,7 @@ public class Reserva {
 	@JsonProperty(value="fechaInicio")
 	private Date fechaInicio;
 	
-	@JsonProperty(value="fechaFinal")
+	@JsonProperty(value="fechaFin")
 	private Date fechaFin;
 	
 	@JsonProperty(value="personas")

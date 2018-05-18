@@ -105,6 +105,7 @@ public class DAOReserva {
 									reserva.getFechaRealizacion(),
 									reserva.getFechaInicio(),
 									reserva.getFechaFin(),
+									reserva.getPersonas(),
 									reserva.getOperador(),
 									reserva.getOferta(),
 									reserva.getCliente(),
@@ -187,7 +188,13 @@ public class DAOReserva {
 	
 	public Reserva reservar(String cliente, Oferta oferta, String inicio, String fin, String hoy, String maestro) throws NumberFormatException, Exception {
 		
-		String id = ""+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10;
+		String id = ""+(int)(Math.random()*10)+
+				(int)(Math.random()*10)+
+				(int)(Math.random()*10)+
+				(int)(Math.random()*10)+
+				(int)(Math.random()*10)+
+				(int)(Math.random()*10)+
+				(int)(Math.random()*10);
 		
 		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, FECHAREALIZACION, FECHAINICIO, FECHAFIN, PERSONAS, OPERADOR, OFERTA, CLIENTE, ESTADO, IDMAESTRO) "
 				+ "VALUES (%2$s,  %3$s, '%4$s', '%5$s', '%6$s', %7$s, %8$s, %9$s, %10$s, '%11$s', %12$s)", 
@@ -197,6 +204,7 @@ public class DAOReserva {
 									hoy,
 									inicio,
 									fin,
+									0,
 									oferta.getOperador(),
 									oferta.getId(),
 									cliente,

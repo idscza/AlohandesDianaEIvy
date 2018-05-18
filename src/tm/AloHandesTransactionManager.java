@@ -497,7 +497,13 @@ public class AloHandesTransactionManager {
 				List<Oferta> validez = daoOferta.findOfertasValidas(hospedaje,losservicios,inicio,fin);
 				if(validez.size() >= quant){
 
-					String idmaestro =""+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10+Math.random()*10;
+					String idmaestro =""+(int)(Math.random()*10)+
+							(int)(Math.random()*10)+
+							(int)(Math.random()*10)+
+							(int)(Math.random()*10)+
+							(int)(Math.random()*10)+
+							(int)(Math.random()*10)+
+							(int)(Math.random()*10);
 					int i = 0;
 
 					while(i < quant) {
