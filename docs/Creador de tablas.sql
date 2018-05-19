@@ -59,6 +59,8 @@ cedula varchar(20),
 edad Number(3),
 nombre varchar(60),
 telefono varchar(20),
+genero varchar(5),
+ciudad varchar(60),
 operador varchar(60),
 tipo varchar (20)
 );
@@ -82,7 +84,16 @@ alter table usuarios
 modify telefono not null;
 
 alter table usuarios
+modify genero not null;
+
+alter table usuarios
+modify ciudad not null;
+
+alter table usuarios
 add CONSTRAINT CHK_Cliente CHECK (edad>=18);
+
+alter table usuarios
+add CONSTRAINT CHK_noagenda CHECK (genero in('M','F'));
 
 alter table usuarios
 add constraint CHK_tipousvalido check (tipo in ('cliente','responsable'));
