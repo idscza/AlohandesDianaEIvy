@@ -243,10 +243,12 @@ public class DAOAlojamiento {
 			Integer edad = resultSet.getInt("EDAD");
 			String nombre = resultSet.getString("NOMBRE");
 			String telefono = resultSet.getString("TELEFONO");
+			String genero = resultSet.getString("GENERO");
+			String ciudad = resultSet.getString("CIUDAD");
 			Long operador = resultSet.getLong("OPERADOR");
 			String tipo = resultSet.getString("TIPO");
 
-			Usuario user = new Usuario(id, login, contrasenia, cedula, edad, nombre, telefono, operador, tipo);
+			Usuario user = new Usuario(id, login, contrasenia, cedula, edad, nombre, telefono, genero, ciudad, operador, tipo);
 
 			return user;
 		}

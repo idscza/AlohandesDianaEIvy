@@ -25,6 +25,12 @@ public class Usuario {
 	@JsonProperty(value="telefono")
 	private String telefono;
 	
+	@JsonProperty(value="genero")
+	private String genero;
+	
+	@JsonProperty(value="ciudad")
+	private String ciudad;
+	
 	@JsonProperty(value="operador")
 	private Long operador;
 	
@@ -44,6 +50,10 @@ public class Usuario {
 	 		String nombre,
 	 		@JsonProperty(value="telefono")
 			String telefono,
+			@JsonProperty(value="genero")
+			String genero,
+			@JsonProperty(value="ciudad")
+			String ciudad,
 			@JsonProperty(value="operador")
 			Long operador,
 			@JsonProperty(value="tipo")
@@ -56,6 +66,8 @@ public class Usuario {
 		this.edad = edad;
 		this.nombre = nombre;
 		this.telefono = telefono;
+		this.genero = genero;
+		this.ciudad = ciudad;
 		this.operador = operador;
 		this.tipo = tipo;
 	}
@@ -130,6 +142,22 @@ public class Usuario {
 	
 	public void setOperador(Long operador) {
 		this.operador = operador;
+	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
 	}
 	
 }
