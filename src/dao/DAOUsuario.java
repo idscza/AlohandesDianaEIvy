@@ -406,5 +406,72 @@ public class DAOUsuario {
 		public void rollback() throws SQLException {
 			conn.rollback();
 		}
+		
+		public ArrayList<Usuario> rfc10(int consultor, int agrupamiento, String oferta, 
+				String fechainicio, String fechafin) throws SQLException, Exception {
+			ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+
+			String sql = String.format("Select distinct usuarios.* from " + 
+					"(Select * from " + 
+					"(Select * from %1$s.reservas where oferta = %2$s) " + 
+					"filtro where FECHAFIN > '%3$s' and FECHAINICIO < '%4$s') " + 
+					"utiles join %1$s.usuarios " + 
+					"on utiles.cliente = usuarios.id "  
+					, USUARIO,oferta,fechafin,fechainicio);
+			
+			if( agrupamiento == 0) {
+				sql += " order by usuarios.id";
+			}else if(agrupamiento == 1) {
+				sql += " order by genero";
+			}else if(agrupamiento == 2) {
+				sql += " order by ciudad";
+			}
+			
+			System.out.println(sql);
+			
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				usuarios.add(convertResultSetToUsuario(rs));
+			}
+			return usuarios;
+		}
+		
+		public ArrayList<Usuario> rfc11(int consultor, int agrupamiento, String oferta, 
+				String fechainicio, String fechafin) throws SQLException, Exception {
+			ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+
+			//Dado el volumen de los datos, solo se muestran los primeros 50
+			
+			String sql = String.format("Select distinct usuarios.* from " + 
+					"(Select * from " + 
+					"(Select * from %1$s.reservas where oferta = %2$s) " + 
+					"filtro where FECHAFIN > '%3$s' and FECHAINICIO < '%4$s') " + 
+					"utiles right outer join %1$s.usuarios " + 
+					"on utiles.cliente = usuarios.id " +
+					"where utiles.id is null and tipo = 'cliente' and rownum <= 50"
+					, USUARIO,oferta,fechafin,fechainicio);
+			
+			if( agrupamiento == 0) {
+				sql += " order by usuarios.id";
+			}else if(agrupamiento == 1) {
+				sql += " order by genero";
+			}else if(agrupamiento == 2) {
+				sql += " order by ciudad";
+			}
+			
+			System.out.println(sql);
+			
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				usuarios.add(convertResultSetToUsuario(rs));
+			}
+			return usuarios;
+		}
 
 }

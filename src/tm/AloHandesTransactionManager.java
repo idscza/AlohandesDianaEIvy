@@ -2191,5 +2191,122 @@ public class AloHandesTransactionManager {
 			
 		}
 
+		public List<Usuario> getConsumoPositivo(String oferta, String inicio, String fin, String agrupamiento) throws Exception {
+			DAOUsuario daoUsuario = new DAOUsuario();
+			List<Usuario> usuarios;
+			try 
+			{
+				this.conn = darConexion();
+				daoUsuario.setConn(conn);
+				daoUsuario.autocommit0();
+
+				String[] asd = inicio.split("-");
+				String fechafin = asd[0]+ "/"+ asd[1] + "/" + asd[2];
+				
+				String[] qwe = fin.split("-");
+				String fechainicio = qwe[0]+ "/"+ qwe[1] + "/" + qwe[2];
+				
+				int elagrupamiento = 3;
+				
+				if(agrupamiento.equals("id")) {
+					elagrupamiento = 0;
+				}else if (agrupamiento.equals("genero")) {
+					elagrupamiento = 1;
+				}else if (agrupamiento.equals("ciudad")) {
+					elagrupamiento = 2;
+				}
+				if(elagrupamiento == 3) { throw new Exception("Orden inválido");}
+				
+				usuarios = daoUsuario.rfc10(0, elagrupamiento, oferta, fechainicio, fechafin);
+				daoUsuario.commit();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				daoUsuario.rollback();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				daoUsuario.rollback();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoUsuario.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return usuarios;
+			
+		}
+
+		public List<Usuario> getConsumoNegativo(String oferta, String inicio, String fin, String agrupamiento) throws Exception{
+			DAOUsuario daoUsuario = new DAOUsuario();
+			List<Usuario> usuarios;
+			try 
+			{
+				this.conn = darConexion();
+				daoUsuario.setConn(conn);
+				daoUsuario.autocommit0();
+
+				String[] asd = inicio.split("-");
+				String fechafin = asd[0]+ "/"+ asd[1] + "/" + asd[2];
+				
+				String[] qwe = fin.split("-");
+				String fechainicio = qwe[0]+ "/"+ qwe[1] + "/" + qwe[2];
+				
+				int elagrupamiento = 3;
+				
+				if(agrupamiento.equals("id")) {
+					elagrupamiento = 0;
+				}else if (agrupamiento.equals("genero")) {
+					elagrupamiento = 1;
+				}else if (agrupamiento.equals("ciudad")) {
+					elagrupamiento = 2;
+				}
+				if(elagrupamiento == 3) { throw new Exception("Orden inválido");}
+				
+				usuarios = daoUsuario.rfc11(0, elagrupamiento, oferta, fechainicio, fechafin);
+				daoUsuario.commit();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				daoUsuario.rollback();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				daoUsuario.rollback();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoUsuario.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return usuarios;
+			
+			
+		}
+
 		
 }

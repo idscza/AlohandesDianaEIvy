@@ -144,14 +144,56 @@ on cliente = id;
 //RFC10
 //-----------------------------------
 
+Caso Admin:
+
+Select distinct usuarios.* from 
+(Select * from
+(Select * from reservas where oferta = 10000)
+filtro where FECHAFIN > '1/1/2010' and FECHAINICIO < '1/1/2020')
+utiles join usuarios
+on utiles.cliente = usuarios.id
+order by genero;
+
+Caso Proveedor:
+
 //-----------------------------------
 //RFC11
 //-----------------------------------
+
+Caso Admin:
+
+Select distinct usuarios.* from 
+(Select * from
+(Select * from reservas where oferta = 100000)
+filtro where FECHAFIN > '1/1/2010' and FECHAINICIO < '1/1/2020')
+utiles right outer join usuarios
+on utiles.cliente = usuarios.id
+where utiles.id is null and tipo = 'cliente'
+order by genero;
 
 //-----------------------------------
 //RFC12
 //-----------------------------------
 
+//El número 3 que parece huérfano es el indicador de cada semana, de este modo sabremos si la oferta incluye dicha semana del año.
+//Por medio de Java se puede lograr iterar con las 53 posibles semanas.
+//Ofertas y oferta se pueden cambiar por operador y operadores, y nos arrojaría un resultado equivalente. 
+
+select * from 
+(select * from 
+(select oferta, 3 as semana, sum(case when to_char(Fechainicio - 7/24,'IW') >= 3 then 1 
+when to_char(Fechafin - 7/24,'IW') <= 3 then 1 else 0 end) as ocupada 
+from reservas
+GROUP BY  3, oferta 
+order by ocupada desc)
+where rownum = 1)ya join ofertas on ya.oferta = ofertas.id;
+
+
 //-----------------------------------
 //RFC13
 //-----------------------------------
+
+Select usuarios.*, count(*) from usuarios 
+join reservas on usuarios.id = reservas.cliente
+where tipo = 'cliente'
+group by usuarios.id;

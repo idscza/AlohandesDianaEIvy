@@ -201,8 +201,31 @@ public class UsuariosService {
 		{
 			try{
 				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
-				Object usuario = tm.getInfoPorTipo( opcion);
+				 Object usuario = tm.getInfoPorTipo( opcion);
 				return Response.status( 200 ).entity( usuario ).build( );			
+			}
+			catch( Exception e )
+			{
+				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+			}
+		}
+		
+		@GET
+		@Path( "consumo/{oferta}/{inicio}/{fin}/{agrupamiento}/{estado}" )
+		@Produces( { MediaType.APPLICATION_JSON } )
+		public Response getConsumoPositivo( @PathParam( "oferta" ) String oferta,
+				@PathParam( "inicio" ) String inicio,
+				@PathParam( "fin" ) String fin,
+				@PathParam( "agrupamiento" ) String agrupamiento,
+				@PathParam( "estado") String estado)
+		{
+			try{
+				AloHandesTransactionManager tm = new AloHandesTransactionManager( getPath( ) );
+				List<Usuario> usuarios; 
+				if(estado.equals ("si")) { usuarios = tm.getConsumoPositivo(oferta,inicio,fin,agrupamiento);}
+				else {usuarios = tm.getConsumoNegativo(oferta,inicio,fin,agrupamiento);}
+				
+				return Response.status( 200 ).entity( usuarios ).build( );			
 			}
 			catch( Exception e )
 			{
